@@ -1,0 +1,5 @@
+﻿10:33.888003-0,EXCP,2,process=rphost,p:processName=AstOffice,OSThread=10404,t:clientID=2096,t:applicationName=WebServerExtension,t:computerName=Ast1COffice,t:connectID=1911,SessionID=60594,Usr=CallCenter,Exception=8d366056-4d5a-4d88-a207-0ae535b7d28e,Descr='src\VResourceHttpServiceServer.cpp(152):
+8d366056-4d5a-4d88-a207-0ae535b7d28e: Поле объекта не обнаружено (ДатаДоставки)
+{ОбщийМодуль.мчт_CallCenterВызовСервера.Модуль(445)}:		СтруктураЗаказа.Вставить("DeliveryDate",      ?(ПереданНаДоставку, ДатуВстроку(ТЗ[0].ДатаДоставки), "")); //дату доставки отображать только если передан на доставку
+{HTTPСервис.GetOrder.Модуль(158)}:		ДанныеЗаказа = мчт_CallCenterВызовСервера.ПолучитьДанныеЗаказаИМПоНомеру(НомерЗаказа, Онлайн, ЭтоЧек, ДатаЗаказа);
+'

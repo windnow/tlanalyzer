@@ -1,0 +1,2733 @@
+﻿00:18.595014-1108999,DBMSSQL,5,process=rphost,p:processName=AstOffice,OSThread=3108,t:clientID=2245,t:applicationName=WebServerExtension,t:computerName=Ast1COffice,t:connectID=2051,SessionID=37882,Usr=MatrixMechta,DBMS=DBMSSQL,DataBase=ASTSQLOFFICE2\AstOffice,Trans=0,dbpid=96,Sql='SELECT
+T1._IDRRef
+FROM dbo._Document21650 T1 WITH(NOLOCK)
+WHERE T1._Posted = 0x01 AND (T1._Fld21654_TYPE = 0x08 AND T1._Fld21654_RTRef = 0x000000B3) AND (T1._Fld21654_TYPE = 0x08 AND T1._Fld21654_RTRef = 0x000000B3 AND T1._Fld21654_RRRef IN
+(SELECT
+T2._IDRRef AS Q_001_F_000RRef
+FROM dbo._Document179 T2 WITH(NOLOCK)
+WHERE (T2._Fld3251_TYPE = 0x08 AND T2._Fld3251_RTRef = 0x000000B3 AND T2._Fld3251_RRRef = ?) AND T2._Posted = 0x01)) AND (T1._Fld21659RRef = ?)
+p_0: 0x93B4B8CB29D980BF11EDD42C7B9B4979
+p_1: 0xB2AD53436D75F68A48CF1D1672BDA9B1
+',Rows=0,RowsAffected=0,Context='
+HTTPСервис.GetOrderInfo.Модуль : 126 : ЧекЗаДоставку = ЧекЗаДоставкуВыбит(Заказ);
+	HTTPСервис.GetOrderInfo.Модуль : 889 : Выборка = Запрос.Выполнить().Выбрать();'
+01:35.190021-1281017,DBMSSQL,5,process=rphost,p:processName=AstOffice,OSThread=9440,t:clientID=2245,t:applicationName=WebServerExtension,t:computerName=Ast1COffice,t:connectID=2051,SessionID=38078,Usr=MatrixMechta,DBMS=DBMSSQL,DataBase=ASTSQLOFFICE2\AstOffice,Trans=0,dbpid=68,Sql='SELECT
+T1._IDRRef
+FROM dbo._Document13093 T1 WITH(NOLOCK)
+LEFT OUTER JOIN dbo._Document179 T2 WITH(NOLOCK)
+LEFT OUTER JOIN dbo._Document269 T3 WITH(NOLOCK)
+ON (0x08 = T3._Fld7198_TYPE AND 0x000000B3 = T3._Fld7198_RTRef AND T2._IDRRef = T3._Fld7198_RRRef)
+ON (0x08 = T1._Fld13105_TYPE AND 0x0000010D = T1._Fld13105_RTRef AND T3._IDRRef = T1._Fld13105_RRRef)
+WHERE (T2._IDRRef = ?) AND T3._Posted = 0x01 AND T2._Fld15934 = 0x01
+p_0: 0x93B4B8CB29D980BF11EDD30040304CF6
+',Rows=0,RowsAffected=0,Context='
+HTTPСервис.GetOrderInfo.Модуль : 29 : ОплатаККМ = ВыбитаОплатаККМ(Заказ);
+	HTTPСервис.GetOrderInfo.Модуль : 436 : РезультатЗапроса = Запрос.Выполнить();'
+01:35.831018-2812912,DBMSSQL,4,process=rphost,p:processName=AstOffice,OSThread=11924,t:clientID=2388,t:applicationName=1CV8,t:computerName=ast12trademark,t:connectID=2182,SessionID=4069,Usr=Тарасов Игорь,DBMS=DBMSSQL,DataBase=ASTSQLOFFICE2\AstOffice,Trans=0,dbpid=79,Sql='SELECT
+CAST((CAST((T1.Fld622Balance_ * ?) AS NUMERIC(34, 8)) / T1.Fld624Balance_) AS NUMERIC(15, 2))
+FROM (SELECT
+T2.Value1_TYPE AS Value1_TYPE,
+T2.Value1_RTRef AS Value1_RTRef,
+T2.Value1_RRRef AS Value1_RRRef,
+CASE WHEN CAST(SUM(T2.Fld622Balance_) AS NUMERIC(27, 2)) IS NULL THEN 0.0 ELSE CAST(SUM(T2.Fld622Balance_) AS NUMERIC(27, 2)) END AS Fld622Balance_,
+CASE WHEN CAST(SUM(T2.Fld624Balance_) AS NUMERIC(27, 3)) IS NULL THEN 0.0 ELSE CAST(SUM(T2.Fld624Balance_) AS NUMERIC(27, 3)) END AS Fld624Balance_
+FROM (SELECT
+CASE WHEN CAST(NULL AS BINARY(1)) IN (0x01) THEN CAST(NULL AS BINARY(1)) END AS Value1_TYPE,
+CASE WHEN CAST(NULL AS BINARY(1)) IS NOT NULL THEN 0x00000000 END AS Value1_RTRef,
+CASE WHEN CAST(NULL AS BINARY(1)) IS NOT NULL THEN 0x00000000000000000000000000000000 END AS Value1_RRRef,
+T3._Fld622 AS Fld622Balance_,
+T3._Fld624 AS Fld624Balance_
+FROM dbo._AccRgAT0633 T3 WITH(NOLOCK)
+INNER JOIN #tt100 T4 WITH(NOLOCK)
+ON T4._IDRRef = T3._AccountRRef AND T4._Cnt = ?
+WHERE T3._Period = ? AND (T3._Fld622 <> ? OR T3._Fld624 <> ?)
+UNION ALL SELECT
+T5._Value1_TYPE AS Value1_TYPE,
+T5._Value1_RTRef AS Value1_RTRef,
+T5._Value1_RRRef AS Value1_RRRef,
+T5._Fld622 AS Fld622Balance_,
+T5._Fld624 AS Fld624Balance_
+FROM dbo._AccRgAT1643 T5 WITH(NOLOCK)
+INNER JOIN #tt100 T6 WITH(NOLOCK)
+ON T6._IDRRef = T5._AccountRRef AND T6._Cnt = ?
+WHERE T5._Period = ? AND (T5._Fld622 <> ? OR T5._Fld624 <> ?)
+UNION ALL SELECT
+T7._Value1_TYPE AS Value1_TYPE,
+T7._Value1_RTRef AS Value1_RTRef,
+T7._Value1_RRRef AS Value1_RRRef,
+T7._Fld622 AS Fld622Balance_,
+T7._Fld624 AS Fld624Balance_
+FROM dbo._AccRgAT2644 T7 WITH(NOLOCK)
+INNER JOIN #tt100 T8 WITH(NOLOCK)
+ON T8._IDRRef = T7._AccountRRef AND T8._Cnt = ?
+WHERE T7._Period = ? AND (T7._Fld622 <> ? OR T7._Fld624 <> ?)
+UNION ALL SELECT
+T9._Value1_TYPE AS Value1_TYPE,
+T9._Value1_RTRef AS Value1_RTRef,
+T9._Value1_RRRef AS Value1_RRRef,
+T9._Fld622 AS Fld622Balance_,
+T9._Fld624 AS Fld624Balance_
+FROM dbo._AccRgAT3645 T9 WITH(NOLOCK)
+INNER JOIN #tt100 T10 WITH(NOLOCK)
+ON T10._IDRRef = T9._AccountRRef AND T10._Cnt = ?
+WHERE T9._Period = ? AND (T9._Fld622 <> ? OR T9._Fld624 <> ?)) T2
+GROUP BY T2.Value1_TYPE,
+T2.Value1_RTRef,
+T2.Value1_RRRef
+HAVING (CASE WHEN CAST(SUM(T2.Fld622Balance_) AS NUMERIC(27, 2)) IS NULL THEN 0.0 ELSE CAST(SUM(T2.Fld622Balance_) AS NUMERIC(27, 2)) END) <> 0.0 OR (CASE WHEN CAST(SUM(T2.Fld624Balance_) AS NUMERIC(27, 3)) IS NULL THEN 0.0 ELSE CAST(SUM(T2.Fld624Balance_) AS NUMERIC(27, 3)) END) <> 0.0) T1
+WHERE (T1.Value1_TYPE = 0x08 AND T1.Value1_RTRef = 0x00000054 AND T1.Value1_RRRef = ?)
+p_0: 1.12N
+p_1: 0N
+p_2: 59991101000000
+p_3: 0N
+p_4: 0N
+p_5: 1N
+p_6: 59991101000000
+p_7: 0N
+p_8: 0N
+p_9: 2N
+p_10: 59991101000000
+p_11: 0N
+p_12: 0N
+p_13: 3N
+p_14: 59991101000000
+p_15: 0N
+p_16: 0N
+p_17: 0x9EC92C768A5D355111E5EF59D8E00AB3
+',Rows=1,RowsAffected=-1
+01:35.846011-0,Context,2,process=rphost,p:processName=AstOffice,OSThread=11924,t:clientID=2388,t:applicationName=1CV8,t:computerName=ast12trademark,t:connectID=2182,SessionID=4069,Usr=Тарасов Игорь,Context='
+ВнешняяОбработка.УправлениеЦенами.Форма.Форма.Форма : 314 : Рез = Запрос.Выполнить().Выгрузить();'
+01:38.034047-2110039,DBMSSQL,4,process=rphost,p:processName=AstOffice,OSThread=11924,t:clientID=2388,t:applicationName=1CV8,t:computerName=ast12trademark,t:connectID=2182,SessionID=4069,Usr=Тарасов Игорь,DBMS=DBMSSQL,DataBase=ASTSQLOFFICE2\AstOffice,Trans=0,dbpid=57,Sql='SELECT
+CAST((CAST((T1.Fld622Balance_ * ?) AS NUMERIC(34, 8)) / T1.Fld624Balance_) AS NUMERIC(15, 2))
+FROM (SELECT
+T2.Value1_TYPE AS Value1_TYPE,
+T2.Value1_RTRef AS Value1_RTRef,
+T2.Value1_RRRef AS Value1_RRRef,
+CASE WHEN CAST(SUM(T2.Fld622Balance_) AS NUMERIC(27, 2)) IS NULL THEN 0.0 ELSE CAST(SUM(T2.Fld622Balance_) AS NUMERIC(27, 2)) END AS Fld622Balance_,
+CASE WHEN CAST(SUM(T2.Fld624Balance_) AS NUMERIC(27, 3)) IS NULL THEN 0.0 ELSE CAST(SUM(T2.Fld624Balance_) AS NUMERIC(27, 3)) END AS Fld624Balance_
+FROM (SELECT
+CASE WHEN CAST(NULL AS BINARY(1)) IN (0x01) THEN CAST(NULL AS BINARY(1)) END AS Value1_TYPE,
+CASE WHEN CAST(NULL AS BINARY(1)) IS NOT NULL THEN 0x00000000 END AS Value1_RTRef,
+CASE WHEN CAST(NULL AS BINARY(1)) IS NOT NULL THEN 0x00000000000000000000000000000000 END AS Value1_RRRef,
+T3._Fld622 AS Fld622Balance_,
+T3._Fld624 AS Fld624Balance_
+FROM dbo._AccRgAT0633 T3 WITH(NOLOCK)
+INNER JOIN #tt82 T4 WITH(NOLOCK)
+ON T4._IDRRef = T3._AccountRRef AND T4._Cnt = ?
+WHERE T3._Period = ? AND (T3._Fld622 <> ? OR T3._Fld624 <> ?)
+UNION ALL SELECT
+T5._Value1_TYPE AS Value1_TYPE,
+T5._Value1_RTRef AS Value1_RTRef,
+T5._Value1_RRRef AS Value1_RRRef,
+T5._Fld622 AS Fld622Balance_,
+T5._Fld624 AS Fld624Balance_
+FROM dbo._AccRgAT1643 T5 WITH(NOLOCK)
+INNER JOIN #tt82 T6 WITH(NOLOCK)
+ON T6._IDRRef = T5._AccountRRef AND T6._Cnt = ?
+WHERE T5._Period = ? AND (T5._Fld622 <> ? OR T5._Fld624 <> ?)
+UNION ALL SELECT
+T7._Value1_TYPE AS Value1_TYPE,
+T7._Value1_RTRef AS Value1_RTRef,
+T7._Value1_RRRef AS Value1_RRRef,
+T7._Fld622 AS Fld622Balance_,
+T7._Fld624 AS Fld624Balance_
+FROM dbo._AccRgAT2644 T7 WITH(NOLOCK)
+INNER JOIN #tt82 T8 WITH(NOLOCK)
+ON T8._IDRRef = T7._AccountRRef AND T8._Cnt = ?
+WHERE T7._Period = ? AND (T7._Fld622 <> ? OR T7._Fld624 <> ?)
+UNION ALL SELECT
+T9._Value1_TYPE AS Value1_TYPE,
+T9._Value1_RTRef AS Value1_RTRef,
+T9._Value1_RRRef AS Value1_RRRef,
+T9._Fld622 AS Fld622Balance_,
+T9._Fld624 AS Fld624Balance_
+FROM dbo._AccRgAT3645 T9 WITH(NOLOCK)
+INNER JOIN #tt82 T10 WITH(NOLOCK)
+ON T10._IDRRef = T9._AccountRRef AND T10._Cnt = ?
+WHERE T9._Period = ? AND (T9._Fld622 <> ? OR T9._Fld624 <> ?)) T2
+GROUP BY T2.Value1_TYPE,
+T2.Value1_RTRef,
+T2.Value1_RRRef
+HAVING (CASE WHEN CAST(SUM(T2.Fld622Balance_) AS NUMERIC(27, 2)) IS NULL THEN 0.0 ELSE CAST(SUM(T2.Fld622Balance_) AS NUMERIC(27, 2)) END) <> 0.0 OR (CASE WHEN CAST(SUM(T2.Fld624Balance_) AS NUMERIC(27, 3)) IS NULL THEN 0.0 ELSE CAST(SUM(T2.Fld624Balance_) AS NUMERIC(27, 3)) END) <> 0.0) T1
+WHERE (T1.Value1_TYPE = 0x08 AND T1.Value1_RTRef = 0x00000054 AND T1.Value1_RRRef = ?)
+p_0: 1.12N
+p_1: 0N
+p_2: 59991101000000
+p_3: 0N
+p_4: 0N
+p_5: 1N
+p_6: 59991101000000
+p_7: 0N
+p_8: 0N
+p_9: 2N
+p_10: 59991101000000
+p_11: 0N
+p_12: 0N
+p_13: 3N
+p_14: 59991101000000
+p_15: 0N
+p_16: 0N
+p_17: 0xA22D005056B6DBD711EA6FD23E2FF939
+',Rows=1,RowsAffected=-1
+01:38.049031-0,Context,2,process=rphost,p:processName=AstOffice,OSThread=11924,t:clientID=2388,t:applicationName=1CV8,t:computerName=ast12trademark,t:connectID=2182,SessionID=4069,Usr=Тарасов Игорь,Context='
+ВнешняяОбработка.УправлениеЦенами.Форма.Форма.Форма : 314 : Рез = Запрос.Выполнить().Выгрузить();'
+01:40.018070-1906044,DBMSSQL,4,process=rphost,p:processName=AstOffice,OSThread=11924,t:clientID=2388,t:applicationName=1CV8,t:computerName=ast12trademark,t:connectID=2182,SessionID=4069,Usr=Тарасов Игорь,DBMS=DBMSSQL,DataBase=ASTSQLOFFICE2\AstOffice,Trans=0,dbpid=57,Sql='SELECT
+CAST((CAST((T1.Fld622Balance_ * ?) AS NUMERIC(34, 8)) / T1.Fld624Balance_) AS NUMERIC(15, 2))
+FROM (SELECT
+T2.Value1_TYPE AS Value1_TYPE,
+T2.Value1_RTRef AS Value1_RTRef,
+T2.Value1_RRRef AS Value1_RRRef,
+CASE WHEN CAST(SUM(T2.Fld622Balance_) AS NUMERIC(27, 2)) IS NULL THEN 0.0 ELSE CAST(SUM(T2.Fld622Balance_) AS NUMERIC(27, 2)) END AS Fld622Balance_,
+CASE WHEN CAST(SUM(T2.Fld624Balance_) AS NUMERIC(27, 3)) IS NULL THEN 0.0 ELSE CAST(SUM(T2.Fld624Balance_) AS NUMERIC(27, 3)) END AS Fld624Balance_
+FROM (SELECT
+CASE WHEN CAST(NULL AS BINARY(1)) IN (0x01) THEN CAST(NULL AS BINARY(1)) END AS Value1_TYPE,
+CASE WHEN CAST(NULL AS BINARY(1)) IS NOT NULL THEN 0x00000000 END AS Value1_RTRef,
+CASE WHEN CAST(NULL AS BINARY(1)) IS NOT NULL THEN 0x00000000000000000000000000000000 END AS Value1_RRRef,
+T3._Fld622 AS Fld622Balance_,
+T3._Fld624 AS Fld624Balance_
+FROM dbo._AccRgAT0633 T3 WITH(NOLOCK)
+INNER JOIN #tt82 T4 WITH(NOLOCK)
+ON T4._IDRRef = T3._AccountRRef AND T4._Cnt = ?
+WHERE T3._Period = ? AND (T3._Fld622 <> ? OR T3._Fld624 <> ?)
+UNION ALL SELECT
+T5._Value1_TYPE AS Value1_TYPE,
+T5._Value1_RTRef AS Value1_RTRef,
+T5._Value1_RRRef AS Value1_RRRef,
+T5._Fld622 AS Fld622Balance_,
+T5._Fld624 AS Fld624Balance_
+FROM dbo._AccRgAT1643 T5 WITH(NOLOCK)
+INNER JOIN #tt82 T6 WITH(NOLOCK)
+ON T6._IDRRef = T5._AccountRRef AND T6._Cnt = ?
+WHERE T5._Period = ? AND (T5._Fld622 <> ? OR T5._Fld624 <> ?)
+UNION ALL SELECT
+T7._Value1_TYPE AS Value1_TYPE,
+T7._Value1_RTRef AS Value1_RTRef,
+T7._Value1_RRRef AS Value1_RRRef,
+T7._Fld622 AS Fld622Balance_,
+T7._Fld624 AS Fld624Balance_
+FROM dbo._AccRgAT2644 T7 WITH(NOLOCK)
+INNER JOIN #tt82 T8 WITH(NOLOCK)
+ON T8._IDRRef = T7._AccountRRef AND T8._Cnt = ?
+WHERE T7._Period = ? AND (T7._Fld622 <> ? OR T7._Fld624 <> ?)
+UNION ALL SELECT
+T9._Value1_TYPE AS Value1_TYPE,
+T9._Value1_RTRef AS Value1_RTRef,
+T9._Value1_RRRef AS Value1_RRRef,
+T9._Fld622 AS Fld622Balance_,
+T9._Fld624 AS Fld624Balance_
+FROM dbo._AccRgAT3645 T9 WITH(NOLOCK)
+INNER JOIN #tt82 T10 WITH(NOLOCK)
+ON T10._IDRRef = T9._AccountRRef AND T10._Cnt = ?
+WHERE T9._Period = ? AND (T9._Fld622 <> ? OR T9._Fld624 <> ?)) T2
+GROUP BY T2.Value1_TYPE,
+T2.Value1_RTRef,
+T2.Value1_RRRef
+HAVING (CASE WHEN CAST(SUM(T2.Fld622Balance_) AS NUMERIC(27, 2)) IS NULL THEN 0.0 ELSE CAST(SUM(T2.Fld622Balance_) AS NUMERIC(27, 2)) END) <> 0.0 OR (CASE WHEN CAST(SUM(T2.Fld624Balance_) AS NUMERIC(27, 3)) IS NULL THEN 0.0 ELSE CAST(SUM(T2.Fld624Balance_) AS NUMERIC(27, 3)) END) <> 0.0) T1
+WHERE (T1.Value1_TYPE = 0x08 AND T1.Value1_RTRef = 0x00000054 AND T1.Value1_RRRef = ?)
+p_0: 1.12N
+p_1: 0N
+p_2: 59991101000000
+p_3: 0N
+p_4: 0N
+p_5: 1N
+p_6: 59991101000000
+p_7: 0N
+p_8: 0N
+p_9: 2N
+p_10: 59991101000000
+p_11: 0N
+p_12: 0N
+p_13: 3N
+p_14: 59991101000000
+p_15: 0N
+p_16: 0N
+p_17: 0xA230005056B6DBD711EAE1430F8C3EE4
+',Rows=1,RowsAffected=-1
+01:40.018109-0,Context,2,process=rphost,p:processName=AstOffice,OSThread=11924,t:clientID=2388,t:applicationName=1CV8,t:computerName=ast12trademark,t:connectID=2182,SessionID=4069,Usr=Тарасов Игорь,Context='
+ВнешняяОбработка.УправлениеЦенами.Форма.Форма.Форма : 314 : Рез = Запрос.Выполнить().Выгрузить();'
+01:42.034013-1952930,DBMSSQL,4,process=rphost,p:processName=AstOffice,OSThread=11924,t:clientID=2388,t:applicationName=1CV8,t:computerName=ast12trademark,t:connectID=2182,SessionID=4069,Usr=Тарасов Игорь,DBMS=DBMSSQL,DataBase=ASTSQLOFFICE2\AstOffice,Trans=0,dbpid=99,Sql='SELECT
+CAST((CAST((T1.Fld622Balance_ * ?) AS NUMERIC(34, 8)) / T1.Fld624Balance_) AS NUMERIC(15, 2))
+FROM (SELECT
+T2.Value1_TYPE AS Value1_TYPE,
+T2.Value1_RTRef AS Value1_RTRef,
+T2.Value1_RRRef AS Value1_RRRef,
+CASE WHEN CAST(SUM(T2.Fld622Balance_) AS NUMERIC(27, 2)) IS NULL THEN 0.0 ELSE CAST(SUM(T2.Fld622Balance_) AS NUMERIC(27, 2)) END AS Fld622Balance_,
+CASE WHEN CAST(SUM(T2.Fld624Balance_) AS NUMERIC(27, 3)) IS NULL THEN 0.0 ELSE CAST(SUM(T2.Fld624Balance_) AS NUMERIC(27, 3)) END AS Fld624Balance_
+FROM (SELECT
+CASE WHEN CAST(NULL AS BINARY(1)) IN (0x01) THEN CAST(NULL AS BINARY(1)) END AS Value1_TYPE,
+CASE WHEN CAST(NULL AS BINARY(1)) IS NOT NULL THEN 0x00000000 END AS Value1_RTRef,
+CASE WHEN CAST(NULL AS BINARY(1)) IS NOT NULL THEN 0x00000000000000000000000000000000 END AS Value1_RRRef,
+T3._Fld622 AS Fld622Balance_,
+T3._Fld624 AS Fld624Balance_
+FROM dbo._AccRgAT0633 T3 WITH(NOLOCK)
+INNER JOIN #tt93 T4 WITH(NOLOCK)
+ON T4._IDRRef = T3._AccountRRef AND T4._Cnt = ?
+WHERE T3._Period = ? AND (T3._Fld622 <> ? OR T3._Fld624 <> ?)
+UNION ALL SELECT
+T5._Value1_TYPE AS Value1_TYPE,
+T5._Value1_RTRef AS Value1_RTRef,
+T5._Value1_RRRef AS Value1_RRRef,
+T5._Fld622 AS Fld622Balance_,
+T5._Fld624 AS Fld624Balance_
+FROM dbo._AccRgAT1643 T5 WITH(NOLOCK)
+INNER JOIN #tt93 T6 WITH(NOLOCK)
+ON T6._IDRRef = T5._AccountRRef AND T6._Cnt = ?
+WHERE T5._Period = ? AND (T5._Fld622 <> ? OR T5._Fld624 <> ?)
+UNION ALL SELECT
+T7._Value1_TYPE AS Value1_TYPE,
+T7._Value1_RTRef AS Value1_RTRef,
+T7._Value1_RRRef AS Value1_RRRef,
+T7._Fld622 AS Fld622Balance_,
+T7._Fld624 AS Fld624Balance_
+FROM dbo._AccRgAT2644 T7 WITH(NOLOCK)
+INNER JOIN #tt93 T8 WITH(NOLOCK)
+ON T8._IDRRef = T7._AccountRRef AND T8._Cnt = ?
+WHERE T7._Period = ? AND (T7._Fld622 <> ? OR T7._Fld624 <> ?)
+UNION ALL SELECT
+T9._Value1_TYPE AS Value1_TYPE,
+T9._Value1_RTRef AS Value1_RTRef,
+T9._Value1_RRRef AS Value1_RRRef,
+T9._Fld622 AS Fld622Balance_,
+T9._Fld624 AS Fld624Balance_
+FROM dbo._AccRgAT3645 T9 WITH(NOLOCK)
+INNER JOIN #tt93 T10 WITH(NOLOCK)
+ON T10._IDRRef = T9._AccountRRef AND T10._Cnt = ?
+WHERE T9._Period = ? AND (T9._Fld622 <> ? OR T9._Fld624 <> ?)) T2
+GROUP BY T2.Value1_TYPE,
+T2.Value1_RTRef,
+T2.Value1_RRRef
+HAVING (CASE WHEN CAST(SUM(T2.Fld622Balance_) AS NUMERIC(27, 2)) IS NULL THEN 0.0 ELSE CAST(SUM(T2.Fld622Balance_) AS NUMERIC(27, 2)) END) <> 0.0 OR (CASE WHEN CAST(SUM(T2.Fld624Balance_) AS NUMERIC(27, 3)) IS NULL THEN 0.0 ELSE CAST(SUM(T2.Fld624Balance_) AS NUMERIC(27, 3)) END) <> 0.0) T1
+WHERE (T1.Value1_TYPE = 0x08 AND T1.Value1_RTRef = 0x00000054 AND T1.Value1_RRRef = ?)
+p_0: 1.12N
+p_1: 0N
+p_2: 59991101000000
+p_3: 0N
+p_4: 0N
+p_5: 1N
+p_6: 59991101000000
+p_7: 0N
+p_8: 0N
+p_9: 2N
+p_10: 59991101000000
+p_11: 0N
+p_12: 0N
+p_13: 3N
+p_14: 59991101000000
+p_15: 0N
+p_16: 0N
+p_17: 0xA235005056B6DBD711EB173A5573DA4C
+',Rows=1,RowsAffected=-1
+01:42.034048-0,Context,2,process=rphost,p:processName=AstOffice,OSThread=11924,t:clientID=2388,t:applicationName=1CV8,t:computerName=ast12trademark,t:connectID=2182,SessionID=4069,Usr=Тарасов Игорь,Context='
+ВнешняяОбработка.УправлениеЦенами.Форма.Форма.Форма : 314 : Рез = Запрос.Выполнить().Выгрузить();'
+01:45.268088-3172051,DBMSSQL,4,process=rphost,p:processName=AstOffice,OSThread=11924,t:clientID=2388,t:applicationName=1CV8,t:computerName=ast12trademark,t:connectID=2182,SessionID=4069,Usr=Тарасов Игорь,DBMS=DBMSSQL,DataBase=ASTSQLOFFICE2\AstOffice,Trans=0,dbpid=99,Sql='SELECT
+CAST((CAST((T1.Fld622Balance_ * ?) AS NUMERIC(34, 8)) / T1.Fld624Balance_) AS NUMERIC(15, 2))
+FROM (SELECT
+T2.Value1_TYPE AS Value1_TYPE,
+T2.Value1_RTRef AS Value1_RTRef,
+T2.Value1_RRRef AS Value1_RRRef,
+CASE WHEN CAST(SUM(T2.Fld622Balance_) AS NUMERIC(27, 2)) IS NULL THEN 0.0 ELSE CAST(SUM(T2.Fld622Balance_) AS NUMERIC(27, 2)) END AS Fld622Balance_,
+CASE WHEN CAST(SUM(T2.Fld624Balance_) AS NUMERIC(27, 3)) IS NULL THEN 0.0 ELSE CAST(SUM(T2.Fld624Balance_) AS NUMERIC(27, 3)) END AS Fld624Balance_
+FROM (SELECT
+CASE WHEN CAST(NULL AS BINARY(1)) IN (0x01) THEN CAST(NULL AS BINARY(1)) END AS Value1_TYPE,
+CASE WHEN CAST(NULL AS BINARY(1)) IS NOT NULL THEN 0x00000000 END AS Value1_RTRef,
+CASE WHEN CAST(NULL AS BINARY(1)) IS NOT NULL THEN 0x00000000000000000000000000000000 END AS Value1_RRRef,
+T3._Fld622 AS Fld622Balance_,
+T3._Fld624 AS Fld624Balance_
+FROM dbo._AccRgAT0633 T3 WITH(NOLOCK)
+INNER JOIN #tt93 T4 WITH(NOLOCK)
+ON T4._IDRRef = T3._AccountRRef AND T4._Cnt = ?
+WHERE T3._Period = ? AND (T3._Fld622 <> ? OR T3._Fld624 <> ?)
+UNION ALL SELECT
+T5._Value1_TYPE AS Value1_TYPE,
+T5._Value1_RTRef AS Value1_RTRef,
+T5._Value1_RRRef AS Value1_RRRef,
+T5._Fld622 AS Fld622Balance_,
+T5._Fld624 AS Fld624Balance_
+FROM dbo._AccRgAT1643 T5 WITH(NOLOCK)
+INNER JOIN #tt93 T6 WITH(NOLOCK)
+ON T6._IDRRef = T5._AccountRRef AND T6._Cnt = ?
+WHERE T5._Period = ? AND (T5._Fld622 <> ? OR T5._Fld624 <> ?)
+UNION ALL SELECT
+T7._Value1_TYPE AS Value1_TYPE,
+T7._Value1_RTRef AS Value1_RTRef,
+T7._Value1_RRRef AS Value1_RRRef,
+T7._Fld622 AS Fld622Balance_,
+T7._Fld624 AS Fld624Balance_
+FROM dbo._AccRgAT2644 T7 WITH(NOLOCK)
+INNER JOIN #tt93 T8 WITH(NOLOCK)
+ON T8._IDRRef = T7._AccountRRef AND T8._Cnt = ?
+WHERE T7._Period = ? AND (T7._Fld622 <> ? OR T7._Fld624 <> ?)
+UNION ALL SELECT
+T9._Value1_TYPE AS Value1_TYPE,
+T9._Value1_RTRef AS Value1_RTRef,
+T9._Value1_RRRef AS Value1_RRRef,
+T9._Fld622 AS Fld622Balance_,
+T9._Fld624 AS Fld624Balance_
+FROM dbo._AccRgAT3645 T9 WITH(NOLOCK)
+INNER JOIN #tt93 T10 WITH(NOLOCK)
+ON T10._IDRRef = T9._AccountRRef AND T10._Cnt = ?
+WHERE T9._Period = ? AND (T9._Fld622 <> ? OR T9._Fld624 <> ?)) T2
+GROUP BY T2.Value1_TYPE,
+T2.Value1_RTRef,
+T2.Value1_RRRef
+HAVING (CASE WHEN CAST(SUM(T2.Fld622Balance_) AS NUMERIC(27, 2)) IS NULL THEN 0.0 ELSE CAST(SUM(T2.Fld622Balance_) AS NUMERIC(27, 2)) END) <> 0.0 OR (CASE WHEN CAST(SUM(T2.Fld624Balance_) AS NUMERIC(27, 3)) IS NULL THEN 0.0 ELSE CAST(SUM(T2.Fld624Balance_) AS NUMERIC(27, 3)) END) <> 0.0) T1
+WHERE (T1.Value1_TYPE = 0x08 AND T1.Value1_RTRef = 0x00000054 AND T1.Value1_RRRef = ?)
+p_0: 1.12N
+p_1: 0N
+p_2: 59991101000000
+p_3: 0N
+p_4: 0N
+p_5: 1N
+p_6: 59991101000000
+p_7: 0N
+p_8: 0N
+p_9: 2N
+p_10: 59991101000000
+p_11: 0N
+p_12: 0N
+p_13: 3N
+p_14: 59991101000000
+p_15: 0N
+p_16: 0N
+p_17: 0xA235005056B6DBD711EB288B2A9B870F
+',Rows=1,RowsAffected=-1
+01:45.284012-0,Context,2,process=rphost,p:processName=AstOffice,OSThread=11924,t:clientID=2388,t:applicationName=1CV8,t:computerName=ast12trademark,t:connectID=2182,SessionID=4069,Usr=Тарасов Игорь,Context='
+ВнешняяОбработка.УправлениеЦенами.Форма.Форма.Форма : 314 : Рез = Запрос.Выполнить().Выгрузить();'
+01:46.596051-1249986,DBMSSQL,4,process=rphost,p:processName=AstOffice,OSThread=11924,t:clientID=2388,t:applicationName=1CV8,t:computerName=ast12trademark,t:connectID=2182,SessionID=4069,Usr=Тарасов Игорь,DBMS=DBMSSQL,DataBase=ASTSQLOFFICE2\AstOffice,Trans=0,dbpid=83,Sql='SELECT
+CAST((CAST((T1.Fld622Balance_ * ?) AS NUMERIC(34, 8)) / T1.Fld624Balance_) AS NUMERIC(15, 2))
+FROM (SELECT
+T2.Value1_TYPE AS Value1_TYPE,
+T2.Value1_RTRef AS Value1_RTRef,
+T2.Value1_RRRef AS Value1_RRRef,
+CASE WHEN CAST(SUM(T2.Fld622Balance_) AS NUMERIC(27, 2)) IS NULL THEN 0.0 ELSE CAST(SUM(T2.Fld622Balance_) AS NUMERIC(27, 2)) END AS Fld622Balance_,
+CASE WHEN CAST(SUM(T2.Fld624Balance_) AS NUMERIC(27, 3)) IS NULL THEN 0.0 ELSE CAST(SUM(T2.Fld624Balance_) AS NUMERIC(27, 3)) END AS Fld624Balance_
+FROM (SELECT
+CASE WHEN CAST(NULL AS BINARY(1)) IN (0x01) THEN CAST(NULL AS BINARY(1)) END AS Value1_TYPE,
+CASE WHEN CAST(NULL AS BINARY(1)) IS NOT NULL THEN 0x00000000 END AS Value1_RTRef,
+CASE WHEN CAST(NULL AS BINARY(1)) IS NOT NULL THEN 0x00000000000000000000000000000000 END AS Value1_RRRef,
+T3._Fld622 AS Fld622Balance_,
+T3._Fld624 AS Fld624Balance_
+FROM dbo._AccRgAT0633 T3 WITH(NOLOCK)
+INNER JOIN #tt39 T4 WITH(NOLOCK)
+ON T4._IDRRef = T3._AccountRRef AND T4._Cnt = ?
+WHERE T3._Period = ? AND (T3._Fld622 <> ? OR T3._Fld624 <> ?)
+UNION ALL SELECT
+T5._Value1_TYPE AS Value1_TYPE,
+T5._Value1_RTRef AS Value1_RTRef,
+T5._Value1_RRRef AS Value1_RRRef,
+T5._Fld622 AS Fld622Balance_,
+T5._Fld624 AS Fld624Balance_
+FROM dbo._AccRgAT1643 T5 WITH(NOLOCK)
+INNER JOIN #tt39 T6 WITH(NOLOCK)
+ON T6._IDRRef = T5._AccountRRef AND T6._Cnt = ?
+WHERE T5._Period = ? AND (T5._Fld622 <> ? OR T5._Fld624 <> ?)
+UNION ALL SELECT
+T7._Value1_TYPE AS Value1_TYPE,
+T7._Value1_RTRef AS Value1_RTRef,
+T7._Value1_RRRef AS Value1_RRRef,
+T7._Fld622 AS Fld622Balance_,
+T7._Fld624 AS Fld624Balance_
+FROM dbo._AccRgAT2644 T7 WITH(NOLOCK)
+INNER JOIN #tt39 T8 WITH(NOLOCK)
+ON T8._IDRRef = T7._AccountRRef AND T8._Cnt = ?
+WHERE T7._Period = ? AND (T7._Fld622 <> ? OR T7._Fld624 <> ?)
+UNION ALL SELECT
+T9._Value1_TYPE AS Value1_TYPE,
+T9._Value1_RTRef AS Value1_RTRef,
+T9._Value1_RRRef AS Value1_RRRef,
+T9._Fld622 AS Fld622Balance_,
+T9._Fld624 AS Fld624Balance_
+FROM dbo._AccRgAT3645 T9 WITH(NOLOCK)
+INNER JOIN #tt39 T10 WITH(NOLOCK)
+ON T10._IDRRef = T9._AccountRRef AND T10._Cnt = ?
+WHERE T9._Period = ? AND (T9._Fld622 <> ? OR T9._Fld624 <> ?)) T2
+GROUP BY T2.Value1_TYPE,
+T2.Value1_RTRef,
+T2.Value1_RRRef
+HAVING (CASE WHEN CAST(SUM(T2.Fld622Balance_) AS NUMERIC(27, 2)) IS NULL THEN 0.0 ELSE CAST(SUM(T2.Fld622Balance_) AS NUMERIC(27, 2)) END) <> 0.0 OR (CASE WHEN CAST(SUM(T2.Fld624Balance_) AS NUMERIC(27, 3)) IS NULL THEN 0.0 ELSE CAST(SUM(T2.Fld624Balance_) AS NUMERIC(27, 3)) END) <> 0.0) T1
+WHERE (T1.Value1_TYPE = 0x08 AND T1.Value1_RTRef = 0x00000054 AND T1.Value1_RRRef = ?)
+p_0: 1.12N
+p_1: 0N
+p_2: 59991101000000
+p_3: 0N
+p_4: 0N
+p_5: 1N
+p_6: 59991101000000
+p_7: 0N
+p_8: 0N
+p_9: 2N
+p_10: 59991101000000
+p_11: 0N
+p_12: 0N
+p_13: 3N
+p_14: 59991101000000
+p_15: 0N
+p_16: 0N
+p_17: 0xA23A005056B6DBD711EB80871EF4C11D
+',Rows=1,RowsAffected=-1
+01:46.612003-0,Context,2,process=rphost,p:processName=AstOffice,OSThread=11924,t:clientID=2388,t:applicationName=1CV8,t:computerName=ast12trademark,t:connectID=2182,SessionID=4069,Usr=Тарасов Игорь,Context='
+ВнешняяОбработка.УправлениеЦенами.Форма.Форма.Форма : 314 : Рез = Запрос.Выполнить().Выгрузить();'
+01:48.018008-1327986,DBMSSQL,4,process=rphost,p:processName=AstOffice,OSThread=11924,t:clientID=2388,t:applicationName=1CV8,t:computerName=ast12trademark,t:connectID=2182,SessionID=4069,Usr=Тарасов Игорь,DBMS=DBMSSQL,DataBase=ASTSQLOFFICE2\AstOffice,Trans=0,dbpid=83,Sql='SELECT
+CAST((CAST((T1.Fld622Balance_ * ?) AS NUMERIC(34, 8)) / T1.Fld624Balance_) AS NUMERIC(15, 2))
+FROM (SELECT
+T2.Value1_TYPE AS Value1_TYPE,
+T2.Value1_RTRef AS Value1_RTRef,
+T2.Value1_RRRef AS Value1_RRRef,
+CASE WHEN CAST(SUM(T2.Fld622Balance_) AS NUMERIC(27, 2)) IS NULL THEN 0.0 ELSE CAST(SUM(T2.Fld622Balance_) AS NUMERIC(27, 2)) END AS Fld622Balance_,
+CASE WHEN CAST(SUM(T2.Fld624Balance_) AS NUMERIC(27, 3)) IS NULL THEN 0.0 ELSE CAST(SUM(T2.Fld624Balance_) AS NUMERIC(27, 3)) END AS Fld624Balance_
+FROM (SELECT
+CASE WHEN CAST(NULL AS BINARY(1)) IN (0x01) THEN CAST(NULL AS BINARY(1)) END AS Value1_TYPE,
+CASE WHEN CAST(NULL AS BINARY(1)) IS NOT NULL THEN 0x00000000 END AS Value1_RTRef,
+CASE WHEN CAST(NULL AS BINARY(1)) IS NOT NULL THEN 0x00000000000000000000000000000000 END AS Value1_RRRef,
+T3._Fld622 AS Fld622Balance_,
+T3._Fld624 AS Fld624Balance_
+FROM dbo._AccRgAT0633 T3 WITH(NOLOCK)
+INNER JOIN #tt39 T4 WITH(NOLOCK)
+ON T4._IDRRef = T3._AccountRRef AND T4._Cnt = ?
+WHERE T3._Period = ? AND (T3._Fld622 <> ? OR T3._Fld624 <> ?)
+UNION ALL SELECT
+T5._Value1_TYPE AS Value1_TYPE,
+T5._Value1_RTRef AS Value1_RTRef,
+T5._Value1_RRRef AS Value1_RRRef,
+T5._Fld622 AS Fld622Balance_,
+T5._Fld624 AS Fld624Balance_
+FROM dbo._AccRgAT1643 T5 WITH(NOLOCK)
+INNER JOIN #tt39 T6 WITH(NOLOCK)
+ON T6._IDRRef = T5._AccountRRef AND T6._Cnt = ?
+WHERE T5._Period = ? AND (T5._Fld622 <> ? OR T5._Fld624 <> ?)
+UNION ALL SELECT
+T7._Value1_TYPE AS Value1_TYPE,
+T7._Value1_RTRef AS Value1_RTRef,
+T7._Value1_RRRef AS Value1_RRRef,
+T7._Fld622 AS Fld622Balance_,
+T7._Fld624 AS Fld624Balance_
+FROM dbo._AccRgAT2644 T7 WITH(NOLOCK)
+INNER JOIN #tt39 T8 WITH(NOLOCK)
+ON T8._IDRRef = T7._AccountRRef AND T8._Cnt = ?
+WHERE T7._Period = ? AND (T7._Fld622 <> ? OR T7._Fld624 <> ?)
+UNION ALL SELECT
+T9._Value1_TYPE AS Value1_TYPE,
+T9._Value1_RTRef AS Value1_RTRef,
+T9._Value1_RRRef AS Value1_RRRef,
+T9._Fld622 AS Fld622Balance_,
+T9._Fld624 AS Fld624Balance_
+FROM dbo._AccRgAT3645 T9 WITH(NOLOCK)
+INNER JOIN #tt39 T10 WITH(NOLOCK)
+ON T10._IDRRef = T9._AccountRRef AND T10._Cnt = ?
+WHERE T9._Period = ? AND (T9._Fld622 <> ? OR T9._Fld624 <> ?)) T2
+GROUP BY T2.Value1_TYPE,
+T2.Value1_RTRef,
+T2.Value1_RRRef
+HAVING (CASE WHEN CAST(SUM(T2.Fld622Balance_) AS NUMERIC(27, 2)) IS NULL THEN 0.0 ELSE CAST(SUM(T2.Fld622Balance_) AS NUMERIC(27, 2)) END) <> 0.0 OR (CASE WHEN CAST(SUM(T2.Fld624Balance_) AS NUMERIC(27, 3)) IS NULL THEN 0.0 ELSE CAST(SUM(T2.Fld624Balance_) AS NUMERIC(27, 3)) END) <> 0.0) T1
+WHERE (T1.Value1_TYPE = 0x08 AND T1.Value1_RTRef = 0x00000054 AND T1.Value1_RRRef = ?)
+p_0: 1.12N
+p_1: 0N
+p_2: 59991101000000
+p_3: 0N
+p_4: 0N
+p_5: 1N
+p_6: 59991101000000
+p_7: 0N
+p_8: 0N
+p_9: 2N
+p_10: 59991101000000
+p_11: 0N
+p_12: 0N
+p_13: 3N
+p_14: 59991101000000
+p_15: 0N
+p_16: 0N
+p_17: 0xA23F005056B6DBD711EBF0E67C47106C
+',Rows=1,RowsAffected=-1
+01:48.018036-0,Context,2,process=rphost,p:processName=AstOffice,OSThread=11924,t:clientID=2388,t:applicationName=1CV8,t:computerName=ast12trademark,t:connectID=2182,SessionID=4069,Usr=Тарасов Игорь,Context='
+ВнешняяОбработка.УправлениеЦенами.Форма.Форма.Форма : 314 : Рез = Запрос.Выполнить().Выгрузить();'
+01:49.393012-1296984,DBMSSQL,4,process=rphost,p:processName=AstOffice,OSThread=11924,t:clientID=2388,t:applicationName=1CV8,t:computerName=ast12trademark,t:connectID=2182,SessionID=4069,Usr=Тарасов Игорь,DBMS=DBMSSQL,DataBase=ASTSQLOFFICE2\AstOffice,Trans=0,dbpid=83,Sql='SELECT
+CAST((CAST((T1.Fld622Balance_ * ?) AS NUMERIC(34, 8)) / T1.Fld624Balance_) AS NUMERIC(15, 2))
+FROM (SELECT
+T2.Value1_TYPE AS Value1_TYPE,
+T2.Value1_RTRef AS Value1_RTRef,
+T2.Value1_RRRef AS Value1_RRRef,
+CASE WHEN CAST(SUM(T2.Fld622Balance_) AS NUMERIC(27, 2)) IS NULL THEN 0.0 ELSE CAST(SUM(T2.Fld622Balance_) AS NUMERIC(27, 2)) END AS Fld622Balance_,
+CASE WHEN CAST(SUM(T2.Fld624Balance_) AS NUMERIC(27, 3)) IS NULL THEN 0.0 ELSE CAST(SUM(T2.Fld624Balance_) AS NUMERIC(27, 3)) END AS Fld624Balance_
+FROM (SELECT
+CASE WHEN CAST(NULL AS BINARY(1)) IN (0x01) THEN CAST(NULL AS BINARY(1)) END AS Value1_TYPE,
+CASE WHEN CAST(NULL AS BINARY(1)) IS NOT NULL THEN 0x00000000 END AS Value1_RTRef,
+CASE WHEN CAST(NULL AS BINARY(1)) IS NOT NULL THEN 0x00000000000000000000000000000000 END AS Value1_RRRef,
+T3._Fld622 AS Fld622Balance_,
+T3._Fld624 AS Fld624Balance_
+FROM dbo._AccRgAT0633 T3 WITH(NOLOCK)
+INNER JOIN #tt39 T4 WITH(NOLOCK)
+ON T4._IDRRef = T3._AccountRRef AND T4._Cnt = ?
+WHERE T3._Period = ? AND (T3._Fld622 <> ? OR T3._Fld624 <> ?)
+UNION ALL SELECT
+T5._Value1_TYPE AS Value1_TYPE,
+T5._Value1_RTRef AS Value1_RTRef,
+T5._Value1_RRRef AS Value1_RRRef,
+T5._Fld622 AS Fld622Balance_,
+T5._Fld624 AS Fld624Balance_
+FROM dbo._AccRgAT1643 T5 WITH(NOLOCK)
+INNER JOIN #tt39 T6 WITH(NOLOCK)
+ON T6._IDRRef = T5._AccountRRef AND T6._Cnt = ?
+WHERE T5._Period = ? AND (T5._Fld622 <> ? OR T5._Fld624 <> ?)
+UNION ALL SELECT
+T7._Value1_TYPE AS Value1_TYPE,
+T7._Value1_RTRef AS Value1_RTRef,
+T7._Value1_RRRef AS Value1_RRRef,
+T7._Fld622 AS Fld622Balance_,
+T7._Fld624 AS Fld624Balance_
+FROM dbo._AccRgAT2644 T7 WITH(NOLOCK)
+INNER JOIN #tt39 T8 WITH(NOLOCK)
+ON T8._IDRRef = T7._AccountRRef AND T8._Cnt = ?
+WHERE T7._Period = ? AND (T7._Fld622 <> ? OR T7._Fld624 <> ?)
+UNION ALL SELECT
+T9._Value1_TYPE AS Value1_TYPE,
+T9._Value1_RTRef AS Value1_RTRef,
+T9._Value1_RRRef AS Value1_RRRef,
+T9._Fld622 AS Fld622Balance_,
+T9._Fld624 AS Fld624Balance_
+FROM dbo._AccRgAT3645 T9 WITH(NOLOCK)
+INNER JOIN #tt39 T10 WITH(NOLOCK)
+ON T10._IDRRef = T9._AccountRRef AND T10._Cnt = ?
+WHERE T9._Period = ? AND (T9._Fld622 <> ? OR T9._Fld624 <> ?)) T2
+GROUP BY T2.Value1_TYPE,
+T2.Value1_RTRef,
+T2.Value1_RRRef
+HAVING (CASE WHEN CAST(SUM(T2.Fld622Balance_) AS NUMERIC(27, 2)) IS NULL THEN 0.0 ELSE CAST(SUM(T2.Fld622Balance_) AS NUMERIC(27, 2)) END) <> 0.0 OR (CASE WHEN CAST(SUM(T2.Fld624Balance_) AS NUMERIC(27, 3)) IS NULL THEN 0.0 ELSE CAST(SUM(T2.Fld624Balance_) AS NUMERIC(27, 3)) END) <> 0.0) T1
+WHERE (T1.Value1_TYPE = 0x08 AND T1.Value1_RTRef = 0x00000054 AND T1.Value1_RRRef = ?)
+p_0: 1.12N
+p_1: 0N
+p_2: 59991101000000
+p_3: 0N
+p_4: 0N
+p_5: 1N
+p_6: 59991101000000
+p_7: 0N
+p_8: 0N
+p_9: 2N
+p_10: 59991101000000
+p_11: 0N
+p_12: 0N
+p_13: 3N
+p_14: 59991101000000
+p_15: 0N
+p_16: 0N
+p_17: 0xA243005056B6DBD711EC7E8A87597F88
+',Rows=1,RowsAffected=-1
+01:49.393047-0,Context,2,process=rphost,p:processName=AstOffice,OSThread=11924,t:clientID=2388,t:applicationName=1CV8,t:computerName=ast12trademark,t:connectID=2182,SessionID=4069,Usr=Тарасов Игорь,Context='
+ВнешняяОбработка.УправлениеЦенами.Форма.Форма.Форма : 314 : Рез = Запрос.Выполнить().Выгрузить();'
+01:51.518027-1047002,DBMSSQL,4,process=rphost,p:processName=AstOffice,OSThread=8808,t:clientID=2096,t:applicationName=WebServerExtension,t:computerName=Ast1COffice,t:connectID=1911,SessionID=38098,Usr=MatrixMechta,DBMS=DBMSSQL,DataBase=ASTSQLOFFICE2\AstOffice,Trans=0,dbpid=79,Sql='SELECT
+T1._IDRRef
+FROM dbo._Document21650 T1 WITH(NOLOCK)
+WHERE T1._Posted = 0x01 AND (T1._Fld21654_TYPE = 0x08 AND T1._Fld21654_RTRef = 0x000000B3) AND (T1._Fld21654_TYPE = 0x08 AND T1._Fld21654_RTRef = 0x000000B3 AND T1._Fld21654_RRRef IN
+(SELECT
+T2._IDRRef AS Q_001_F_000RRef
+FROM dbo._Document179 T2 WITH(NOLOCK)
+WHERE (T2._Fld3251_TYPE = 0x08 AND T2._Fld3251_RTRef = 0x000000B3 AND T2._Fld3251_RRRef = ?) AND T2._Posted = 0x01)) AND (T1._Fld21659RRef = ?)
+p_0: 0x93B4B8CB29D980BF11EDD42C7B9B4973
+p_1: 0xB2AD53436D75F68A48CF1D1672BDA9B1
+',Rows=0,RowsAffected=0,Context='
+HTTPСервис.GetOrderInfo.Модуль : 126 : ЧекЗаДоставку = ЧекЗаДоставкуВыбит(Заказ);
+	HTTPСервис.GetOrderInfo.Модуль : 889 : Выборка = Запрос.Выполнить().Выбрать();'
+01:57.612008-3593867,DBMSSQL,5,process=rphost,p:processName=AstOffice,OSThread=10032,t:clientID=2610,t:applicationName=WebServerExtension,t:computerName=Ast1COffice,t:connectID=6988,SessionID=38102,Usr=MatrixMechta,DBMS=DBMSSQL,DataBase=ASTSQLOFFICE2\AstOffice,Trans=0,dbpid=79,Sql="SELECT TOP 1
+T1._IDRRef,
+T1._Date_Time
+FROM dbo._Document21650 T1 WITH(NOLOCK)
+WHERE (T1._Fld21654_TYPE = 0x08 AND T1._Fld21654_RTRef = 0x000000B3 AND T1._Fld21654_RRRef = ?) AND T1._Posted = 0x01 AND (T1._Fld21657 <> ?)
+ORDER BY (T1._Date_Time) DESC
+p_0: 0x93B4B8CB29D980BF11EDD2604B277DB1
+p_1: ''
+",Rows=1,RowsAffected=-1,Context='
+HTTPСервис.GetOrderInfo.Модуль : 115 : ФискЧек = ФискальныйЧекВыбит(Заказ);
+	HTTPСервис.GetOrderInfo.Модуль : 409 : РезультатЗапроса = Запрос.Выполнить();'
+02:00.299006-1265002,DBMSSQL,4,process=rphost,p:processName=AstOffice,OSThread=8808,t:clientID=2388,t:applicationName=1CV8,t:computerName=ast12trademark,t:connectID=2182,SessionID=4069,Usr=Тарасов Игорь,DBMS=DBMSSQL,DataBase=ASTSQLOFFICE2\AstOffice,Trans=0,dbpid=96,Sql='SELECT
+CAST((CAST((T1.Fld622Balance_ * ?) AS NUMERIC(34, 8)) / T1.Fld624Balance_) AS NUMERIC(15, 2))
+FROM (SELECT
+T2.Value1_TYPE AS Value1_TYPE,
+T2.Value1_RTRef AS Value1_RTRef,
+T2.Value1_RRRef AS Value1_RRRef,
+CASE WHEN CAST(SUM(T2.Fld622Balance_) AS NUMERIC(27, 2)) IS NULL THEN 0.0 ELSE CAST(SUM(T2.Fld622Balance_) AS NUMERIC(27, 2)) END AS Fld622Balance_,
+CASE WHEN CAST(SUM(T2.Fld624Balance_) AS NUMERIC(27, 3)) IS NULL THEN 0.0 ELSE CAST(SUM(T2.Fld624Balance_) AS NUMERIC(27, 3)) END AS Fld624Balance_
+FROM (SELECT
+CASE WHEN CAST(NULL AS BINARY(1)) IN (0x01) THEN CAST(NULL AS BINARY(1)) END AS Value1_TYPE,
+CASE WHEN CAST(NULL AS BINARY(1)) IS NOT NULL THEN 0x00000000 END AS Value1_RTRef,
+CASE WHEN CAST(NULL AS BINARY(1)) IS NOT NULL THEN 0x00000000000000000000000000000000 END AS Value1_RRRef,
+T3._Fld622 AS Fld622Balance_,
+T3._Fld624 AS Fld624Balance_
+FROM dbo._AccRgAT0633 T3 WITH(NOLOCK)
+INNER JOIN #tt90 T4 WITH(NOLOCK)
+ON T4._IDRRef = T3._AccountRRef AND T4._Cnt = ?
+WHERE T3._Period = ? AND (T3._Fld622 <> ? OR T3._Fld624 <> ?)
+UNION ALL SELECT
+T5._Value1_TYPE AS Value1_TYPE,
+T5._Value1_RTRef AS Value1_RTRef,
+T5._Value1_RRRef AS Value1_RRRef,
+T5._Fld622 AS Fld622Balance_,
+T5._Fld624 AS Fld624Balance_
+FROM dbo._AccRgAT1643 T5 WITH(NOLOCK)
+INNER JOIN #tt90 T6 WITH(NOLOCK)
+ON T6._IDRRef = T5._AccountRRef AND T6._Cnt = ?
+WHERE T5._Period = ? AND (T5._Fld622 <> ? OR T5._Fld624 <> ?)
+UNION ALL SELECT
+T7._Value1_TYPE AS Value1_TYPE,
+T7._Value1_RTRef AS Value1_RTRef,
+T7._Value1_RRRef AS Value1_RRRef,
+T7._Fld622 AS Fld622Balance_,
+T7._Fld624 AS Fld624Balance_
+FROM dbo._AccRgAT2644 T7 WITH(NOLOCK)
+INNER JOIN #tt90 T8 WITH(NOLOCK)
+ON T8._IDRRef = T7._AccountRRef AND T8._Cnt = ?
+WHERE T7._Period = ? AND (T7._Fld622 <> ? OR T7._Fld624 <> ?)
+UNION ALL SELECT
+T9._Value1_TYPE AS Value1_TYPE,
+T9._Value1_RTRef AS Value1_RTRef,
+T9._Value1_RRRef AS Value1_RRRef,
+T9._Fld622 AS Fld622Balance_,
+T9._Fld624 AS Fld624Balance_
+FROM dbo._AccRgAT3645 T9 WITH(NOLOCK)
+INNER JOIN #tt90 T10 WITH(NOLOCK)
+ON T10._IDRRef = T9._AccountRRef AND T10._Cnt = ?
+WHERE T9._Period = ? AND (T9._Fld622 <> ? OR T9._Fld624 <> ?)) T2
+GROUP BY T2.Value1_TYPE,
+T2.Value1_RTRef,
+T2.Value1_RRRef
+HAVING (CASE WHEN CAST(SUM(T2.Fld622Balance_) AS NUMERIC(27, 2)) IS NULL THEN 0.0 ELSE CAST(SUM(T2.Fld622Balance_) AS NUMERIC(27, 2)) END) <> 0.0 OR (CASE WHEN CAST(SUM(T2.Fld624Balance_) AS NUMERIC(27, 3)) IS NULL THEN 0.0 ELSE CAST(SUM(T2.Fld624Balance_) AS NUMERIC(27, 3)) END) <> 0.0) T1
+WHERE (T1.Value1_TYPE = 0x08 AND T1.Value1_RTRef = 0x00000054 AND T1.Value1_RRRef = ?)
+p_0: 1.12N
+p_1: 0N
+p_2: 59991101000000
+p_3: 0N
+p_4: 0N
+p_5: 1N
+p_6: 59991101000000
+p_7: 0N
+p_8: 0N
+p_9: 2N
+p_10: 59991101000000
+p_11: 0N
+p_12: 0N
+p_13: 3N
+p_14: 59991101000000
+p_15: 0N
+p_16: 0N
+p_17: 0xA23E005056B6DBD711EBC36585BFDD7F
+',Rows=1,RowsAffected=-1
+02:00.315007-0,Context,2,process=rphost,p:processName=AstOffice,OSThread=8808,t:clientID=2388,t:applicationName=1CV8,t:computerName=ast12trademark,t:connectID=2182,SessionID=4069,Usr=Тарасов Игорь,Context='
+ВнешняяОбработка.УправлениеЦенами.Форма.Форма.Форма : 314 : Рез = Запрос.Выполнить().Выгрузить();'
+02:01.721000-1311989,DBMSSQL,4,process=rphost,p:processName=AstOffice,OSThread=8808,t:clientID=2388,t:applicationName=1CV8,t:computerName=ast12trademark,t:connectID=2182,SessionID=4069,Usr=Тарасов Игорь,DBMS=DBMSSQL,DataBase=ASTSQLOFFICE2\AstOffice,Trans=0,dbpid=96,Sql='SELECT
+CAST((CAST((T1.Fld622Balance_ * ?) AS NUMERIC(34, 8)) / T1.Fld624Balance_) AS NUMERIC(15, 2))
+FROM (SELECT
+T2.Value1_TYPE AS Value1_TYPE,
+T2.Value1_RTRef AS Value1_RTRef,
+T2.Value1_RRRef AS Value1_RRRef,
+CASE WHEN CAST(SUM(T2.Fld622Balance_) AS NUMERIC(27, 2)) IS NULL THEN 0.0 ELSE CAST(SUM(T2.Fld622Balance_) AS NUMERIC(27, 2)) END AS Fld622Balance_,
+CASE WHEN CAST(SUM(T2.Fld624Balance_) AS NUMERIC(27, 3)) IS NULL THEN 0.0 ELSE CAST(SUM(T2.Fld624Balance_) AS NUMERIC(27, 3)) END AS Fld624Balance_
+FROM (SELECT
+CASE WHEN CAST(NULL AS BINARY(1)) IN (0x01) THEN CAST(NULL AS BINARY(1)) END AS Value1_TYPE,
+CASE WHEN CAST(NULL AS BINARY(1)) IS NOT NULL THEN 0x00000000 END AS Value1_RTRef,
+CASE WHEN CAST(NULL AS BINARY(1)) IS NOT NULL THEN 0x00000000000000000000000000000000 END AS Value1_RRRef,
+T3._Fld622 AS Fld622Balance_,
+T3._Fld624 AS Fld624Balance_
+FROM dbo._AccRgAT0633 T3 WITH(NOLOCK)
+INNER JOIN #tt90 T4 WITH(NOLOCK)
+ON T4._IDRRef = T3._AccountRRef AND T4._Cnt = ?
+WHERE T3._Period = ? AND (T3._Fld622 <> ? OR T3._Fld624 <> ?)
+UNION ALL SELECT
+T5._Value1_TYPE AS Value1_TYPE,
+T5._Value1_RTRef AS Value1_RTRef,
+T5._Value1_RRRef AS Value1_RRRef,
+T5._Fld622 AS Fld622Balance_,
+T5._Fld624 AS Fld624Balance_
+FROM dbo._AccRgAT1643 T5 WITH(NOLOCK)
+INNER JOIN #tt90 T6 WITH(NOLOCK)
+ON T6._IDRRef = T5._AccountRRef AND T6._Cnt = ?
+WHERE T5._Period = ? AND (T5._Fld622 <> ? OR T5._Fld624 <> ?)
+UNION ALL SELECT
+T7._Value1_TYPE AS Value1_TYPE,
+T7._Value1_RTRef AS Value1_RTRef,
+T7._Value1_RRRef AS Value1_RRRef,
+T7._Fld622 AS Fld622Balance_,
+T7._Fld624 AS Fld624Balance_
+FROM dbo._AccRgAT2644 T7 WITH(NOLOCK)
+INNER JOIN #tt90 T8 WITH(NOLOCK)
+ON T8._IDRRef = T7._AccountRRef AND T8._Cnt = ?
+WHERE T7._Period = ? AND (T7._Fld622 <> ? OR T7._Fld624 <> ?)
+UNION ALL SELECT
+T9._Value1_TYPE AS Value1_TYPE,
+T9._Value1_RTRef AS Value1_RTRef,
+T9._Value1_RRRef AS Value1_RRRef,
+T9._Fld622 AS Fld622Balance_,
+T9._Fld624 AS Fld624Balance_
+FROM dbo._AccRgAT3645 T9 WITH(NOLOCK)
+INNER JOIN #tt90 T10 WITH(NOLOCK)
+ON T10._IDRRef = T9._AccountRRef AND T10._Cnt = ?
+WHERE T9._Period = ? AND (T9._Fld622 <> ? OR T9._Fld624 <> ?)) T2
+GROUP BY T2.Value1_TYPE,
+T2.Value1_RTRef,
+T2.Value1_RRRef
+HAVING (CASE WHEN CAST(SUM(T2.Fld622Balance_) AS NUMERIC(27, 2)) IS NULL THEN 0.0 ELSE CAST(SUM(T2.Fld622Balance_) AS NUMERIC(27, 2)) END) <> 0.0 OR (CASE WHEN CAST(SUM(T2.Fld624Balance_) AS NUMERIC(27, 3)) IS NULL THEN 0.0 ELSE CAST(SUM(T2.Fld624Balance_) AS NUMERIC(27, 3)) END) <> 0.0) T1
+WHERE (T1.Value1_TYPE = 0x08 AND T1.Value1_RTRef = 0x00000054 AND T1.Value1_RRRef = ?)
+p_0: 1.12N
+p_1: 0N
+p_2: 59991101000000
+p_3: 0N
+p_4: 0N
+p_5: 1N
+p_6: 59991101000000
+p_7: 0N
+p_8: 0N
+p_9: 2N
+p_10: 59991101000000
+p_11: 0N
+p_12: 0N
+p_13: 3N
+p_14: 59991101000000
+p_15: 0N
+p_16: 0N
+p_17: 0xA23E005056B6DBD711EBC36585BFDD81
+',Rows=1,RowsAffected=-1
+02:01.721016-0,Context,2,process=rphost,p:processName=AstOffice,OSThread=8808,t:clientID=2388,t:applicationName=1CV8,t:computerName=ast12trademark,t:connectID=2182,SessionID=4069,Usr=Тарасов Игорь,Context='
+ВнешняяОбработка.УправлениеЦенами.Форма.Форма.Форма : 314 : Рез = Запрос.Выполнить().Выгрузить();'
+02:04.432065-2601038,DBMSSQL,4,process=rphost,p:processName=AstOffice,OSThread=8808,t:clientID=2388,t:applicationName=1CV8,t:computerName=ast12trademark,t:connectID=2182,SessionID=4069,Usr=Тарасов Игорь,DBMS=DBMSSQL,DataBase=ASTSQLOFFICE2\AstOffice,Trans=0,dbpid=104,Sql='SELECT
+CAST((CAST((T1.Fld622Balance_ * ?) AS NUMERIC(34, 8)) / T1.Fld624Balance_) AS NUMERIC(15, 2))
+FROM (SELECT
+T2.Value1_TYPE AS Value1_TYPE,
+T2.Value1_RTRef AS Value1_RTRef,
+T2.Value1_RRRef AS Value1_RRRef,
+CASE WHEN CAST(SUM(T2.Fld622Balance_) AS NUMERIC(27, 2)) IS NULL THEN 0.0 ELSE CAST(SUM(T2.Fld622Balance_) AS NUMERIC(27, 2)) END AS Fld622Balance_,
+CASE WHEN CAST(SUM(T2.Fld624Balance_) AS NUMERIC(27, 3)) IS NULL THEN 0.0 ELSE CAST(SUM(T2.Fld624Balance_) AS NUMERIC(27, 3)) END AS Fld624Balance_
+FROM (SELECT
+CASE WHEN CAST(NULL AS BINARY(1)) IN (0x01) THEN CAST(NULL AS BINARY(1)) END AS Value1_TYPE,
+CASE WHEN CAST(NULL AS BINARY(1)) IS NOT NULL THEN 0x00000000 END AS Value1_RTRef,
+CASE WHEN CAST(NULL AS BINARY(1)) IS NOT NULL THEN 0x00000000000000000000000000000000 END AS Value1_RRRef,
+T3._Fld622 AS Fld622Balance_,
+T3._Fld624 AS Fld624Balance_
+FROM dbo._AccRgAT0633 T3 WITH(NOLOCK)
+INNER JOIN #tt123 T4 WITH(NOLOCK)
+ON T4._IDRRef = T3._AccountRRef AND T4._Cnt = ?
+WHERE T3._Period = ? AND (T3._Fld622 <> ? OR T3._Fld624 <> ?)
+UNION ALL SELECT
+T5._Value1_TYPE AS Value1_TYPE,
+T5._Value1_RTRef AS Value1_RTRef,
+T5._Value1_RRRef AS Value1_RRRef,
+T5._Fld622 AS Fld622Balance_,
+T5._Fld624 AS Fld624Balance_
+FROM dbo._AccRgAT1643 T5 WITH(NOLOCK)
+INNER JOIN #tt123 T6 WITH(NOLOCK)
+ON T6._IDRRef = T5._AccountRRef AND T6._Cnt = ?
+WHERE T5._Period = ? AND (T5._Fld622 <> ? OR T5._Fld624 <> ?)
+UNION ALL SELECT
+T7._Value1_TYPE AS Value1_TYPE,
+T7._Value1_RTRef AS Value1_RTRef,
+T7._Value1_RRRef AS Value1_RRRef,
+T7._Fld622 AS Fld622Balance_,
+T7._Fld624 AS Fld624Balance_
+FROM dbo._AccRgAT2644 T7 WITH(NOLOCK)
+INNER JOIN #tt123 T8 WITH(NOLOCK)
+ON T8._IDRRef = T7._AccountRRef AND T8._Cnt = ?
+WHERE T7._Period = ? AND (T7._Fld622 <> ? OR T7._Fld624 <> ?)
+UNION ALL SELECT
+T9._Value1_TYPE AS Value1_TYPE,
+T9._Value1_RTRef AS Value1_RTRef,
+T9._Value1_RRRef AS Value1_RRRef,
+T9._Fld622 AS Fld622Balance_,
+T9._Fld624 AS Fld624Balance_
+FROM dbo._AccRgAT3645 T9 WITH(NOLOCK)
+INNER JOIN #tt123 T10 WITH(NOLOCK)
+ON T10._IDRRef = T9._AccountRRef AND T10._Cnt = ?
+WHERE T9._Period = ? AND (T9._Fld622 <> ? OR T9._Fld624 <> ?)) T2
+GROUP BY T2.Value1_TYPE,
+T2.Value1_RTRef,
+T2.Value1_RRRef
+HAVING (CASE WHEN CAST(SUM(T2.Fld622Balance_) AS NUMERIC(27, 2)) IS NULL THEN 0.0 ELSE CAST(SUM(T2.Fld622Balance_) AS NUMERIC(27, 2)) END) <> 0.0 OR (CASE WHEN CAST(SUM(T2.Fld624Balance_) AS NUMERIC(27, 3)) IS NULL THEN 0.0 ELSE CAST(SUM(T2.Fld624Balance_) AS NUMERIC(27, 3)) END) <> 0.0) T1
+WHERE (T1.Value1_TYPE = 0x08 AND T1.Value1_RTRef = 0x00000054 AND T1.Value1_RRRef = ?)
+p_0: 1.12N
+p_1: 0N
+p_2: 59991101000000
+p_3: 0N
+p_4: 0N
+p_5: 1N
+p_6: 59991101000000
+p_7: 0N
+p_8: 0N
+p_9: 2N
+p_10: 59991101000000
+p_11: 0N
+p_12: 0N
+p_13: 3N
+p_14: 59991101000000
+p_15: 0N
+p_16: 0N
+p_17: 0xA246005056B6DBD711ECAF37F97C4608
+',Rows=1,RowsAffected=-1
+02:04.448038-0,Context,2,process=rphost,p:processName=AstOffice,OSThread=8808,t:clientID=2388,t:applicationName=1CV8,t:computerName=ast12trademark,t:connectID=2182,SessionID=4069,Usr=Тарасов Игорь,Context='
+ВнешняяОбработка.УправлениеЦенами.Форма.Форма.Форма : 314 : Рез = Запрос.Выполнить().Выгрузить();'
+02:05.901036-1375023,DBMSSQL,4,process=rphost,p:processName=AstOffice,OSThread=8808,t:clientID=2388,t:applicationName=1CV8,t:computerName=ast12trademark,t:connectID=2182,SessionID=4069,Usr=Тарасов Игорь,DBMS=DBMSSQL,DataBase=ASTSQLOFFICE2\AstOffice,Trans=0,dbpid=83,Sql='SELECT
+CAST((CAST((T1.Fld622Balance_ * ?) AS NUMERIC(34, 8)) / T1.Fld624Balance_) AS NUMERIC(15, 2))
+FROM (SELECT
+T2.Value1_TYPE AS Value1_TYPE,
+T2.Value1_RTRef AS Value1_RTRef,
+T2.Value1_RRRef AS Value1_RRRef,
+CASE WHEN CAST(SUM(T2.Fld622Balance_) AS NUMERIC(27, 2)) IS NULL THEN 0.0 ELSE CAST(SUM(T2.Fld622Balance_) AS NUMERIC(27, 2)) END AS Fld622Balance_,
+CASE WHEN CAST(SUM(T2.Fld624Balance_) AS NUMERIC(27, 3)) IS NULL THEN 0.0 ELSE CAST(SUM(T2.Fld624Balance_) AS NUMERIC(27, 3)) END AS Fld624Balance_
+FROM (SELECT
+CASE WHEN CAST(NULL AS BINARY(1)) IN (0x01) THEN CAST(NULL AS BINARY(1)) END AS Value1_TYPE,
+CASE WHEN CAST(NULL AS BINARY(1)) IS NOT NULL THEN 0x00000000 END AS Value1_RTRef,
+CASE WHEN CAST(NULL AS BINARY(1)) IS NOT NULL THEN 0x00000000000000000000000000000000 END AS Value1_RRRef,
+T3._Fld622 AS Fld622Balance_,
+T3._Fld624 AS Fld624Balance_
+FROM dbo._AccRgAT0633 T3 WITH(NOLOCK)
+INNER JOIN #tt39 T4 WITH(NOLOCK)
+ON T4._IDRRef = T3._AccountRRef AND T4._Cnt = ?
+WHERE T3._Period = ? AND (T3._Fld622 <> ? OR T3._Fld624 <> ?)
+UNION ALL SELECT
+T5._Value1_TYPE AS Value1_TYPE,
+T5._Value1_RTRef AS Value1_RTRef,
+T5._Value1_RRRef AS Value1_RRRef,
+T5._Fld622 AS Fld622Balance_,
+T5._Fld624 AS Fld624Balance_
+FROM dbo._AccRgAT1643 T5 WITH(NOLOCK)
+INNER JOIN #tt39 T6 WITH(NOLOCK)
+ON T6._IDRRef = T5._AccountRRef AND T6._Cnt = ?
+WHERE T5._Period = ? AND (T5._Fld622 <> ? OR T5._Fld624 <> ?)
+UNION ALL SELECT
+T7._Value1_TYPE AS Value1_TYPE,
+T7._Value1_RTRef AS Value1_RTRef,
+T7._Value1_RRRef AS Value1_RRRef,
+T7._Fld622 AS Fld622Balance_,
+T7._Fld624 AS Fld624Balance_
+FROM dbo._AccRgAT2644 T7 WITH(NOLOCK)
+INNER JOIN #tt39 T8 WITH(NOLOCK)
+ON T8._IDRRef = T7._AccountRRef AND T8._Cnt = ?
+WHERE T7._Period = ? AND (T7._Fld622 <> ? OR T7._Fld624 <> ?)
+UNION ALL SELECT
+T9._Value1_TYPE AS Value1_TYPE,
+T9._Value1_RTRef AS Value1_RTRef,
+T9._Value1_RRRef AS Value1_RRRef,
+T9._Fld622 AS Fld622Balance_,
+T9._Fld624 AS Fld624Balance_
+FROM dbo._AccRgAT3645 T9 WITH(NOLOCK)
+INNER JOIN #tt39 T10 WITH(NOLOCK)
+ON T10._IDRRef = T9._AccountRRef AND T10._Cnt = ?
+WHERE T9._Period = ? AND (T9._Fld622 <> ? OR T9._Fld624 <> ?)) T2
+GROUP BY T2.Value1_TYPE,
+T2.Value1_RTRef,
+T2.Value1_RRRef
+HAVING (CASE WHEN CAST(SUM(T2.Fld622Balance_) AS NUMERIC(27, 2)) IS NULL THEN 0.0 ELSE CAST(SUM(T2.Fld622Balance_) AS NUMERIC(27, 2)) END) <> 0.0 OR (CASE WHEN CAST(SUM(T2.Fld624Balance_) AS NUMERIC(27, 3)) IS NULL THEN 0.0 ELSE CAST(SUM(T2.Fld624Balance_) AS NUMERIC(27, 3)) END) <> 0.0) T1
+WHERE (T1.Value1_TYPE = 0x08 AND T1.Value1_RTRef = 0x00000054 AND T1.Value1_RRRef = ?)
+p_0: 1.12N
+p_1: 0N
+p_2: 59991101000000
+p_3: 0N
+p_4: 0N
+p_5: 1N
+p_6: 59991101000000
+p_7: 0N
+p_8: 0N
+p_9: 2N
+p_10: 59991101000000
+p_11: 0N
+p_12: 0N
+p_13: 3N
+p_14: 59991101000000
+p_15: 0N
+p_16: 0N
+p_17: 0xA259005056B6DBD711EDD4EE1D888872
+',Rows=1,RowsAffected=-1
+02:05.901062-0,Context,2,process=rphost,p:processName=AstOffice,OSThread=8808,t:clientID=2388,t:applicationName=1CV8,t:computerName=ast12trademark,t:connectID=2182,SessionID=4069,Usr=Тарасов Игорь,Context='
+ВнешняяОбработка.УправлениеЦенами.Форма.Форма.Форма : 314 : Рез = Запрос.Выполнить().Выгрузить();'
+02:07.260004-1280976,DBMSSQL,4,process=rphost,p:processName=AstOffice,OSThread=8808,t:clientID=2388,t:applicationName=1CV8,t:computerName=ast12trademark,t:connectID=2182,SessionID=4069,Usr=Тарасов Игорь,DBMS=DBMSSQL,DataBase=ASTSQLOFFICE2\AstOffice,Trans=0,dbpid=83,Sql='SELECT
+CAST((CAST((T1.Fld622Balance_ * ?) AS NUMERIC(34, 8)) / T1.Fld624Balance_) AS NUMERIC(15, 2))
+FROM (SELECT
+T2.Value1_TYPE AS Value1_TYPE,
+T2.Value1_RTRef AS Value1_RTRef,
+T2.Value1_RRRef AS Value1_RRRef,
+CASE WHEN CAST(SUM(T2.Fld622Balance_) AS NUMERIC(27, 2)) IS NULL THEN 0.0 ELSE CAST(SUM(T2.Fld622Balance_) AS NUMERIC(27, 2)) END AS Fld622Balance_,
+CASE WHEN CAST(SUM(T2.Fld624Balance_) AS NUMERIC(27, 3)) IS NULL THEN 0.0 ELSE CAST(SUM(T2.Fld624Balance_) AS NUMERIC(27, 3)) END AS Fld624Balance_
+FROM (SELECT
+CASE WHEN CAST(NULL AS BINARY(1)) IN (0x01) THEN CAST(NULL AS BINARY(1)) END AS Value1_TYPE,
+CASE WHEN CAST(NULL AS BINARY(1)) IS NOT NULL THEN 0x00000000 END AS Value1_RTRef,
+CASE WHEN CAST(NULL AS BINARY(1)) IS NOT NULL THEN 0x00000000000000000000000000000000 END AS Value1_RRRef,
+T3._Fld622 AS Fld622Balance_,
+T3._Fld624 AS Fld624Balance_
+FROM dbo._AccRgAT0633 T3 WITH(NOLOCK)
+INNER JOIN #tt39 T4 WITH(NOLOCK)
+ON T4._IDRRef = T3._AccountRRef AND T4._Cnt = ?
+WHERE T3._Period = ? AND (T3._Fld622 <> ? OR T3._Fld624 <> ?)
+UNION ALL SELECT
+T5._Value1_TYPE AS Value1_TYPE,
+T5._Value1_RTRef AS Value1_RTRef,
+T5._Value1_RRRef AS Value1_RRRef,
+T5._Fld622 AS Fld622Balance_,
+T5._Fld624 AS Fld624Balance_
+FROM dbo._AccRgAT1643 T5 WITH(NOLOCK)
+INNER JOIN #tt39 T6 WITH(NOLOCK)
+ON T6._IDRRef = T5._AccountRRef AND T6._Cnt = ?
+WHERE T5._Period = ? AND (T5._Fld622 <> ? OR T5._Fld624 <> ?)
+UNION ALL SELECT
+T7._Value1_TYPE AS Value1_TYPE,
+T7._Value1_RTRef AS Value1_RTRef,
+T7._Value1_RRRef AS Value1_RRRef,
+T7._Fld622 AS Fld622Balance_,
+T7._Fld624 AS Fld624Balance_
+FROM dbo._AccRgAT2644 T7 WITH(NOLOCK)
+INNER JOIN #tt39 T8 WITH(NOLOCK)
+ON T8._IDRRef = T7._AccountRRef AND T8._Cnt = ?
+WHERE T7._Period = ? AND (T7._Fld622 <> ? OR T7._Fld624 <> ?)
+UNION ALL SELECT
+T9._Value1_TYPE AS Value1_TYPE,
+T9._Value1_RTRef AS Value1_RTRef,
+T9._Value1_RRRef AS Value1_RRRef,
+T9._Fld622 AS Fld622Balance_,
+T9._Fld624 AS Fld624Balance_
+FROM dbo._AccRgAT3645 T9 WITH(NOLOCK)
+INNER JOIN #tt39 T10 WITH(NOLOCK)
+ON T10._IDRRef = T9._AccountRRef AND T10._Cnt = ?
+WHERE T9._Period = ? AND (T9._Fld622 <> ? OR T9._Fld624 <> ?)) T2
+GROUP BY T2.Value1_TYPE,
+T2.Value1_RTRef,
+T2.Value1_RRRef
+HAVING (CASE WHEN CAST(SUM(T2.Fld622Balance_) AS NUMERIC(27, 2)) IS NULL THEN 0.0 ELSE CAST(SUM(T2.Fld622Balance_) AS NUMERIC(27, 2)) END) <> 0.0 OR (CASE WHEN CAST(SUM(T2.Fld624Balance_) AS NUMERIC(27, 3)) IS NULL THEN 0.0 ELSE CAST(SUM(T2.Fld624Balance_) AS NUMERIC(27, 3)) END) <> 0.0) T1
+WHERE (T1.Value1_TYPE = 0x08 AND T1.Value1_RTRef = 0x00000054 AND T1.Value1_RRRef = ?)
+p_0: 1.12N
+p_1: 0N
+p_2: 59991101000000
+p_3: 0N
+p_4: 0N
+p_5: 1N
+p_6: 59991101000000
+p_7: 0N
+p_8: 0N
+p_9: 2N
+p_10: 59991101000000
+p_11: 0N
+p_12: 0N
+p_13: 3N
+p_14: 59991101000000
+p_15: 0N
+p_16: 0N
+p_17: 0xA259005056B6DBD711EDD4EE1D888874
+',Rows=1,RowsAffected=-1
+02:07.260030-0,Context,2,process=rphost,p:processName=AstOffice,OSThread=8808,t:clientID=2388,t:applicationName=1CV8,t:computerName=ast12trademark,t:connectID=2182,SessionID=4069,Usr=Тарасов Игорь,Context='
+ВнешняяОбработка.УправлениеЦенами.Форма.Форма.Форма : 314 : Рез = Запрос.Выполнить().Выгрузить();'
+02:08.526021-1187967,DBMSSQL,4,process=rphost,p:processName=AstOffice,OSThread=8808,t:clientID=2388,t:applicationName=1CV8,t:computerName=ast12trademark,t:connectID=2182,SessionID=4069,Usr=Тарасов Игорь,DBMS=DBMSSQL,DataBase=ASTSQLOFFICE2\AstOffice,Trans=0,dbpid=96,Sql='SELECT
+CAST((CAST((T1.Fld622Balance_ * ?) AS NUMERIC(34, 8)) / T1.Fld624Balance_) AS NUMERIC(15, 2))
+FROM (SELECT
+T2.Value1_TYPE AS Value1_TYPE,
+T2.Value1_RTRef AS Value1_RTRef,
+T2.Value1_RRRef AS Value1_RRRef,
+CASE WHEN CAST(SUM(T2.Fld622Balance_) AS NUMERIC(27, 2)) IS NULL THEN 0.0 ELSE CAST(SUM(T2.Fld622Balance_) AS NUMERIC(27, 2)) END AS Fld622Balance_,
+CASE WHEN CAST(SUM(T2.Fld624Balance_) AS NUMERIC(27, 3)) IS NULL THEN 0.0 ELSE CAST(SUM(T2.Fld624Balance_) AS NUMERIC(27, 3)) END AS Fld624Balance_
+FROM (SELECT
+CASE WHEN CAST(NULL AS BINARY(1)) IN (0x01) THEN CAST(NULL AS BINARY(1)) END AS Value1_TYPE,
+CASE WHEN CAST(NULL AS BINARY(1)) IS NOT NULL THEN 0x00000000 END AS Value1_RTRef,
+CASE WHEN CAST(NULL AS BINARY(1)) IS NOT NULL THEN 0x00000000000000000000000000000000 END AS Value1_RRRef,
+T3._Fld622 AS Fld622Balance_,
+T3._Fld624 AS Fld624Balance_
+FROM dbo._AccRgAT0633 T3 WITH(NOLOCK)
+INNER JOIN #tt90 T4 WITH(NOLOCK)
+ON T4._IDRRef = T3._AccountRRef AND T4._Cnt = ?
+WHERE T3._Period = ? AND (T3._Fld622 <> ? OR T3._Fld624 <> ?)
+UNION ALL SELECT
+T5._Value1_TYPE AS Value1_TYPE,
+T5._Value1_RTRef AS Value1_RTRef,
+T5._Value1_RRRef AS Value1_RRRef,
+T5._Fld622 AS Fld622Balance_,
+T5._Fld624 AS Fld624Balance_
+FROM dbo._AccRgAT1643 T5 WITH(NOLOCK)
+INNER JOIN #tt90 T6 WITH(NOLOCK)
+ON T6._IDRRef = T5._AccountRRef AND T6._Cnt = ?
+WHERE T5._Period = ? AND (T5._Fld622 <> ? OR T5._Fld624 <> ?)
+UNION ALL SELECT
+T7._Value1_TYPE AS Value1_TYPE,
+T7._Value1_RTRef AS Value1_RTRef,
+T7._Value1_RRRef AS Value1_RRRef,
+T7._Fld622 AS Fld622Balance_,
+T7._Fld624 AS Fld624Balance_
+FROM dbo._AccRgAT2644 T7 WITH(NOLOCK)
+INNER JOIN #tt90 T8 WITH(NOLOCK)
+ON T8._IDRRef = T7._AccountRRef AND T8._Cnt = ?
+WHERE T7._Period = ? AND (T7._Fld622 <> ? OR T7._Fld624 <> ?)
+UNION ALL SELECT
+T9._Value1_TYPE AS Value1_TYPE,
+T9._Value1_RTRef AS Value1_RTRef,
+T9._Value1_RRRef AS Value1_RRRef,
+T9._Fld622 AS Fld622Balance_,
+T9._Fld624 AS Fld624Balance_
+FROM dbo._AccRgAT3645 T9 WITH(NOLOCK)
+INNER JOIN #tt90 T10 WITH(NOLOCK)
+ON T10._IDRRef = T9._AccountRRef AND T10._Cnt = ?
+WHERE T9._Period = ? AND (T9._Fld622 <> ? OR T9._Fld624 <> ?)) T2
+GROUP BY T2.Value1_TYPE,
+T2.Value1_RTRef,
+T2.Value1_RRRef
+HAVING (CASE WHEN CAST(SUM(T2.Fld622Balance_) AS NUMERIC(27, 2)) IS NULL THEN 0.0 ELSE CAST(SUM(T2.Fld622Balance_) AS NUMERIC(27, 2)) END) <> 0.0 OR (CASE WHEN CAST(SUM(T2.Fld624Balance_) AS NUMERIC(27, 3)) IS NULL THEN 0.0 ELSE CAST(SUM(T2.Fld624Balance_) AS NUMERIC(27, 3)) END) <> 0.0) T1
+WHERE (T1.Value1_TYPE = 0x08 AND T1.Value1_RTRef = 0x00000054 AND T1.Value1_RRRef = ?)
+p_0: 1.12N
+p_1: 0N
+p_2: 59991101000000
+p_3: 0N
+p_4: 0N
+p_5: 1N
+p_6: 59991101000000
+p_7: 0N
+p_8: 0N
+p_9: 2N
+p_10: 59991101000000
+p_11: 0N
+p_12: 0N
+p_13: 3N
+p_14: 59991101000000
+p_15: 0N
+p_16: 0N
+p_17: 0xA259005056B6DBD711EDD4EE1D888876
+',Rows=1,RowsAffected=-1
+02:08.526045-0,Context,2,process=rphost,p:processName=AstOffice,OSThread=8808,t:clientID=2388,t:applicationName=1CV8,t:computerName=ast12trademark,t:connectID=2182,SessionID=4069,Usr=Тарасов Игорь,Context='
+ВнешняяОбработка.УправлениеЦенами.Форма.Форма.Форма : 314 : Рез = Запрос.Выполнить().Выгрузить();'
+02:09.776021-1187974,DBMSSQL,4,process=rphost,p:processName=AstOffice,OSThread=8808,t:clientID=2388,t:applicationName=1CV8,t:computerName=ast12trademark,t:connectID=2182,SessionID=4069,Usr=Тарасов Игорь,DBMS=DBMSSQL,DataBase=ASTSQLOFFICE2\AstOffice,Trans=0,dbpid=96,Sql='SELECT
+CAST((CAST((T1.Fld622Balance_ * ?) AS NUMERIC(34, 8)) / T1.Fld624Balance_) AS NUMERIC(15, 2))
+FROM (SELECT
+T2.Value1_TYPE AS Value1_TYPE,
+T2.Value1_RTRef AS Value1_RTRef,
+T2.Value1_RRRef AS Value1_RRRef,
+CASE WHEN CAST(SUM(T2.Fld622Balance_) AS NUMERIC(27, 2)) IS NULL THEN 0.0 ELSE CAST(SUM(T2.Fld622Balance_) AS NUMERIC(27, 2)) END AS Fld622Balance_,
+CASE WHEN CAST(SUM(T2.Fld624Balance_) AS NUMERIC(27, 3)) IS NULL THEN 0.0 ELSE CAST(SUM(T2.Fld624Balance_) AS NUMERIC(27, 3)) END AS Fld624Balance_
+FROM (SELECT
+CASE WHEN CAST(NULL AS BINARY(1)) IN (0x01) THEN CAST(NULL AS BINARY(1)) END AS Value1_TYPE,
+CASE WHEN CAST(NULL AS BINARY(1)) IS NOT NULL THEN 0x00000000 END AS Value1_RTRef,
+CASE WHEN CAST(NULL AS BINARY(1)) IS NOT NULL THEN 0x00000000000000000000000000000000 END AS Value1_RRRef,
+T3._Fld622 AS Fld622Balance_,
+T3._Fld624 AS Fld624Balance_
+FROM dbo._AccRgAT0633 T3 WITH(NOLOCK)
+INNER JOIN #tt90 T4 WITH(NOLOCK)
+ON T4._IDRRef = T3._AccountRRef AND T4._Cnt = ?
+WHERE T3._Period = ? AND (T3._Fld622 <> ? OR T3._Fld624 <> ?)
+UNION ALL SELECT
+T5._Value1_TYPE AS Value1_TYPE,
+T5._Value1_RTRef AS Value1_RTRef,
+T5._Value1_RRRef AS Value1_RRRef,
+T5._Fld622 AS Fld622Balance_,
+T5._Fld624 AS Fld624Balance_
+FROM dbo._AccRgAT1643 T5 WITH(NOLOCK)
+INNER JOIN #tt90 T6 WITH(NOLOCK)
+ON T6._IDRRef = T5._AccountRRef AND T6._Cnt = ?
+WHERE T5._Period = ? AND (T5._Fld622 <> ? OR T5._Fld624 <> ?)
+UNION ALL SELECT
+T7._Value1_TYPE AS Value1_TYPE,
+T7._Value1_RTRef AS Value1_RTRef,
+T7._Value1_RRRef AS Value1_RRRef,
+T7._Fld622 AS Fld622Balance_,
+T7._Fld624 AS Fld624Balance_
+FROM dbo._AccRgAT2644 T7 WITH(NOLOCK)
+INNER JOIN #tt90 T8 WITH(NOLOCK)
+ON T8._IDRRef = T7._AccountRRef AND T8._Cnt = ?
+WHERE T7._Period = ? AND (T7._Fld622 <> ? OR T7._Fld624 <> ?)
+UNION ALL SELECT
+T9._Value1_TYPE AS Value1_TYPE,
+T9._Value1_RTRef AS Value1_RTRef,
+T9._Value1_RRRef AS Value1_RRRef,
+T9._Fld622 AS Fld622Balance_,
+T9._Fld624 AS Fld624Balance_
+FROM dbo._AccRgAT3645 T9 WITH(NOLOCK)
+INNER JOIN #tt90 T10 WITH(NOLOCK)
+ON T10._IDRRef = T9._AccountRRef AND T10._Cnt = ?
+WHERE T9._Period = ? AND (T9._Fld622 <> ? OR T9._Fld624 <> ?)) T2
+GROUP BY T2.Value1_TYPE,
+T2.Value1_RTRef,
+T2.Value1_RRRef
+HAVING (CASE WHEN CAST(SUM(T2.Fld622Balance_) AS NUMERIC(27, 2)) IS NULL THEN 0.0 ELSE CAST(SUM(T2.Fld622Balance_) AS NUMERIC(27, 2)) END) <> 0.0 OR (CASE WHEN CAST(SUM(T2.Fld624Balance_) AS NUMERIC(27, 3)) IS NULL THEN 0.0 ELSE CAST(SUM(T2.Fld624Balance_) AS NUMERIC(27, 3)) END) <> 0.0) T1
+WHERE (T1.Value1_TYPE = 0x08 AND T1.Value1_RTRef = 0x00000054 AND T1.Value1_RRRef = ?)
+p_0: 1.12N
+p_1: 0N
+p_2: 59991101000000
+p_3: 0N
+p_4: 0N
+p_5: 1N
+p_6: 59991101000000
+p_7: 0N
+p_8: 0N
+p_9: 2N
+p_10: 59991101000000
+p_11: 0N
+p_12: 0N
+p_13: 3N
+p_14: 59991101000000
+p_15: 0N
+p_16: 0N
+p_17: 0xA259005056B6DBD711EDD4EE1D888878
+',Rows=1,RowsAffected=-1
+02:09.776060-0,Context,2,process=rphost,p:processName=AstOffice,OSThread=8808,t:clientID=2388,t:applicationName=1CV8,t:computerName=ast12trademark,t:connectID=2182,SessionID=4069,Usr=Тарасов Игорь,Context='
+ВнешняяОбработка.УправлениеЦенами.Форма.Форма.Форма : 314 : Рез = Запрос.Выполнить().Выгрузить();'
+02:20.120012-1109931,DBMSSQL,4,process=rphost,p:processName=AstOffice,OSThread=8808,t:clientID=2223,t:applicationName=WebServerExtension,t:computerName=Ast1COffice,t:connectID=2029,SessionID=38134,Usr=MatrixMechta,DBMS=DBMSSQL,DataBase=ASTSQLOFFICE2\AstOffice,Trans=0,dbpid=104,Sql="SELECT TOP 1
+T1._IDRRef,
+T1._Date_Time
+FROM dbo._Document21650 T1 WITH(NOLOCK)
+WHERE (T1._Fld21654_TYPE = 0x08 AND T1._Fld21654_RTRef = 0x000000B3 AND T1._Fld21654_RRRef = ?) AND T1._Posted = 0x01 AND (T1._Fld21657 <> ?)
+ORDER BY (T1._Date_Time) DESC
+p_0: 0xB6CD005056B63BCB11EDD1778FF34030
+p_1: ''
+",Rows=1,RowsAffected=-1,Context='
+HTTPСервис.GetOrderInfo.Модуль : 115 : ФискЧек = ФискальныйЧекВыбит(Заказ);
+	HTTPСервис.GetOrderInfo.Модуль : 409 : РезультатЗапроса = Запрос.Выполнить();'
+02:22.323015-2202928,DBMSSQL,4,process=rphost,p:processName=AstOffice,OSThread=8808,t:clientID=2223,t:applicationName=WebServerExtension,t:computerName=Ast1COffice,t:connectID=2029,SessionID=38134,Usr=MatrixMechta,DBMS=DBMSSQL,DataBase=ASTSQLOFFICE2\AstOffice,Trans=0,dbpid=104,Sql='SELECT
+T1._IDRRef
+FROM dbo._Document21650 T1 WITH(NOLOCK)
+WHERE T1._Posted = 0x01 AND (T1._Fld21654_TYPE = 0x08 AND T1._Fld21654_RTRef = 0x000000B3) AND (T1._Fld21654_TYPE = 0x08 AND T1._Fld21654_RTRef = 0x000000B3 AND T1._Fld21654_RRRef IN
+(SELECT
+T2._IDRRef AS Q_001_F_000RRef
+FROM dbo._Document179 T2 WITH(NOLOCK)
+WHERE (T2._Fld3251_TYPE = 0x08 AND T2._Fld3251_RTRef = 0x000000B3 AND T2._Fld3251_RRRef = ?) AND T2._Posted = 0x01)) AND (T1._Fld21659RRef = ?)
+p_0: 0xB6CD005056B63BCB11EDD1778FF34030
+p_1: 0xB2AD53436D75F68A48CF1D1672BDA9B1
+',Rows=0,RowsAffected=0,Context='
+HTTPСервис.GetOrderInfo.Модуль : 126 : ЧекЗаДоставку = ЧекЗаДоставкуВыбит(Заказ);
+	HTTPСервис.GetOrderInfo.Модуль : 889 : Выборка = Запрос.Выполнить().Выбрать();'
+02:33.010042-2187037,DBMSSQL,4,process=rphost,p:processName=AstOffice,OSThread=9220,t:clientID=2223,t:applicationName=WebServerExtension,t:computerName=Ast1COffice,t:connectID=2029,SessionID=38148,Usr=УзлыИБ,DBMS=DBMSSQL,DataBase=ASTSQLOFFICE2\AstOffice,Trans=0,dbpid=83,Sql='SELECT
+T1.Q_001_F_000RRef,
+T1.Q_001_F_001RRef,
+CAST(SUM(T1.Q_001_F_002_) AS NUMERIC(33, 3)),
+CAST(SUM(T1.Q_001_F_003_) AS NUMERIC(33, 3)),
+CAST(SUM(T1.Q_001_F_004_) AS NUMERIC(33, 3))
+FROM (SELECT
+T2.Fld12206RRef AS Q_001_F_000RRef,
+T2.Fld12207RRef AS Q_001_F_001RRef,
+T2.Fld12211Balance_ AS Q_001_F_002_,
+CAST(? AS NUMERIC(27, 3)) AS Q_001_F_003_,
+CAST(? AS NUMERIC(27, 3)) AS Q_001_F_004_
+FROM (SELECT
+T3._Fld12206RRef AS Fld12206RRef,
+T3._Fld12207RRef AS Fld12207RRef,
+CAST(SUM(T3._Fld12211) AS NUMERIC(27, 3)) AS Fld12211Balance_
+FROM dbo._AccumRgT12213 T3 WITH(NOLOCK)
+WHERE T3._Period = ? AND ((CASE WHEN (T3._Fld12207RRef IN (?)) THEN 0x01 ELSE 0x00 END) = 0x01 AND (CASE WHEN (T3._Fld12206RRef IN (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)) THEN 0x01 ELSE 0x00 END) = 0x01 AND (T3._Fld12210RRef = ?)) AND (T3._Fld12211 <> ?) AND (T3._Fld12211 <> ?)
+GROUP BY T3._Fld12206RRef,
+T3._Fld12207RRef
+HAVING (CAST(SUM(T3._Fld12211) AS NUMERIC(27, 3))) <> 0.0) T2
+UNION ALL SELECT
+T4.Fld12119RRef AS Fld12119RRef,
+T4.Fld12121RRef AS Fld12121RRef,
+CAST(? AS NUMERIC(27, 3)),
+T4.Fld12124Balance_ AS Fld12124Balance_,
+CASE WHEN (T4.Fld12120_TYPE = 0x01 AND T4.Fld12120_RTRef = 0x00000000 AND T4.Fld12120_RRRef = 0x00000000000000000000000000000000) THEN T4.Fld12124Balance_ ELSE ? END
+FROM (SELECT
+T5._Fld12119RRef AS Fld12119RRef,
+T5._Fld12121RRef AS Fld12121RRef,
+T5._Fld12120_TYPE AS Fld12120_TYPE,
+T5._Fld12120_RTRef AS Fld12120_RTRef,
+T5._Fld12120_RRRef AS Fld12120_RRRef,
+CAST(SUM(T5._Fld12124) AS NUMERIC(27, 3)) AS Fld12124Balance_
+FROM dbo._AccumRgT12127 T5 WITH(NOLOCK)
+WHERE T5._Period = ? AND ((CASE WHEN (T5._Fld12121RRef IN (?)) THEN 0x01 ELSE 0x00 END) = 0x01 AND (CASE WHEN (T5._Fld12119RRef IN (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)) THEN 0x01 ELSE 0x00 END) = 0x01) AND (T5._Fld12124 <> ?) AND (T5._Fld12124 <> ?)
+GROUP BY T5._Fld12119RRef,
+T5._Fld12121RRef,
+T5._Fld12120_TYPE,
+T5._Fld12120_RTRef,
+T5._Fld12120_RRRef
+HAVING (CAST(SUM(T5._Fld12124) AS NUMERIC(27, 3))) <> 0.0) T4) T1
+GROUP BY T1.Q_001_F_000RRef,
+T1.Q_001_F_001RRef
+p_0: 0N
+p_1: 0N
+p_2: 59991101000000
+p_3: 0xA224005056B6DBD711E9CDF8BCAAD429
+p_4: 0x902068B599C9809D11E250A24C43C34A
+p_5: 0x902068B599C9809D11E250A24C43C34C
+p_6: 0x902068B599C9809D11E250A24C43C34D
+p_7: 0x80BC1866DAF0891511E792C97CBF6E41
+p_8: 0xA21C005056B6DBD711E9188B3C894881
+p_9: 0x9F732C768A5D355111E5189037A911AE
+p_10: 0xA23A005056B6DBD711EB71BDFD9633FC
+p_11: 0xA227005056B6DBD711E9E00D5C73F875
+p_12: 0xA22D005056B6DBD711EA8533C0EA16AA
+p_13: 0xA20F005056B60E3D11EDA155FC6D487D
+p_14: 0xA20F005056B60E3D11EDA155FC6D487E
+p_15: 0xA20F005056B60E3D11EDA155FC6D487C
+p_16: 0xA20F005056B60E3D11EDA155FC6D487B
+p_17: 0xA79841EBE5E5B977449B6BCED05404A0
+p_18: 0N
+p_19: 0N
+p_20: 0N
+p_21: 0N
+p_22: 59991101000000
+p_23: 0xA224005056B6DBD711E9CDF8BCAAD429
+p_24: 0x902068B599C9809D11E250A24C43C34A
+p_25: 0x902068B599C9809D11E250A24C43C34C
+p_26: 0x902068B599C9809D11E250A24C43C34D
+p_27: 0x80BC1866DAF0891511E792C97CBF6E41
+p_28: 0xA21C005056B6DBD711E9188B3C894881
+p_29: 0x9F732C768A5D355111E5189037A911AE
+p_30: 0xA23A005056B6DBD711EB71BDFD9633FC
+p_31: 0xA227005056B6DBD711E9E00D5C73F875
+p_32: 0xA22D005056B6DBD711EA8533C0EA16AA
+p_33: 0xA20F005056B60E3D11EDA155FC6D487D
+p_34: 0xA20F005056B60E3D11EDA155FC6D487E
+p_35: 0xA20F005056B60E3D11EDA155FC6D487C
+p_36: 0xA20F005056B60E3D11EDA155FC6D487B
+p_37: 0N
+p_38: 0N
+',Rows=0,RowsAffected=0,Context='
+WebСервис.GetRests.Модуль : 24 : ТаблицаОстатков =  мчт_ВебСервисОстатки.ПолучитьОстаткиЛокальные(МассивСкладов, МассивНоменклатуры, Качество, ДокументРезерва);
+	ОбщийМодуль.мчт_ВебСервисОстатки.Модуль : 120 : Результат = Запрос.Выполнить().Выгрузить();'
+02:34.901006-2077894,DBMSSQL,5,process=rphost,p:processName=AstOffice,OSThread=9440,t:clientID=2610,t:applicationName=WebServerExtension,t:computerName=Ast1COffice,t:connectID=6988,SessionID=38150,Usr=УзлыИБ,DBMS=DBMSSQL,DataBase=ASTSQLOFFICE2\AstOffice,Trans=0,dbpid=79,Sql='SELECT
+T1.Q_001_F_000RRef,
+T1.Q_001_F_001RRef,
+CAST(SUM(T1.Q_001_F_002_) AS NUMERIC(33, 3)),
+CAST(SUM(T1.Q_001_F_003_) AS NUMERIC(33, 3)),
+CAST(SUM(T1.Q_001_F_004_) AS NUMERIC(33, 3))
+FROM (SELECT
+T2.Fld12206RRef AS Q_001_F_000RRef,
+T2.Fld12207RRef AS Q_001_F_001RRef,
+T2.Fld12211Balance_ AS Q_001_F_002_,
+CAST(? AS NUMERIC(27, 3)) AS Q_001_F_003_,
+CAST(? AS NUMERIC(27, 3)) AS Q_001_F_004_
+FROM (SELECT
+T3._Fld12206RRef AS Fld12206RRef,
+T3._Fld12207RRef AS Fld12207RRef,
+CAST(SUM(T3._Fld12211) AS NUMERIC(27, 3)) AS Fld12211Balance_
+FROM dbo._AccumRgT12213 T3 WITH(NOLOCK)
+WHERE T3._Period = ? AND ((CASE WHEN (T3._Fld12207RRef IN (?)) THEN 0x01 ELSE 0x00 END) = 0x01 AND (CASE WHEN (T3._Fld12206RRef IN (?, ?, ?, ?)) THEN 0x01 ELSE 0x00 END) = 0x01 AND (T3._Fld12210RRef = ?)) AND (T3._Fld12211 <> ?) AND (T3._Fld12211 <> ?)
+GROUP BY T3._Fld12206RRef,
+T3._Fld12207RRef
+HAVING (CAST(SUM(T3._Fld12211) AS NUMERIC(27, 3))) <> 0.0) T2
+UNION ALL SELECT
+T4.Fld12119RRef AS Fld12119RRef,
+T4.Fld12121RRef AS Fld12121RRef,
+CAST(? AS NUMERIC(27, 3)),
+T4.Fld12124Balance_ AS Fld12124Balance_,
+CASE WHEN (T4.Fld12120_TYPE = 0x01 AND T4.Fld12120_RTRef = 0x00000000 AND T4.Fld12120_RRRef = 0x00000000000000000000000000000000) THEN T4.Fld12124Balance_ ELSE ? END
+FROM (SELECT
+T5._Fld12119RRef AS Fld12119RRef,
+T5._Fld12121RRef AS Fld12121RRef,
+T5._Fld12120_TYPE AS Fld12120_TYPE,
+T5._Fld12120_RTRef AS Fld12120_RTRef,
+T5._Fld12120_RRRef AS Fld12120_RRRef,
+CAST(SUM(T5._Fld12124) AS NUMERIC(27, 3)) AS Fld12124Balance_
+FROM dbo._AccumRgT12127 T5 WITH(NOLOCK)
+WHERE T5._Period = ? AND ((CASE WHEN (T5._Fld12121RRef IN (?)) THEN 0x01 ELSE 0x00 END) = 0x01 AND (CASE WHEN (T5._Fld12119RRef IN (?, ?, ?, ?)) THEN 0x01 ELSE 0x00 END) = 0x01) AND (T5._Fld12124 <> ?) AND (T5._Fld12124 <> ?)
+GROUP BY T5._Fld12119RRef,
+T5._Fld12121RRef,
+T5._Fld12120_TYPE,
+T5._Fld12120_RTRef,
+T5._Fld12120_RRRef
+HAVING (CAST(SUM(T5._Fld12124) AS NUMERIC(27, 3))) <> 0.0) T4) T1
+GROUP BY T1.Q_001_F_000RRef,
+T1.Q_001_F_001RRef
+p_0: 0N
+p_1: 0N
+p_2: 59991101000000
+p_3: 0xA24A005056B6DBD711ED24F3730EFE71
+p_4: 0x80C11866DAF0891511E7C6008A9A53AF
+p_5: 0xA23B005056B6DBD711EB96B39C749400
+p_6: 0xA23B005056B6DBD711EB96B39C749401
+p_7: 0xA23B005056B6DBD711EB96B39C749402
+p_8: 0xA79841EBE5E5B977449B6BCED05404A0
+p_9: 0N
+p_10: 0N
+p_11: 0N
+p_12: 0N
+p_13: 59991101000000
+p_14: 0xA24A005056B6DBD711ED24F3730EFE71
+p_15: 0x80C11866DAF0891511E7C6008A9A53AF
+p_16: 0xA23B005056B6DBD711EB96B39C749400
+p_17: 0xA23B005056B6DBD711EB96B39C749401
+p_18: 0xA23B005056B6DBD711EB96B39C749402
+p_19: 0N
+p_20: 0N
+',Rows=0,RowsAffected=0,Context='
+WebСервис.GetRests.Модуль : 24 : ТаблицаОстатков =  мчт_ВебСервисОстатки.ПолучитьОстаткиЛокальные(МассивСкладов, МассивНоменклатуры, Качество, ДокументРезерва);
+	ОбщийМодуль.мчт_ВебСервисОстатки.Модуль : 120 : Результат = Запрос.Выполнить().Выгрузить();'
+02:43.948024-2062952,DBMSSQL,4,process=rphost,p:processName=AstOffice,OSThread=6000,t:clientID=2096,t:applicationName=WebServerExtension,t:computerName=Ast1COffice,t:connectID=1911,SessionID=38156,Usr=MatrixMechta,DBMS=DBMSSQL,DataBase=ASTSQLOFFICE2\AstOffice,Trans=0,dbpid=79,Sql='SELECT
+T1._IDRRef
+FROM dbo._Document21650 T1 WITH(NOLOCK)
+WHERE T1._Posted = 0x01 AND (T1._Fld21654_TYPE = 0x08 AND T1._Fld21654_RTRef = 0x000000B3) AND (T1._Fld21654_TYPE = 0x08 AND T1._Fld21654_RTRef = 0x000000B3 AND T1._Fld21654_RRRef IN
+(SELECT
+T2._IDRRef AS Q_001_F_000RRef
+FROM dbo._Document179 T2 WITH(NOLOCK)
+WHERE (T2._Fld3251_TYPE = 0x08 AND T2._Fld3251_RTRef = 0x000000B3 AND T2._Fld3251_RRRef = ?) AND T2._Posted = 0x01)) AND (T1._Fld21659RRef = ?)
+p_0: 0x93B4B8CB29D980BF11EDD42C7B9B4973
+p_1: 0xB2AD53436D75F68A48CF1D1672BDA9B1
+',Rows=0,RowsAffected=0,Context='
+HTTPСервис.GetOrderInfo.Модуль : 126 : ЧекЗаДоставку = ЧекЗаДоставкуВыбит(Заказ);
+	HTTPСервис.GetOrderInfo.Модуль : 889 : Выборка = Запрос.Выполнить().Выбрать();'
+02:46.698002-1374945,DBMSSQL,3,process=rphost,p:processName=AstOffice,OSThread=9220,t:clientID=2324,t:applicationName=1CV8,t:computerName=AST12TSDAST,t:connectID=2126,SessionID=3768,Usr=Сакенова Динара,DBMS=DBMSSQL,DataBase=ASTSQLOFFICE2\AstOffice,Trans=0,dbpid=96,Sql='SELECT
+T1._IDRRef,
+T1._Version,
+T1._Marked,
+T1._PredefinedID,
+T1._Description,
+T1._Fld1802RRef,
+T1._Fld1803,
+T1._Fld1804_TYPE,
+T1._Fld1804_RTRef,
+T1._Fld1804_RRRef,
+T1._Fld1805,
+T1._Fld1806
+FROM dbo._Reference139 T1 WITH(NOLOCK)
+WHERE T1._IDRRef = ?
+p_0: 0xB6CD005056B63BCB11EDCDF48B393D1C
+',Rows=1,RowsAffected=-1
+02:46.698024-0,Context,1,process=rphost,p:processName=AstOffice,OSThread=9220,t:clientID=2324,t:applicationName=1CV8,t:computerName=AST12TSDAST,t:connectID=2126,SessionID=3768,Usr=Сакенова Динара,Context='
+Справочник.ХранилищеДополнительнойИнформации.Форма.ФормаСпискаФайловИИзображений.Форма : 326 : ОформлениеСтроки.Ячейки.ИмяФайла.ИндексКартинки = УниверсальныеМеханизмы.ПолучитьИндексПиктограммыФайла(УниверсальныеМеханизмы.ПолучитьРасширениеФайла(ДанныеСтроки.Ссылка.ИмяФайла));
+	ОбщийМодуль.УниверсальныеМеханизмы.Модуль : 797 : РасширениеФайла = ИмяФайла;'
+04:12.557000-1140974,DBMSSQL,4,process=rphost,p:processName=AstOffice,OSThread=3108,t:clientID=2096,t:applicationName=WebServerExtension,t:computerName=Ast1COffice,t:connectID=1911,SessionID=38326,Usr=УзлыИБ,DBMS=DBMSSQL,DataBase=ASTSQLOFFICE2\AstOffice,Trans=0,dbpid=96,Sql='SELECT
+T1.Q_001_F_000RRef,
+T1.Q_001_F_001RRef,
+CAST(SUM(T1.Q_001_F_002_) AS NUMERIC(33, 3)),
+CAST(SUM(T1.Q_001_F_003_) AS NUMERIC(33, 3)),
+CAST(SUM(T1.Q_001_F_004_) AS NUMERIC(33, 3))
+FROM (SELECT
+T2.Fld12206RRef AS Q_001_F_000RRef,
+T2.Fld12207RRef AS Q_001_F_001RRef,
+T2.Fld12211Balance_ AS Q_001_F_002_,
+CAST(? AS NUMERIC(27, 3)) AS Q_001_F_003_,
+CAST(? AS NUMERIC(27, 3)) AS Q_001_F_004_
+FROM (SELECT
+T3._Fld12206RRef AS Fld12206RRef,
+T3._Fld12207RRef AS Fld12207RRef,
+CAST(SUM(T3._Fld12211) AS NUMERIC(27, 3)) AS Fld12211Balance_
+FROM dbo._AccumRgT12213 T3 WITH(NOLOCK)
+WHERE T3._Period = ? AND ((CASE WHEN (T3._Fld12207RRef IN (?)) THEN 0x01 ELSE 0x00 END) = 0x01 AND (CASE WHEN (T3._Fld12206RRef IN (?, ?, ?, ?)) THEN 0x01 ELSE 0x00 END) = 0x01 AND (T3._Fld12210RRef = ?)) AND (T3._Fld12211 <> ?) AND (T3._Fld12211 <> ?)
+GROUP BY T3._Fld12206RRef,
+T3._Fld12207RRef
+HAVING (CAST(SUM(T3._Fld12211) AS NUMERIC(27, 3))) <> 0.0) T2
+UNION ALL SELECT
+T4.Fld12119RRef AS Fld12119RRef,
+T4.Fld12121RRef AS Fld12121RRef,
+CAST(? AS NUMERIC(27, 3)),
+T4.Fld12124Balance_ AS Fld12124Balance_,
+CASE WHEN (T4.Fld12120_TYPE = 0x01 AND T4.Fld12120_RTRef = 0x00000000 AND T4.Fld12120_RRRef = 0x00000000000000000000000000000000) THEN T4.Fld12124Balance_ ELSE ? END
+FROM (SELECT
+T5._Fld12119RRef AS Fld12119RRef,
+T5._Fld12121RRef AS Fld12121RRef,
+T5._Fld12120_TYPE AS Fld12120_TYPE,
+T5._Fld12120_RTRef AS Fld12120_RTRef,
+T5._Fld12120_RRRef AS Fld12120_RRRef,
+CAST(SUM(T5._Fld12124) AS NUMERIC(27, 3)) AS Fld12124Balance_
+FROM dbo._AccumRgT12127 T5 WITH(NOLOCK)
+WHERE T5._Period = ? AND ((CASE WHEN (T5._Fld12121RRef IN (?)) THEN 0x01 ELSE 0x00 END) = 0x01 AND (CASE WHEN (T5._Fld12119RRef IN (?, ?, ?, ?)) THEN 0x01 ELSE 0x00 END) = 0x01) AND (T5._Fld12124 <> ?) AND (T5._Fld12124 <> ?)
+GROUP BY T5._Fld12119RRef,
+T5._Fld12121RRef,
+T5._Fld12120_TYPE,
+T5._Fld12120_RTRef,
+T5._Fld12120_RRRef
+HAVING (CAST(SUM(T5._Fld12124) AS NUMERIC(27, 3))) <> 0.0) T4) T1
+GROUP BY T1.Q_001_F_000RRef,
+T1.Q_001_F_001RRef
+p_0: 0N
+p_1: 0N
+p_2: 59991101000000
+p_3: 0x95562C768A5D355111E65D1DF0E25D9B
+p_4: 0x80C11866DAF0891511E7C6008A9A53AF
+p_5: 0xA23B005056B6DBD711EB96B39C749400
+p_6: 0xA23B005056B6DBD711EB96B39C749401
+p_7: 0xA23B005056B6DBD711EB96B39C749402
+p_8: 0xA79841EBE5E5B977449B6BCED05404A0
+p_9: 0N
+p_10: 0N
+p_11: 0N
+p_12: 0N
+p_13: 59991101000000
+p_14: 0x95562C768A5D355111E65D1DF0E25D9B
+p_15: 0x80C11866DAF0891511E7C6008A9A53AF
+p_16: 0xA23B005056B6DBD711EB96B39C749400
+p_17: 0xA23B005056B6DBD711EB96B39C749401
+p_18: 0xA23B005056B6DBD711EB96B39C749402
+p_19: 0N
+p_20: 0N
+',Rows=0,RowsAffected=0,Context='
+WebСервис.GetRests.Модуль : 24 : ТаблицаОстатков =  мчт_ВебСервисОстатки.ПолучитьОстаткиЛокальные(МассивСкладов, МассивНоменклатуры, Качество, ДокументРезерва);
+	ОбщийМодуль.мчт_ВебСервисОстатки.Модуль : 120 : Результат = Запрос.Выполнить().Выгрузить();'
+04:13.182000-7983992,DBMSSQL,4,process=rphost,p:processName=AstOffice,OSThread=8808,t:clientID=2325,t:applicationName=1CV8,t:computerName=ast12mansda2,t:connectID=2127,SessionID=3769,Usr=Гошенко Дмитрий,DBMS=DBMSSQL,DataBase=ASTSQLOFFICE2\AstOffice,Trans=0,dbpid=57,Sql="INSERT INTO #tt83 WITH(TABLOCK) (_Q_000_F_000, _Q_000_F_001RRef, _Q_000_F_002_TYPE, _Q_000_F_002_RTRef, _Q_000_F_002_RRRef, _Q_000_F_003, _Q_000_F_004) SELECT
+T1.Q_001_F_000_,
+T1.Q_001_F_001RRef,
+T1.Q_001_F_002_TYPE,
+T1.Q_001_F_002_RTRef,
+T1.Q_001_F_002_RRRef,
+T1.Q_001_F_003_,
+T1.Q_001_F_004_
+FROM (SELECT
+T2.Period_ AS Q_001_F_000_,
+T2.Fld11891RRef AS Q_001_F_001RRef,
+T2.Fld11885_TYPE AS Q_001_F_002_TYPE,
+T2.Fld11885_RTRef AS Q_001_F_002_RTRef,
+T2.Fld11885_RRRef AS Q_001_F_002_RRRef,
+CAST(SUM(T2.Fld11895Turnover_) AS NUMERIC(33, 3)) AS Q_001_F_003_,
+CAST(? AS NUMERIC(38, 8)) AS Q_001_F_004_
+FROM (SELECT
+DATETIME2FROMPARTS(DATEPART(YEAR,T3._Period),DATEPART(MONTH,T3._Period),1,0,0,0,0,0) AS Period_,
+T3._Fld11891RRef AS Fld11891RRef,
+T3._Fld11885_TYPE AS Fld11885_TYPE,
+T3._Fld11885_RTRef AS Fld11885_RTRef,
+T3._Fld11885_RRRef AS Fld11885_RRRef,
+CAST(SUM(T3._Fld11895) AS NUMERIC(27, 3)) AS Fld11895Turnover_
+FROM dbo._AccumRgTn11905 T3 WITH(NOLOCK)
+WHERE T3._Period >= ? AND T3._Period < ? AND (T3._Fld11895 <> ?)
+GROUP BY DATETIME2FROMPARTS(DATEPART(YEAR,T3._Period),DATEPART(MONTH,T3._Period),1,0,0,0,0,0),
+T3._Fld11891RRef,
+T3._Fld11885_TYPE,
+T3._Fld11885_RTRef,
+T3._Fld11885_RRRef
+HAVING (CAST(SUM(T3._Fld11895) AS NUMERIC(27, 3))) <> 0.0) T2
+GROUP BY T2.Period_,
+T2.Fld11891RRef,
+T2.Fld11885_TYPE,
+T2.Fld11885_RTRef,
+T2.Fld11885_RRRef
+UNION ALL SELECT
+?,
+T8._Fld1494RRef AS Fld1494RRef,
+0x08 AS Fld12207_TYPE,
+0x00000054 AS Fld12207_RTRef,
+T4.Fld12207RRef AS Fld12207_RRRef,
+CAST(? AS NUMERIC(33, 3)),
+CAST(SUM(T4.Fld12211Balance_) AS NUMERIC(38, 8))
+FROM (SELECT
+T5.Fld12206RRef AS Fld12206RRef,
+T5.Fld12207RRef AS Fld12207RRef,
+CAST(SUM(T5.Fld12211Balance_) AS NUMERIC(33, 3)) AS Fld12211Balance_
+FROM (SELECT
+T6._Fld12206RRef AS Fld12206RRef,
+T6._Fld12207RRef AS Fld12207RRef,
+CAST(SUM(T6._Fld12211) AS NUMERIC(27, 3)) AS Fld12211Balance_
+FROM dbo._AccumRgT12213 T6 WITH(NOLOCK)
+WHERE T6._Period = ? AND (T6._Fld12211 <> ?) AND (T6._Fld12211 <> ?)
+GROUP BY T6._Fld12206RRef,
+T6._Fld12207RRef
+HAVING (CAST(SUM(T6._Fld12211) AS NUMERIC(27, 3))) <> 0.0
+UNION ALL SELECT
+T7._Fld12206RRef AS Fld12206RRef,
+T7._Fld12207RRef AS Fld12207RRef,
+CAST(CAST(SUM(CASE WHEN T7._RecordKind = 0.0 THEN -T7._Fld12211 ELSE T7._Fld12211 END) AS NUMERIC(21, 3)) AS NUMERIC(27, 3)) AS Fld12211Balance_
+FROM dbo._AccumRg12205 T7 WITH(NOLOCK)
+WHERE T7._Period > ? AND T7._Period < ? AND T7._Active = 0x01
+GROUP BY T7._Fld12206RRef,
+T7._Fld12207RRef
+HAVING (CAST(CAST(SUM(CASE WHEN T7._RecordKind = 0.0 THEN -T7._Fld12211 ELSE T7._Fld12211 END) AS NUMERIC(21, 3)) AS NUMERIC(27, 3))) <> 0.0) T5
+GROUP BY T5.Fld12206RRef,
+T5.Fld12207RRef
+HAVING (CAST(SUM(T5.Fld12211Balance_) AS NUMERIC(33, 3))) <> 0.0) T4
+LEFT OUTER JOIN dbo._Reference111 T8 WITH(NOLOCK)
+ON T4.Fld12206RRef = T8._IDRRef
+WHERE (? = ?) AND (T8._Fld20505RRef = ?) OR (? = ?) AND (T8._Fld20505RRef <> ?) OR (? = ?)
+GROUP BY T8._Fld1494RRef,
+T4.Fld12207RRef) T1
+LEFT OUTER JOIN dbo._Reference84 T9 WITH(NOLOCK)
+ON T1.Q_001_F_002_TYPE = 0x08 AND T1.Q_001_F_002_RTRef = 0x00000054 AND T1.Q_001_F_002_RRRef = T9._IDRRef
+LEFT OUTER JOIN dbo._Reference85 T10 WITH(NOLOCK)
+ON T9._Fld1301RRef = T10._IDRRef
+WHERE (CASE WHEN T1.Q_001_F_002_TYPE = 0x08 AND T1.Q_001_F_002_RTRef = 0x00000054 THEN T9._Fld1316RRef ELSE CAST(NULL AS BINARY(16)) END = ?) AND (CASE WHEN T1.Q_001_F_002_TYPE = 0x08 AND T1.Q_001_F_002_RTRef = 0x00000054 THEN T10._Fld13198RRef ELSE CAST(NULL AS BINARY(16)) END = ?)
+p_0: 0N
+p_1: 40230101000000
+p_2: 40230501000000
+p_3: 0N
+p_4: 20010101000000
+p_5: 0N
+p_6: 59991101000000
+p_7: 0N
+p_8: 0N
+p_9: 40230430235959
+p_10: 59991101000000
+p_11: ''
+p_12: 'Да'
+p_13: 0xAB9B3228050A137B42A26D3D637BF6A0
+p_14: ''
+p_15: 'Нет'
+p_16: 0xAB9B3228050A137B42A26D3D637BF6A0
+p_17: ''
+p_18: ''
+p_19: 0xB1F090E6BAD53EC511DFCCA5064038BB
+p_20: 0xA207509A4C77E85111EAA621E06CE8BF
+",Rows=0,RowsAffected=941
+04:13.182010-0,Context,2,process=rphost,p:processName=AstOffice,OSThread=8808,t:clientID=2325,t:applicationName=1CV8,t:computerName=ast12mansda2,t:connectID=2127,SessionID=3769,Usr=Гошенко Дмитрий,Context='
+ВнешнийОтчет.мчт_СводныеПродажиПоМесяцам.Форма.Форма.Форма : 76 : ДеревоЗапроса = ПостроительОтчета.Результат.Выгрузить(ОбходРезультатаЗапроса.ПоГруппировкам);'
+04:14.057008-1016003,DBMSSQL,4,process=rphost,p:processName=AstOffice,OSThread=12740,t:clientID=2655,t:applicationName=BackgroundJob,t:computerName=Ast1COffice,t:connectID=8097,SessionID=38327,Usr=ФоновоеВыгрузка,DBMS=DBMSSQL,DataBase=ASTSQLOFFICE2\AstOffice,Trans=0,dbpid=99,Sql='INSERT INTO #tt49 WITH(TABLOCK) (_Q_001_F_000_TYPE, _Q_001_F_000_RTRef, _Q_001_F_000_RRRef, _Q_001_F_001_TYPE, _Q_001_F_001_S, _Q_001_F_001_RTRef, _Q_001_F_001_RRRef) SELECT
+CASE WHEN (T1._Fld22736_TYPE = 0x08 AND T1._Fld22736_RTRef = 0x00000055) THEN CASE WHEN T2._IDRRef IS NOT NULL THEN 0x08 END ELSE T1._Fld22736_TYPE END,
+CASE WHEN (T1._Fld22736_TYPE = 0x08 AND T1._Fld22736_RTRef = 0x00000055) THEN CASE WHEN T2._IDRRef IS NOT NULL THEN 0x00000054 END ELSE T1._Fld22736_RTRef END,
+CASE WHEN (T1._Fld22736_TYPE = 0x08 AND T1._Fld22736_RTRef = 0x00000055) THEN T2._IDRRef ELSE T1._Fld22736_RRRef END,
+T1._Fld22735_TYPE,
+T1._Fld22735_S,
+T1._Fld22735_RTRef,
+T1._Fld22735_RRRef
+FROM dbo._InfoRg22734 T1 WITH(NOLOCK)
+LEFT OUTER JOIN dbo._Reference84 T2 WITH(NOLOCK)
+ON CASE WHEN (T1._Fld22736_TYPE = 0x08 AND T1._Fld22736_RTRef = 0x00000055) THEN CASE WHEN (T1._Fld22736_TYPE = CASE WHEN T2._Fld1301RRef IS NOT NULL THEN 0x08 END AND T1._Fld22736_RTRef = CASE WHEN T2._Fld1301RRef IS NOT NULL THEN 0x00000055 END AND T1._Fld22736_RRRef = T2._Fld1301RRef) THEN 0x01 WHEN NOT (T1._Fld22736_TYPE = CASE WHEN T2._Fld1301RRef IS NOT NULL THEN 0x08 END AND T1._Fld22736_RTRef = CASE WHEN T2._Fld1301RRef IS NOT NULL THEN 0x00000055 END AND T1._Fld22736_RRRef = T2._Fld1301RRef) THEN 0x00 END ELSE 0x00 END = 0x01',Rows=0,RowsAffected=276,Context='
+ОбщийМодуль.мчт_МодульРегламентныхЗаданий.Модуль : 28 : ВнешняяОбработка.ВыполнитьАвто();
+	ВнешняяОбработка.мчт_ВыгрузкаТоваровДляКаспийВеб.МодульОбъекта : 323 : ОграниченияНоменклатуры		 = СформироватьТаблицуИсключенийВыгрузки(СписокМагазинов,СписокМагазиновДоп);;
+		ВнешняяОбработка.мчт_ВыгрузкаТоваровДляКаспийВеб.МодульОбъекта : 296 : РезультатЗапроса = Запрос.Выполнить();'
+04:17.245000-1078997,DBMSSQL,4,process=rphost,p:processName=AstOffice,OSThread=12740,t:clientID=2655,t:applicationName=BackgroundJob,t:computerName=Ast1COffice,t:connectID=8097,SessionID=38327,Usr=ФоновоеВыгрузка,DBMS=DBMSSQL,DataBase=ASTSQLOFFICE2\AstOffice,Trans=0,dbpid=99,Sql='INSERT INTO #tt1 WITH(TABLOCK) (_Q_001_F_000RRef) SELECT
+T1._IDRRef
+FROM dbo._Reference84 T1 WITH(NOLOCK)
+LEFT OUTER JOIN dbo._Reference29 T2 WITH(NOLOCK)
+ON T1._Fld1294RRef = T2._IDRRef
+WHERE (CASE WHEN T1._Fld1301RRef IN
+(SELECT
+T3._INVALUELISTRRef AS INVALUELISTRRef
+FROM #tt91 T3 WITH(NOLOCK)
+WHERE T3._INVALUELISTRRef IS NOT NULL) THEN 0x01 WHEN NOT (T1._Fld1301RRef IN
+(SELECT
+T4._INVALUELISTRRef AS INVALUELISTRRef
+FROM #tt51 T4 WITH(NOLOCK)
+WHERE T4._INVALUELISTRRef IS NOT NULL)) THEN 0x00 END) = 0x01 AND 0x01 = 0x01 AND (T1._Marked = 0x00) AND (T1._Folder) = 0x01 AND T1._Fld12698 = 0x01 AND (T2._Fld801RRef <> ?) AND (T1._Fld12699 = 0x00) AND (T1._Fld1316RRef <> ?)
+p_0: 0x8BA9D396BBAE173C483C3CA9609E5702
+p_1: 0x85E390E6BAD53EC511DFE896F7D17964
+',Rows=0,RowsAffected=60370,Context='
+ОбщийМодуль.мчт_МодульРегламентныхЗаданий.Модуль : 28 : ВнешняяОбработка.ВыполнитьАвто();
+	ВнешняяОбработка.мчт_ВыгрузкаТоваровДляКаспийВеб.МодульОбъекта : 333 : ОтветЗапроса = ПолучитьТаблицуТоваров(СписокМагазинов, СписокМагазиновДоп, СписокРодителей, УчитыватьРодителей, СписокГрупп, СписокГруппТоваров, Учитыватьгруппы, СписокАстаны, ДатаАктуальности, МинимальнаяЦена, ОтборПоНаличию, ОтборКоличество, Ложь, ОграниченияНоменклатуры, ТаблПринудВыгрузки);
+		ВнешняяОбработка.мчт_ВыгрузкаТоваровДляКаспийВеб.МодульОбъекта : 1186 : ПакетыЗапроса=Запрос.ВыполнитьПакет();'
+04:20.057000-2796985,DBMSSQL,4,process=rphost,p:processName=AstOffice,OSThread=12740,t:clientID=2655,t:applicationName=BackgroundJob,t:computerName=Ast1COffice,t:connectID=8097,SessionID=38327,Usr=ФоновоеВыгрузка,DBMS=DBMSSQL,DataBase=ASTSQLOFFICE2\AstOffice,Trans=0,dbpid=99,Sql='INSERT INTO #tt98 WITH(TABLOCK) (_Q_001_F_000RRef, _Q_001_F_001RRef, _Q_001_F_002RRef, _Q_001_F_003) SELECT
+T2._Fld12537RRef,
+T1._Q_001_F_000RRef,
+T3._Q_001_F_000RRef,
+T1._Q_001_F_001
+FROM #tt97 T1 WITH(NOLOCK)
+LEFT OUTER JOIN dbo._InfoRg11204 T2 WITH(NOLOCK)
+ON (T1._Q_001_F_000RRef = T2._Fld11205RRef)
+LEFT OUTER JOIN #tt1 T3 WITH(NOLOCK)
+ON 1=1',Rows=0,RowsAffected=7123660,Context='
+ОбщийМодуль.мчт_МодульРегламентныхЗаданий.Модуль : 28 : ВнешняяОбработка.ВыполнитьАвто();
+	ВнешняяОбработка.мчт_ВыгрузкаТоваровДляКаспийВеб.МодульОбъекта : 333 : ОтветЗапроса = ПолучитьТаблицуТоваров(СписокМагазинов, СписокМагазиновДоп, СписокРодителей, УчитыватьРодителей, СписокГрупп, СписокГруппТоваров, Учитыватьгруппы, СписокАстаны, ДатаАктуальности, МинимальнаяЦена, ОтборПоНаличию, ОтборКоличество, Ложь, ОграниченияНоменклатуры, ТаблПринудВыгрузки);
+		ВнешняяОбработка.мчт_ВыгрузкаТоваровДляКаспийВеб.МодульОбъекта : 1186 : ПакетыЗапроса=Запрос.ВыполнитьПакет();'
+04:22.463000-2374993,DBMSSQL,4,process=rphost,p:processName=AstOffice,OSThread=12740,t:clientID=2655,t:applicationName=BackgroundJob,t:computerName=Ast1COffice,t:connectID=8097,SessionID=38327,Usr=ФоновоеВыгрузка,DBMS=DBMSSQL,DataBase=ASTSQLOFFICE2\AstOffice,Trans=0,dbpid=99,Sql='INSERT INTO #tt99 WITH(TABLOCK) (_Q_001_F_000RRef, _Q_001_F_001, _Q_001_F_002RRef, _Q_001_F_003RRef, _Q_001_F_004, _Q_001_F_005, _Q_001_F_006RRef) SELECT
+T1._Q_001_F_000RRef,
+T1._Q_001_F_003,
+T1._Q_001_F_001RRef,
+T1._Q_001_F_002RRef,
+ISNULL(CAST(T2.Fld12211Balance_ AS NUMERIC(27, 3)),?),
+CASE WHEN (ISNULL(CAST(T2.Fld12211Balance_ AS NUMERIC(27, 3)),?) = ?) THEN 0x00 ELSE 0x01 END,
+T8._Fld1494RRef
+FROM #tt98 T1 WITH(NOLOCK)
+INNER JOIN (SELECT
+T3._Fld12206RRef AS Fld12206RRef,
+T3._Fld12207RRef AS Fld12207RRef,
+CAST(SUM(T3._Fld12211) AS NUMERIC(27, 3)) AS Fld12211Balance_
+FROM dbo._AccumRgT12213 T3 WITH(NOLOCK)
+LEFT OUTER JOIN dbo._Reference84 T4 WITH(NOLOCK)
+ON T3._Fld12207RRef = T4._IDRRef
+WHERE T3._Period = ? AND (EXISTS(SELECT
+1
+FROM #tt98 T5 WITH(NOLOCK)
+WHERE (T3._Fld12207RRef = T5._Q_001_F_002RRef) AND (T3._Fld12206RRef = T5._Q_001_F_001RRef)) AND (CASE WHEN T4._Fld1301RRef IN
+(SELECT
+T6._INVALUELISTRRef AS INVALUELISTRRef
+FROM #tt91 T6 WITH(NOLOCK)
+WHERE T6._INVALUELISTRRef IS NOT NULL) THEN 0x01 WHEN NOT (T4._Fld1301RRef IN
+(SELECT
+T7._INVALUELISTRRef AS INVALUELISTRRef
+FROM #tt51 T7 WITH(NOLOCK)
+WHERE T7._INVALUELISTRRef IS NOT NULL)) THEN 0x00 END) = 0x01 AND 0x01 = 0x01) AND (T3._Fld12211 <> ?) AND (T3._Fld12211 <> ?)
+GROUP BY T3._Fld12206RRef,
+T3._Fld12207RRef
+HAVING (CAST(SUM(T3._Fld12211) AS NUMERIC(27, 3))) <> 0.0) T2
+ON (T1._Q_001_F_001RRef = T2.Fld12206RRef) AND (T1._Q_001_F_002RRef = T2.Fld12207RRef)
+LEFT OUTER JOIN dbo._Reference111 T8 WITH(NOLOCK)
+ON T1._Q_001_F_001RRef = T8._IDRRef
+p_0: 0N
+p_1: 0N
+p_2: 0N
+p_3: 59991101000000
+p_4: 0N
+p_5: 0N
+',Rows=0,RowsAffected=308151,Context='
+ОбщийМодуль.мчт_МодульРегламентныхЗаданий.Модуль : 28 : ВнешняяОбработка.ВыполнитьАвто();
+	ВнешняяОбработка.мчт_ВыгрузкаТоваровДляКаспийВеб.МодульОбъекта : 333 : ОтветЗапроса = ПолучитьТаблицуТоваров(СписокМагазинов, СписокМагазиновДоп, СписокРодителей, УчитыватьРодителей, СписокГрупп, СписокГруппТоваров, Учитыватьгруппы, СписокАстаны, ДатаАктуальности, МинимальнаяЦена, ОтборПоНаличию, ОтборКоличество, Ложь, ОграниченияНоменклатуры, ТаблПринудВыгрузки);
+		ВнешняяОбработка.мчт_ВыгрузкаТоваровДляКаспийВеб.МодульОбъекта : 1186 : ПакетыЗапроса=Запрос.ВыполнитьПакет();'
+04:28.776028-1719006,DBMSSQL,4,process=rphost,p:processName=AstOffice,OSThread=8756,t:clientID=2096,t:applicationName=WebServerExtension,t:computerName=Ast1COffice,t:connectID=1911,SessionID=38348,Usr=УзлыИБ,DBMS=DBMSSQL,DataBase=ASTSQLOFFICE2\AstOffice,Trans=0,dbpid=57,Sql='SELECT
+T1.Q_001_F_000RRef,
+T1.Q_001_F_001RRef,
+CAST(SUM(T1.Q_001_F_002_) AS NUMERIC(33, 3)),
+CAST(SUM(T1.Q_001_F_003_) AS NUMERIC(33, 3)),
+CAST(SUM(T1.Q_001_F_004_) AS NUMERIC(33, 3))
+FROM (SELECT
+T2.Fld12206RRef AS Q_001_F_000RRef,
+T2.Fld12207RRef AS Q_001_F_001RRef,
+T2.Fld12211Balance_ AS Q_001_F_002_,
+CAST(? AS NUMERIC(27, 3)) AS Q_001_F_003_,
+CAST(? AS NUMERIC(27, 3)) AS Q_001_F_004_
+FROM (SELECT
+T3._Fld12206RRef AS Fld12206RRef,
+T3._Fld12207RRef AS Fld12207RRef,
+CAST(SUM(T3._Fld12211) AS NUMERIC(27, 3)) AS Fld12211Balance_
+FROM dbo._AccumRgT12213 T3 WITH(NOLOCK)
+WHERE T3._Period = ? AND ((CASE WHEN (T3._Fld12207RRef IN (?)) THEN 0x01 ELSE 0x00 END) = 0x01 AND (CASE WHEN (T3._Fld12206RRef IN (?, ?, ?, ?)) THEN 0x01 ELSE 0x00 END) = 0x01 AND (T3._Fld12210RRef = ?)) AND (T3._Fld12211 <> ?) AND (T3._Fld12211 <> ?)
+GROUP BY T3._Fld12206RRef,
+T3._Fld12207RRef
+HAVING (CAST(SUM(T3._Fld12211) AS NUMERIC(27, 3))) <> 0.0) T2
+UNION ALL SELECT
+T4.Fld12119RRef AS Fld12119RRef,
+T4.Fld12121RRef AS Fld12121RRef,
+CAST(? AS NUMERIC(27, 3)),
+T4.Fld12124Balance_ AS Fld12124Balance_,
+CASE WHEN (T4.Fld12120_TYPE = 0x01 AND T4.Fld12120_RTRef = 0x00000000 AND T4.Fld12120_RRRef = 0x00000000000000000000000000000000) THEN T4.Fld12124Balance_ ELSE ? END
+FROM (SELECT
+T5._Fld12119RRef AS Fld12119RRef,
+T5._Fld12121RRef AS Fld12121RRef,
+T5._Fld12120_TYPE AS Fld12120_TYPE,
+T5._Fld12120_RTRef AS Fld12120_RTRef,
+T5._Fld12120_RRRef AS Fld12120_RRRef,
+CAST(SUM(T5._Fld12124) AS NUMERIC(27, 3)) AS Fld12124Balance_
+FROM dbo._AccumRgT12127 T5 WITH(NOLOCK)
+WHERE T5._Period = ? AND ((CASE WHEN (T5._Fld12121RRef IN (?)) THEN 0x01 ELSE 0x00 END) = 0x01 AND (CASE WHEN (T5._Fld12119RRef IN (?, ?, ?, ?)) THEN 0x01 ELSE 0x00 END) = 0x01) AND (T5._Fld12124 <> ?) AND (T5._Fld12124 <> ?)
+GROUP BY T5._Fld12119RRef,
+T5._Fld12121RRef,
+T5._Fld12120_TYPE,
+T5._Fld12120_RTRef,
+T5._Fld12120_RRRef
+HAVING (CAST(SUM(T5._Fld12124) AS NUMERIC(27, 3))) <> 0.0) T4) T1
+GROUP BY T1.Q_001_F_000RRef,
+T1.Q_001_F_001RRef
+p_0: 0N
+p_1: 0N
+p_2: 59991101000000
+p_3: 0xA23A005056B6DBD711EB759B424ADEBD
+p_4: 0x80C11866DAF0891511E7C6008A9A53AF
+p_5: 0xA23B005056B6DBD711EB96B39C749400
+p_6: 0xA23B005056B6DBD711EB96B39C749401
+p_7: 0xA23B005056B6DBD711EB96B39C749402
+p_8: 0xA79841EBE5E5B977449B6BCED05404A0
+p_9: 0N
+p_10: 0N
+p_11: 0N
+p_12: 0N
+p_13: 59991101000000
+p_14: 0xA23A005056B6DBD711EB759B424ADEBD
+p_15: 0x80C11866DAF0891511E7C6008A9A53AF
+p_16: 0xA23B005056B6DBD711EB96B39C749400
+p_17: 0xA23B005056B6DBD711EB96B39C749401
+p_18: 0xA23B005056B6DBD711EB96B39C749402
+p_19: 0N
+p_20: 0N
+',Rows=0,RowsAffected=0,Context='
+WebСервис.GetRests.Модуль : 24 : ТаблицаОстатков =  мчт_ВебСервисОстатки.ПолучитьОстаткиЛокальные(МассивСкладов, МассивНоменклатуры, Качество, ДокументРезерва);
+	ОбщийМодуль.мчт_ВебСервисОстатки.Модуль : 120 : Результат = Запрос.Выполнить().Выгрузить();'
+04:30.573000-7937993,DBMSSQL,4,process=rphost,p:processName=AstOffice,OSThread=12740,t:clientID=2655,t:applicationName=BackgroundJob,t:computerName=Ast1COffice,t:connectID=8097,SessionID=38327,Usr=ФоновоеВыгрузка,DBMS=DBMSSQL,DataBase=ASTSQLOFFICE2\AstOffice,Trans=0,dbpid=99,Sql="INSERT INTO #tt106 WITH(TABLOCK) (_Q_001_F_000RRef, _Q_001_F_001RRef, _Q_001_F_002RRef, _Q_001_F_003, _Q_001_F_004) SELECT
+CASE WHEN (T31._Code = N'120000302') OR (T31._Code = N'300000113') OR (T31._Code = N'300000114') OR (T31._Code = N'300000115') THEN 0x9FFE2C768A5D355311E47096FA0CD251 WHEN (T32._Code = N'120000002') THEN 0xA211005056B6DBD711E864B1818AF428 ELSE T15._Fld12537RRef END,
+T1.Fld12206RRef,
+T1.Fld12207RRef,
+CAST(SUM((T1.Fld12211Balance_ - CASE WHEN (ISNULL(CAST(T16.Fld12124Balance_ AS NUMERIC(33, 3)),0.0) < 0.0) THEN 0.0 ELSE ISNULL(CAST(T16.Fld12124Balance_ AS NUMERIC(33, 3)),0.0) END)) AS NUMERIC(38, 8)),
+T30._Q_001_F_001
+FROM (SELECT
+T2.Fld12206RRef AS Fld12206RRef,
+T2.Fld12207RRef AS Fld12207RRef,
+CAST(SUM(T2.Fld12211Balance_) AS NUMERIC(33, 3)) AS Fld12211Balance_
+FROM (SELECT
+T3._Fld12206RRef AS Fld12206RRef,
+T3._Fld12207RRef AS Fld12207RRef,
+CAST(SUM(T3._Fld12211) AS NUMERIC(27, 3)) AS Fld12211Balance_
+FROM dbo._AccumRgT12213 T3 WITH(NOLOCK)
+LEFT OUTER JOIN dbo._Reference84 T4 WITH(NOLOCK)
+ON T3._Fld12207RRef = T4._IDRRef
+WHERE T3._Period = ? AND (T3._Fld12207RRef IN
+(SELECT
+T5._Q_001_F_000RRef AS Q_001_F_000RRef
+FROM #tt1 T5 WITH(NOLOCK)) AND T3._Fld12206RRef IN
+(SELECT
+T6._Q_001_F_000RRef AS Q_001_F_000RRef
+FROM #tt96 T6 WITH(NOLOCK)) AND (CASE WHEN T4._Fld1301RRef IN
+(SELECT
+T7._INVALUELISTRRef AS INVALUELISTRRef
+FROM #tt91 T7 WITH(NOLOCK)
+WHERE T7._INVALUELISTRRef IS NOT NULL) THEN 0x01 WHEN NOT (T4._Fld1301RRef IN
+(SELECT
+T8._INVALUELISTRRef AS INVALUELISTRRef
+FROM #tt51 T8 WITH(NOLOCK)
+WHERE T8._INVALUELISTRRef IS NOT NULL)) THEN 0x00 END) = 0x01 AND 0x01 = 0x01) AND (T3._Fld12211 <> ?) AND (T3._Fld12211 <> ?)
+GROUP BY T3._Fld12206RRef,
+T3._Fld12207RRef
+HAVING (CAST(SUM(T3._Fld12211) AS NUMERIC(27, 3))) <> 0.0
+UNION ALL SELECT
+T9._Fld12206RRef AS Fld12206RRef,
+T9._Fld12207RRef AS Fld12207RRef,
+CAST(CAST(SUM(CASE WHEN T9._RecordKind = 0.0 THEN -T9._Fld12211 ELSE T9._Fld12211 END) AS NUMERIC(21, 3)) AS NUMERIC(27, 3)) AS Fld12211Balance_
+FROM dbo._AccumRg12205 T9 WITH(NOLOCK)
+LEFT OUTER JOIN dbo._Reference84 T10 WITH(NOLOCK)
+ON T9._Fld12207RRef = T10._IDRRef
+WHERE T9._Period >= ? AND T9._Period < ? AND T9._Active = 0x01 AND (T9._Fld12207RRef IN
+(SELECT
+T11._Q_001_F_000RRef AS Q_001_F_000RRef
+FROM #tt1 T11 WITH(NOLOCK)) AND T9._Fld12206RRef IN
+(SELECT
+T12._Q_001_F_000RRef AS Q_001_F_000RRef
+FROM #tt96 T12 WITH(NOLOCK)) AND (CASE WHEN T10._Fld1301RRef IN
+(SELECT
+T13._INVALUELISTRRef AS INVALUELISTRRef
+FROM #tt100 T13 WITH(NOLOCK)
+WHERE T13._INVALUELISTRRef IS NOT NULL) THEN 0x01 WHEN NOT (T10._Fld1301RRef IN
+(SELECT
+T14._INVALUELISTRRef AS INVALUELISTRRef
+FROM #tt101 T14 WITH(NOLOCK)
+WHERE T14._INVALUELISTRRef IS NOT NULL)) THEN 0x00 END) = 0x01 AND 0x01 = 0x01)
+GROUP BY T9._Fld12206RRef,
+T9._Fld12207RRef
+HAVING (CAST(CAST(SUM(CASE WHEN T9._RecordKind = 0.0 THEN -T9._Fld12211 ELSE T9._Fld12211 END) AS NUMERIC(21, 3)) AS NUMERIC(27, 3))) <> 0.0) T2
+GROUP BY T2.Fld12206RRef,
+T2.Fld12207RRef
+HAVING (CAST(SUM(T2.Fld12211Balance_) AS NUMERIC(33, 3))) <> 0.0) T1
+LEFT OUTER JOIN dbo._InfoRg11204 T15 WITH(NOLOCK)
+ON (T1.Fld12206RRef = T15._Fld11205RRef)
+LEFT OUTER JOIN (SELECT
+T17.Fld12119RRef AS Fld12119RRef,
+T17.Fld12121RRef AS Fld12121RRef,
+CAST(SUM(T17.Fld12124Balance_) AS NUMERIC(33, 3)) AS Fld12124Balance_
+FROM (SELECT
+T18._Fld12119RRef AS Fld12119RRef,
+T18._Fld12121RRef AS Fld12121RRef,
+CAST(SUM(T18._Fld12124) AS NUMERIC(27, 3)) AS Fld12124Balance_
+FROM dbo._AccumRgT12127 T18 WITH(NOLOCK)
+LEFT OUTER JOIN dbo._Reference84 T19 WITH(NOLOCK)
+ON T18._Fld12121RRef = T19._IDRRef
+WHERE T18._Period = ? AND (T18._Fld12121RRef IN
+(SELECT
+T20._Q_001_F_000RRef AS Q_001_F_000RRef
+FROM #tt1 T20 WITH(NOLOCK)) AND T18._Fld12119RRef IN
+(SELECT
+T21._Q_001_F_000RRef AS Q_001_F_000RRef
+FROM #tt96 T21 WITH(NOLOCK)) AND (CASE WHEN T19._Fld1301RRef IN
+(SELECT
+T22._INVALUELISTRRef AS INVALUELISTRRef
+FROM #tt102 T22 WITH(NOLOCK)
+WHERE T22._INVALUELISTRRef IS NOT NULL) THEN 0x01 WHEN NOT (T19._Fld1301RRef IN
+(SELECT
+T23._INVALUELISTRRef AS INVALUELISTRRef
+FROM #tt103 T23 WITH(NOLOCK)
+WHERE T23._INVALUELISTRRef IS NOT NULL)) THEN 0x00 END) = 0x01 AND 0x01 = 0x01) AND (T18._Fld12124 <> ?) AND (T18._Fld12124 <> ?)
+GROUP BY T18._Fld12119RRef,
+T18._Fld12121RRef
+HAVING (CAST(SUM(T18._Fld12124) AS NUMERIC(27, 3))) <> 0.0
+UNION ALL SELECT
+T24._Fld12119RRef AS Fld12119RRef,
+T24._Fld12121RRef AS Fld12121RRef,
+CAST(CAST(SUM(CASE WHEN T24._RecordKind = 0.0 THEN -T24._Fld12124 ELSE T24._Fld12124 END) AS NUMERIC(21, 3)) AS NUMERIC(27, 3)) AS Fld12124Balance_
+FROM dbo._AccumRg12118 T24 WITH(NOLOCK)
+LEFT OUTER JOIN dbo._Reference84 T25 WITH(NOLOCK)
+ON T24._Fld12121RRef = T25._IDRRef
+WHERE T24._Period >= ? AND T24._Period < ? AND T24._Active = 0x01 AND (T24._Fld12121RRef IN
+(SELECT
+T26._Q_001_F_000RRef AS Q_001_F_000RRef
+FROM #tt1 T26 WITH(NOLOCK)) AND T24._Fld12119RRef IN
+(SELECT
+T27._Q_001_F_000RRef AS Q_001_F_000RRef
+FROM #tt96 T27 WITH(NOLOCK)) AND (CASE WHEN T25._Fld1301RRef IN
+(SELECT
+T28._INVALUELISTRRef AS INVALUELISTRRef
+FROM #tt104 T28 WITH(NOLOCK)
+WHERE T28._INVALUELISTRRef IS NOT NULL) THEN 0x01 WHEN NOT (T25._Fld1301RRef IN
+(SELECT
+T29._INVALUELISTRRef AS INVALUELISTRRef
+FROM #tt105 T29 WITH(NOLOCK)
+WHERE T29._INVALUELISTRRef IS NOT NULL)) THEN 0x00 END) = 0x01 AND 0x01 = 0x01)
+GROUP BY T24._Fld12119RRef,
+T24._Fld12121RRef
+HAVING (CAST(CAST(SUM(CASE WHEN T24._RecordKind = 0.0 THEN -T24._Fld12124 ELSE T24._Fld12124 END) AS NUMERIC(21, 3)) AS NUMERIC(27, 3))) <> 0.0) T17
+GROUP BY T17.Fld12119RRef,
+T17.Fld12121RRef
+HAVING (CAST(SUM(T17.Fld12124Balance_) AS NUMERIC(33, 3))) <> 0.0) T16
+ON (T1.Fld12206RRef = T16.Fld12119RRef) AND (T1.Fld12207RRef = T16.Fld12121RRef)
+LEFT OUTER JOIN #tt96 T30 WITH(NOLOCK)
+ON (T1.Fld12206RRef = T30._Q_001_F_000RRef)
+LEFT OUTER JOIN dbo._Reference111 T31 WITH(NOLOCK)
+ON T1.Fld12206RRef = T31._IDRRef
+LEFT OUTER JOIN dbo._Reference89 T32 WITH(NOLOCK)
+ON T15._Fld12537RRef = T32._IDRRef
+WHERE ((T1.Fld12211Balance_ - ISNULL(CAST(T16.Fld12124Balance_ AS NUMERIC(33, 3)),?)) > ?)
+GROUP BY T1.Fld12207RRef,
+T1.Fld12206RRef,
+T30._Q_001_F_001,
+CASE WHEN (T31._Code = N'120000302') OR (T31._Code = N'300000113') OR (T31._Code = N'300000114') OR (T31._Code = N'300000115') THEN 0x9FFE2C768A5D355311E47096FA0CD251 WHEN (T32._Code = N'120000002') THEN 0xA211005056B6DBD711E864B1818AF428 ELSE T15._Fld12537RRef END
+p_0: 59991101000000
+p_1: 0N
+p_2: 0N
+p_3: 40230407140412
+p_4: 59991101000000
+p_5: 59991101000000
+p_6: 0N
+p_7: 0N
+p_8: 40230407140412
+p_9: 59991101000000
+p_10: 0N
+p_11: 0N
+",Rows=0,RowsAffected=44721,Context='
+ОбщийМодуль.мчт_МодульРегламентныхЗаданий.Модуль : 28 : ВнешняяОбработка.ВыполнитьАвто();
+	ВнешняяОбработка.мчт_ВыгрузкаТоваровДляКаспийВеб.МодульОбъекта : 333 : ОтветЗапроса = ПолучитьТаблицуТоваров(СписокМагазинов, СписокМагазиновДоп, СписокРодителей, УчитыватьРодителей, СписокГрупп, СписокГруппТоваров, Учитыватьгруппы, СписокАстаны, ДатаАктуальности, МинимальнаяЦена, ОтборПоНаличию, ОтборКоличество, Ложь, ОграниченияНоменклатуры, ТаблПринудВыгрузки);
+		ВнешняяОбработка.мчт_ВыгрузкаТоваровДляКаспийВеб.МодульОбъекта : 1186 : ПакетыЗапроса=Запрос.ВыполнитьПакет();'
+04:33.760002-2171967,DBMSSQL,4,process=rphost,p:processName=AstOffice,OSThread=12740,t:clientID=2655,t:applicationName=BackgroundJob,t:computerName=Ast1COffice,t:connectID=8097,SessionID=38327,Usr=ФоновоеВыгрузка,DBMS=DBMSSQL,DataBase=ASTSQLOFFICE2\AstOffice,Trans=0,dbpid=99,Sql='INSERT INTO #tt111 WITH(TABLOCK) (_Q_001_F_000RRef, _Q_001_F_001RRef, _Q_001_F_002RRef, _Q_001_F_003) SELECT
+T7._Q_001_F_000RRef,
+T7._Q_001_F_001RRef,
+T1.Fld11083RRef,
+T1.Fld11087_
+FROM (SELECT
+T6._Fld11084RRef AS Fld11084RRef,
+T6._Fld11083RRef AS Fld11083RRef,
+T6._Fld11087 AS Fld11087_
+FROM (SELECT
+T3._Fld11083RRef AS Fld11083RRef,
+T3._Fld11084RRef AS Fld11084RRef,
+T3._Fld11085RRef AS Fld11085RRef,
+MAX(T3._Period) AS MAXPERIOD_
+FROM dbo._InfoRg11082 T3 WITH(NOLOCK)
+WHERE T3._Period <= ? AND T3._Active = 0x01 AND (T3._Fld11084RRef IN
+(SELECT
+T4._Q_001_F_001RRef AS Q_001_F_000RRef
+FROM #tt110 T4 WITH(NOLOCK)) AND T3._Fld11083RRef IN
+(SELECT
+T5._Q_001_F_000RRef AS Q_001_F_000RRef
+FROM #tt107 T5 WITH(NOLOCK)))
+GROUP BY T3._Fld11083RRef,
+T3._Fld11084RRef,
+T3._Fld11085RRef) T2
+INNER JOIN dbo._InfoRg11082 T6 WITH(NOLOCK)
+ON T2.Fld11083RRef = T6._Fld11083RRef AND T2.Fld11084RRef = T6._Fld11084RRef AND T2.Fld11085RRef = T6._Fld11085RRef AND T2.MAXPERIOD_ = T6._Period) T1
+LEFT OUTER JOIN #tt110 T7 WITH(NOLOCK)
+ON (T1.Fld11084RRef = T7._Q_001_F_001RRef)
+p_0: 40230407140412
+',Rows=0,RowsAffected=233222,Context='
+ОбщийМодуль.мчт_МодульРегламентныхЗаданий.Модуль : 28 : ВнешняяОбработка.ВыполнитьАвто();
+	ВнешняяОбработка.мчт_ВыгрузкаТоваровДляКаспийВеб.МодульОбъекта : 333 : ОтветЗапроса = ПолучитьТаблицуТоваров(СписокМагазинов, СписокМагазиновДоп, СписокРодителей, УчитыватьРодителей, СписокГрупп, СписокГруппТоваров, Учитыватьгруппы, СписокАстаны, ДатаАктуальности, МинимальнаяЦена, ОтборПоНаличию, ОтборКоличество, Ложь, ОграниченияНоменклатуры, ТаблПринудВыгрузки);
+		ВнешняяОбработка.мчт_ВыгрузкаТоваровДляКаспийВеб.МодульОбъекта : 1186 : ПакетыЗапроса=Запрос.ВыполнитьПакет();'
+04:34.807000-1046981,DBMSSQL,4,process=rphost,p:processName=AstOffice,OSThread=12740,t:clientID=2655,t:applicationName=BackgroundJob,t:computerName=Ast1COffice,t:connectID=8097,SessionID=38327,Usr=ФоновоеВыгрузка,DBMS=DBMSSQL,DataBase=ASTSQLOFFICE2\AstOffice,Trans=0,dbpid=99,Sql='INSERT INTO #tt112 WITH(TABLOCK) (_Q_001_F_000RRef, _Q_001_F_001RRef, _Q_001_F_002, _Q_001_F_003RRef, _Q_001_F_004RRef, _Q_001_F_005, _Q_001_F_006, _Q_001_F_007) SELECT
+T1._Q_001_F_000RRef,
+T1._Q_001_F_006RRef,
+T1._Q_001_F_001,
+T1._Q_001_F_002RRef,
+T1._Q_001_F_003RRef,
+T1._Q_001_F_005,
+T1._Q_001_F_004,
+CASE WHEN (ISNULL(CAST(T2.Fld12124Balance_ AS NUMERIC(33, 3)),?) < ?) THEN ? ELSE ISNULL(CAST(T2.Fld12124Balance_ AS NUMERIC(33, 3)),?) END
+FROM #tt99 T1 WITH(NOLOCK)
+LEFT OUTER JOIN (SELECT
+T3.Fld12121RRef AS Fld12121RRef,
+T3.Fld12119RRef AS Fld12119RRef,
+CAST(SUM(T3.Fld12124Balance_) AS NUMERIC(33, 3)) AS Fld12124Balance_
+FROM (SELECT
+T4._Fld12121RRef AS Fld12121RRef,
+T4._Fld12119RRef AS Fld12119RRef,
+CAST(SUM(T4._Fld12124) AS NUMERIC(27, 3)) AS Fld12124Balance_
+FROM dbo._AccumRgT12127 T4 WITH(NOLOCK)
+WHERE T4._Period = ? AND ((T4._Fld12119RRef IN (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)) AND T4._Fld12121RRef IN
+(SELECT
+T5._Q_001_F_003RRef AS Q_001_F_000RRef
+FROM #tt99 T5 WITH(NOLOCK))) AND (T4._Fld12124 <> ?) AND (T4._Fld12124 <> ?)
+GROUP BY T4._Fld12121RRef,
+T4._Fld12119RRef
+HAVING (CAST(SUM(T4._Fld12124) AS NUMERIC(27, 3))) <> 0.0
+UNION ALL SELECT
+T6._Fld12121RRef AS Fld12121RRef,
+T6._Fld12119RRef AS Fld12119RRef,
+CAST(CAST(SUM(CASE WHEN T6._RecordKind = 0.0 THEN -T6._Fld12124 ELSE T6._Fld12124 END) AS NUMERIC(21, 3)) AS NUMERIC(27, 3)) AS Fld12124Balance_
+FROM dbo._AccumRg12118 T6 WITH(NOLOCK)
+WHERE T6._Period >= ? AND T6._Period < ? AND T6._Active = 0x01 AND ((T6._Fld12119RRef IN (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)) AND T6._Fld12121RRef IN
+(SELECT
+T7._Q_001_F_003RRef AS Q_001_F_000RRef
+FROM #tt99 T7 WITH(NOLOCK)))
+GROUP BY T6._Fld12121RRef,
+T6._Fld12119RRef
+HAVING (CAST(CAST(SUM(CASE WHEN T6._RecordKind = 0.0 THEN -T6._Fld12124 ELSE T6._Fld12124 END) AS NUMERIC(21, 3)) AS NUMERIC(27, 3))) <> 0.0) T3
+GROUP BY T3.Fld12121RRef,
+T3.Fld12119RRef
+HAVING (CAST(SUM(T3.Fld12124Balance_) AS NUMERIC(33, 3))) <> 0.0) T2
+ON (T1._Q_001_F_003RRef = T2.Fld12121RRef) AND (T1._Q_001_F_002RRef = T2.Fld12119RRef)
+p_0: 0N
+p_1: 0N
+p_2: 0N
+p_3: 0N
+p_4: 59991101000000
+p_5: 0xA220005056B6DBD711E956052DDA508D
+p_6: 0x80D7704D7BB700A811E7767262E88D76
+p_7: 0x902068B599C9809D11E250A24C43C362
+p_8: 0x80F81866DA78E64211EB1CCF5AA2775B
+p_9: 0xA2222C768A51767B11EC2BDB800DF4FD
+p_10: 0xA2242C768A51767B11EC567C0D4888D3
+p_11: 0xA243005056B6DBD711EC801502449D06
+p_12: 0xA221005056B6DBD711E99316CF5589CE
+p_13: 0xA22B005056B6DBD711EA01DB27526186
+p_14: 0x902068B599C9809D11E250B43DF15213
+p_15: 0x80BE704D7BB5791D11E744F5B2DB63B0
+p_16: 0xAF6CE03F49AB9AB311E47881E16EA17C
+p_17: 0x902068B599C9809D11E250A24C43C368
+p_18: 0xA231005056B6DBD711EB07A7414C3E32
+p_19: 0xA23F005056B6DBD711EC2C18FB2EE16A
+p_20: 0xA20F000AF7B9CD5511EA4BBF660E669D
+p_21: 0x92CB74D02B904B5111E37838E6086AA0
+p_22: 0x149F001E672DD49C11E353FF19A53A62
+p_23: 0x80CB1866DAF0891511E7F9A845B1E606
+p_24: 0x8125AC162D8884E011EA4BC557918AFF
+p_25: 0xA24D005056B6DBD711ED5C17907DB2E2
+p_26: 0x149F001E672DD49C11E353FF19A53A7E
+p_27: 0x149F001E672DD49C11E353FF19A53A74
+p_28: 0xA1FA1866DAF0891511E8F2D45B4AE3FC
+p_29: 0x9C73B8CB29A4F9CF11ECB4929DE82B49
+p_30: 0xA22B005056B6DBD711EA04455C2EE928
+p_31: 0xA221005056B6DBD711E9B2ADB770ADD5
+p_32: 0x95562C768A5D355111E665D65A521CB5
+p_33: 0xA22D005056B6DBD711EA98C241273988
+p_34: 0xA224005056B6DBD711E9DDB228C9615C
+p_35: 0xAD2D2C768A5D355111E69A9AC7B89D0D
+p_36: 0xA20C005056B6DBD711E825A4CE71357F
+p_37: 0xA21F2C768A51767B11EB767E41C41F5B
+p_38: 0xA2242C768A51767B11EC58C4DFADDDB0
+p_39: 0xA25B509A4C77E86D11ECCBA9E52C2352
+p_40: 0x902068B599C9809D11E250A24C43C379
+p_41: 0x902068B599C9809D11E250B43DF15207
+p_42: 0xA22D005056B6DBD711EA98C241273986
+p_43: 0xAC3F2C768A5D355311E3151309A3763B
+p_44: 0x94052C768A5D355111E65244510075F5
+p_45: 0xA2071866DAF0891511E893B327A91E5F
+p_46: 0xAEFA78E3B517F44411E7DBC5768CFBC7
+p_47: 0x902068B599C9809D11E250B43DF1521C
+p_48: 0xA254005056B6DBD711ED9E23FCC0E0D2
+p_49: 0xA2181866DAF0891511E8E414271DA3D8
+p_50: 0x902068B599C9809D11E250B43DF15221
+p_51: 0xA201000AF7A5763711E933383ECC4511
+p_52: 0xA227000AF7B9FAAF11EB1D8A7A30BD88
+p_53: 0xA237000AF7B9FAAF11ECAF3C72F0BE5C
+p_54: 0xA200000AF7A5763711E9239ECA9FCCC1
+p_55: 0xB26A2C768A5D355211E26451B2000E47
+p_56: 0x8121AC162D6E1B3711EB224FCD4670D0
+p_57: 0xA243005056B6DBD711EC80006E72EE09
+p_58: 0xA224005056B6DBD711E9CD2F99D581A2
+p_59: 0x80CCAC162D6E1B3711E8235815650286
+p_60: 0xA20F000AF7B9CD5511EA4BBF660E66A0
+p_61: 0xA2252C768A51767B11ECAE8CF5C633CD
+p_62: 0xA22D005056B6DBD711EA4D78416F3A04
+p_63: 0xA93A2C768A5D355111E63919505E10A7
+p_64: 0x822D68B599C9809D11E2726F03441F19
+p_65: 0xA220005056B6DBD711E961C79AE45647
+p_66: 0xA2242C768A51767B11EC51D0C554FF1E
+p_67: 0xA2B22C768A5D355311E313BDE7A5A7E2
+p_68: 0x80C81866DAF0891511E7CDCE89468756
+p_69: 0x902068B599C9809D11E250A24C43C340
+p_70: 0x902068B599C9809D11E250A24C43C341
+p_71: 0xA21A005056B67D6211E9F95977ED6EEA
+p_72: 0xA213005056B6DBD711E8782EABA02A32
+p_73: 0xAF8E68B599C9809D11E27005D00A0B6B
+p_74: 0x902068B599C9809D11E250A24C43C342
+p_75: 0xA230005056B6DBD711EAF97737586330
+p_76: 0xA230005056B6DBD711EAF97737586330
+p_77: 0xA21F2C768A51767B11EB8185D8B8B9B6
+p_78: 0xA23F005056B6DBD711EC15248BA9C66B
+p_79: 0xA243005056B6DBD711EC7F4A5A3C6309
+p_80: 0xBBB74CD98F452EB911ECAF3F74B055E6
+p_81: 0xA20A005056B60E3D11ED4398A4E2E30F
+p_82: 0x902068B599C9809D11E250B43DF15225
+p_83: 0x8D582C768A5D355111E69C042B771429
+p_84: 0xA23F005056B6DBD711EC2C18FB2EE16E
+p_85: 0xA2242C768A51767B11EC412425BE5C63
+p_86: 0xA2242C768A51767B11EC4142FD88C849
+p_87: 0xA243005056B6DBD711EC80006E72EE03
+p_88: 0xA24D005056B6DBD711ED5C15695F2719
+p_89: 0xA2202C768A51767A11EBACB0C1D74B76
+p_90: 0xA2222C768A51767B11EBF8FEB6A0448D
+p_91: 0xA2202C768A51767A11EBAC9C56DEEC62
+p_92: 0xA2242C768A51767B11EC42DC44EA03F3
+p_93: 0xBBB66C2B59A2E5A611ECB0D7909E5967
+p_94: 0xA243005056B6DBD711EC801502449D02
+p_95: 0xA2222C768A51767B11EBF99A64DEABA6
+p_96: 0xA2212C768A51767B11EBD4061B7D907C
+p_97: 0xA21D000AF7B9CD5511EBF03344B2F4DE
+p_98: 0xA238005056B6DBD711EB32CCD50BA9FD
+p_99: 0xA243005056B6DBD711EC80006E72EDF8
+p_100: 0xA230005056B6DBD711EADD3F78851364
+p_101: 0xA23A005056B6DBD711EB701BA0BAC9AA
+p_102: 0xA2222C768A51767B11EC0FCB42C35AD8
+p_103: 0x8A85B8CB29ABF66211EC1B9561A553A4
+p_104: 0xA243005056B6DBD711EC80006E72EDFF
+p_105: 0xA243005056B6DBD711EC80006E72EDFE
+p_106: 0x80C81866DAF0891511E7CDCE89468756
+p_107: 0xA2B22C768A5D355311E313BDE7A5A7E2
+p_108: 0x902068B599C9809D11E250A24C43C340
+p_109: 0xA243005056B6DBD711EC7F4A5A3C6309
+p_110: 0x902068B599C9809D11E250A24C43C341
+p_111: 0xA21A005056B67D6211E9F95977ED6EEA
+p_112: 0xA213005056B6DBD711E8782EABA02A32
+p_113: 0xAF8E68B599C9809D11E27005D00A0B6B
+p_114: 0x902068B599C9809D11E250A24C43C342
+p_115: 0xA21F2C768A51767B11EB8185D8B8B9B6
+p_116: 0xA23F005056B6DBD711EC15248BA9C66B
+p_117: 0xBBB74CD98F452EB911ECAF3F74B055E6
+p_118: 0xA2142C768A51767B11EB2E2DF8E5E2F5
+p_119: 0xA2212C768A51767B11EBDA5DDDDB2B61
+p_120: 0xA2222C768A51767B11EC0FBA3264E27D
+p_121: 0xA240005056B6DBD711EC4C30E5DB1B8F
+p_122: 0xA21F2C768A51767B11EB768E8A2E33B0
+p_123: 0N
+p_124: 0N
+p_125: 40230407140412
+p_126: 59991101000000
+p_127: 0xA220005056B6DBD711E956052DDA508D
+p_128: 0x80D7704D7BB700A811E7767262E88D76
+p_129: 0x902068B599C9809D11E250A24C43C362
+p_130: 0x80F81866DA78E64211EB1CCF5AA2775B
+p_131: 0xA2222C768A51767B11EC2BDB800DF4FD
+p_132: 0xA2242C768A51767B11EC567C0D4888D3
+p_133: 0xA243005056B6DBD711EC801502449D06
+p_134: 0xA221005056B6DBD711E99316CF5589CE
+p_135: 0xA22B005056B6DBD711EA01DB27526186
+p_136: 0x902068B599C9809D11E250B43DF15213
+p_137: 0x80BE704D7BB5791D11E744F5B2DB63B0
+p_138: 0xAF6CE03F49AB9AB311E47881E16EA17C
+p_139: 0x902068B599C9809D11E250A24C43C368
+p_140: 0xA231005056B6DBD711EB07A7414C3E32
+p_141: 0xA23F005056B6DBD711EC2C18FB2EE16A
+p_142: 0xA20F000AF7B9CD5511EA4BBF660E669D
+p_143: 0x92CB74D02B904B5111E37838E6086AA0
+p_144: 0x149F001E672DD49C11E353FF19A53A62
+p_145: 0x80CB1866DAF0891511E7F9A845B1E606
+p_146: 0x8125AC162D8884E011EA4BC557918AFF
+p_147: 0xA24D005056B6DBD711ED5C17907DB2E2
+p_148: 0x149F001E672DD49C11E353FF19A53A7E
+p_149: 0x149F001E672DD49C11E353FF19A53A74
+p_150: 0xA1FA1866DAF0891511E8F2D45B4AE3FC
+p_151: 0x9C73B8CB29A4F9CF11ECB4929DE82B49
+p_152: 0xA22B005056B6DBD711EA04455C2EE928
+p_153: 0xA221005056B6DBD711E9B2ADB770ADD5
+p_154: 0x95562C768A5D355111E665D65A521CB5
+p_155: 0xA22D005056B6DBD711EA98C241273988
+p_156: 0xA224005056B6DBD711E9DDB228C9615C
+p_157: 0xAD2D2C768A5D355111E69A9AC7B89D0D
+p_158: 0xA20C005056B6DBD711E825A4CE71357F
+p_159: 0xA21F2C768A51767B11EB767E41C41F5B
+p_160: 0xA2242C768A51767B11EC58C4DFADDDB0
+p_161: 0xA25B509A4C77E86D11ECCBA9E52C2352
+p_162: 0x902068B599C9809D11E250A24C43C379
+p_163: 0x902068B599C9809D11E250B43DF15207
+p_164: 0xA22D005056B6DBD711EA98C241273986
+p_165: 0xAC3F2C768A5D355311E3151309A3763B
+p_166: 0x94052C768A5D355111E65244510075F5
+p_167: 0xA2071866DAF0891511E893B327A91E5F
+p_168: 0xAEFA78E3B517F44411E7DBC5768CFBC7
+p_169: 0x902068B599C9809D11E250B43DF1521C
+p_170: 0xA254005056B6DBD711ED9E23FCC0E0D2
+p_171: 0xA2181866DAF0891511E8E414271DA3D8
+p_172: 0x902068B599C9809D11E250B43DF15221
+p_173: 0xA201000AF7A5763711E933383ECC4511
+p_174: 0xA227000AF7B9FAAF11EB1D8A7A30BD88
+p_175: 0xA237000AF7B9FAAF11ECAF3C72F0BE5C
+p_176: 0xA200000AF7A5763711E9239ECA9FCCC1
+p_177: 0xB26A2C768A5D355211E26451B2000E47
+p_178: 0x8121AC162D6E1B3711EB224FCD4670D0
+p_179: 0xA243005056B6DBD711EC80006E72EE09
+p_180: 0xA224005056B6DBD711E9CD2F99D581A2
+p_181: 0x80CCAC162D6E1B3711E8235815650286
+p_182: 0xA20F000AF7B9CD5511EA4BBF660E66A0
+p_183: 0xA2252C768A51767B11ECAE8CF5C633CD
+p_184: 0xA22D005056B6DBD711EA4D78416F3A04
+p_185: 0xA93A2C768A5D355111E63919505E10A7
+p_186: 0x822D68B599C9809D11E2726F03441F19
+p_187: 0xA220005056B6DBD711E961C79AE45647
+p_188: 0xA2242C768A51767B11EC51D0C554FF1E
+p_189: 0xA2B22C768A5D355311E313BDE7A5A7E2
+p_190: 0x80C81866DAF0891511E7CDCE89468756
+p_191: 0x902068B599C9809D11E250A24C43C340
+p_192: 0x902068B599C9809D11E250A24C43C341
+p_193: 0xA21A005056B67D6211E9F95977ED6EEA
+p_194: 0xA213005056B6DBD711E8782EABA02A32
+p_195: 0xAF8E68B599C9809D11E27005D00A0B6B
+p_196: 0x902068B599C9809D11E250A24C43C342
+p_197: 0xA230005056B6DBD711EAF97737586330
+p_198: 0xA230005056B6DBD711EAF97737586330
+p_199: 0xA21F2C768A51767B11EB8185D8B8B9B6
+p_200: 0xA23F005056B6DBD711EC15248BA9C66B
+p_201: 0xA243005056B6DBD711EC7F4A5A3C6309
+p_202: 0xBBB74CD98F452EB911ECAF3F74B055E6
+p_203: 0xA20A005056B60E3D11ED4398A4E2E30F
+p_204: 0x902068B599C9809D11E250B43DF15225
+p_205: 0x8D582C768A5D355111E69C042B771429
+p_206: 0xA23F005056B6DBD711EC2C18FB2EE16E
+p_207: 0xA2242C768A51767B11EC412425BE5C63
+p_208: 0xA2242C768A51767B11EC4142FD88C849
+p_209: 0xA243005056B6DBD711EC80006E72EE03
+p_210: 0xA24D005056B6DBD711ED5C15695F2719
+p_211: 0xA2202C768A51767A11EBACB0C1D74B76
+p_212: 0xA2222C768A51767B11EBF8FEB6A0448D
+p_213: 0xA2202C768A51767A11EBAC9C56DEEC62
+p_214: 0xA2242C768A51767B11EC42DC44EA03F3
+p_215: 0xBBB66C2B59A2E5A611ECB0D7909E5967
+p_216: 0xA243005056B6DBD711EC801502449D02
+p_217: 0xA2222C768A51767B11EBF99A64DEABA6
+p_218: 0xA2212C768A51767B11EBD4061B7D907C
+p_219: 0xA21D000AF7B9CD5511EBF03344B2F4DE
+p_220: 0xA238005056B6DBD711EB32CCD50BA9FD
+p_221: 0xA243005056B6DBD711EC80006E72EDF8
+p_222: 0xA230005056B6DBD711EADD3F78851364
+p_223: 0xA23A005056B6DBD711EB701BA0BAC9AA
+p_224: 0xA2222C768A51767B11EC0FCB42C35AD8
+p_225: 0x8A85B8CB29ABF66211EC1B9561A553A4
+p_226: 0xA243005056B6DBD711EC80006E72EDFF
+p_227: 0xA243005056B6DBD711EC80006E72EDFE
+p_228: 0x80C81866DAF0891511E7CDCE89468756
+p_229: 0xA2B22C768A5D355311E313BDE7A5A7E2
+p_230: 0x902068B599C9809D11E250A24C43C340
+p_231: 0xA243005056B6DBD711EC7F4A5A3C6309
+p_232: 0x902068B599C9809D11E250A24C43C341
+p_233: 0xA21A005056B67D6211E9F95977ED6EEA
+p_234: 0xA213005056B6DBD711E8782EABA02A32
+p_235: 0xAF8E68B599C9809D11E27005D00A0B6B
+p_236: 0x902068B599C9809D11E250A24C43C342
+p_237: 0xA21F2C768A51767B11EB8185D8B8B9B6
+p_238: 0xA23F005056B6DBD711EC15248BA9C66B
+p_239: 0xBBB74CD98F452EB911ECAF3F74B055E6
+p_240: 0xA2142C768A51767B11EB2E2DF8E5E2F5
+p_241: 0xA2212C768A51767B11EBDA5DDDDB2B61
+p_242: 0xA2222C768A51767B11EC0FBA3264E27D
+p_243: 0xA240005056B6DBD711EC4C30E5DB1B8F
+p_244: 0xA21F2C768A51767B11EB768E8A2E33B0
+',Rows=0,RowsAffected=308151,Context='
+ОбщийМодуль.мчт_МодульРегламентныхЗаданий.Модуль : 28 : ВнешняяОбработка.ВыполнитьАвто();
+	ВнешняяОбработка.мчт_ВыгрузкаТоваровДляКаспийВеб.МодульОбъекта : 333 : ОтветЗапроса = ПолучитьТаблицуТоваров(СписокМагазинов, СписокМагазиновДоп, СписокРодителей, УчитыватьРодителей, СписокГрупп, СписокГруппТоваров, Учитыватьгруппы, СписокАстаны, ДатаАктуальности, МинимальнаяЦена, ОтборПоНаличию, ОтборКоличество, Ложь, ОграниченияНоменклатуры, ТаблПринудВыгрузки);
+		ВнешняяОбработка.мчт_ВыгрузкаТоваровДляКаспийВеб.МодульОбъекта : 1186 : ПакетыЗапроса=Запрос.ВыполнитьПакет();'
+04:35.510000-1375000,DBMSSQL,4,process=rphost,p:processName=AstOffice,OSThread=8756,t:clientID=2641,t:applicationName=1CV8,t:computerName=ast12rozn6,t:connectID=7790,SessionID=35816,Usr=Жумажанов Бакытжан,DBMS=DBMSSQL,DataBase=ASTSQLOFFICE2\AstOffice,Trans=0,dbpid=104,Sql='SELECT
+T1.Fld17778RRef,
+T1.Fld17780RRef,
+T1.Fld17781_TYPE,
+T1.Fld17781_RTRef,
+T1.Fld17781_RRRef,
+T1.Fld17784RRef,
+CASE WHEN (T1.Fld17784RRef = ?) OR (T1.Fld17784RRef = ?) THEN ? ELSE CASE WHEN (T1.Fld17784RRef = ?) THEN ? ELSE -? END END,
+CASE WHEN (T1.Fld17781_TYPE = 0x08 AND T1.Fld17781_RTRef = 0x000000B3) THEN T5._Fld13600RRef ELSE T6._Fld8919RRef END,
+T1.Fld17778RRef,
+T7._Description,
+T7._Description,
+T1.Fld17780RRef,
+T8._Description,
+CASE WHEN (T1.Fld17781_TYPE = 0x08 AND T1.Fld17781_RTRef = 0x000000B3) THEN T5._Fld13600RRef ELSE T6._Fld8919RRef END,
+T9._Description,
+T1.Fld17781_TYPE,
+T1.Fld17781_RTRef,
+T1.Fld17781_RRRef
+FROM (SELECT
+T4._Period AS Period_,
+T4._Fld17781_TYPE AS Fld17781_TYPE,
+T4._Fld17781_RTRef AS Fld17781_RTRef,
+T4._Fld17781_RRRef AS Fld17781_RRRef,
+T4._Fld17778RRef AS Fld17778RRef,
+T4._Fld17779 AS Fld17779_,
+T4._Fld17780RRef AS Fld17780RRef,
+T4._Fld17784RRef AS Fld17784RRef
+FROM (SELECT
+T3._Fld17778RRef AS Fld17778RRef,
+T3._Fld17779 AS Fld17779_,
+T3._Fld17780RRef AS Fld17780RRef,
+T3._Fld17781_TYPE AS Fld17781_TYPE,
+T3._Fld17781_RTRef AS Fld17781_RTRef,
+T3._Fld17781_RRRef AS Fld17781_RRRef,
+MAX(T3._Period) AS MAXPERIOD_
+FROM dbo._InfoRg17777 T3 WITH(NOLOCK)
+GROUP BY T3._Fld17778RRef,
+T3._Fld17779,
+T3._Fld17780RRef,
+T3._Fld17781_TYPE,
+T3._Fld17781_RTRef,
+T3._Fld17781_RRRef) T2
+INNER JOIN dbo._InfoRg17777 T4 WITH(NOLOCK)
+ON T2.Fld17778RRef = T4._Fld17778RRef AND T2.Fld17779_ = T4._Fld17779 AND T2.Fld17780RRef = T4._Fld17780RRef AND T2.Fld17781_TYPE = T4._Fld17781_TYPE AND T2.Fld17781_RTRef = T4._Fld17781_RTRef AND T2.Fld17781_RRRef = T4._Fld17781_RRRef AND T2.MAXPERIOD_ = T4._Period) T1
+LEFT OUTER JOIN dbo._Document179_VT3309 T5 WITH(NOLOCK)
+ON (T1.Fld17781_TYPE = 0x08 AND T1.Fld17781_RTRef = 0x000000B3 AND T1.Fld17781_RRRef = T5._Document179_IDRRef) AND (T1.Fld17778RRef = T5._Fld3317RRef) AND (T1.Fld17779_ = T5._Fld20780)
+LEFT OUTER JOIN dbo._Document306_VT8896 T6 WITH(NOLOCK)
+ON (T1.Fld17781_TYPE = 0x08 AND T1.Fld17781_RTRef = 0x00000132 AND T1.Fld17781_RRRef = T6._Document306_IDRRef) AND (T1.Fld17778RRef = T6._Fld8898RRef) AND (T1.Fld17779_ = T6._Fld8914)
+LEFT OUTER JOIN dbo._Reference84 T7 WITH(NOLOCK)
+ON T1.Fld17778RRef = T7._IDRRef
+LEFT OUTER JOIN dbo._Reference17762 T8 WITH(NOLOCK)
+ON T1.Fld17780RRef = T8._IDRRef
+LEFT OUTER JOIN dbo._Reference96 T9 WITH(NOLOCK)
+ON CASE WHEN (T1.Fld17781_TYPE = 0x08 AND T1.Fld17781_RTRef = 0x000000B3) THEN T5._Fld13600RRef ELSE T6._Fld8919RRef END = T9._IDRRef
+WHERE (T1.Period_ >= ?) AND (T1.Period_ <= ?)
+p_0: 0x8135F8983A5391F447C1118912915B9F
+p_1: 0x824E80DAA0053BC9421F5DF20DA31E90
+p_2: 1N
+p_3: 0x8101AD96108EBB194EAA97BE41E32796
+p_4: 0N
+p_5: 1N
+p_6: 40230201000000
+p_7: 40230331235959
+',Rows=47187,RowsAffected=-1
+04:36.276018-0,Context,2,process=rphost,p:processName=AstOffice,OSThread=8756,t:clientID=2641,t:applicationName=1CV8,t:computerName=ast12rozn6,t:connectID=7790,SessionID=35816,Usr=Жумажанов Бакытжан,Context='
+ВнешнийОтчет.мчт_ОтчетОСостоянииЭлектроннойНоменклатуры.Форма.ФормаОтчета.Форма : 23 : СформироватьОтчет();
+	ВнешнийОтчет.мчт_ОтчетОСостоянииЭлектроннойНоменклатуры.Форма.ФормаОтчета.Форма : 50 : ПроцессорВывода.Вывести(ПроцессорКомпоновкиДанных);'
+04:38.713001-1483993,DBMSSQL,4,process=rphost,p:processName=AstOffice,OSThread=12740,t:clientID=2655,t:applicationName=BackgroundJob,t:computerName=Ast1COffice,t:connectID=8097,SessionID=38327,Usr=ФоновоеВыгрузка,DBMS=DBMSSQL,DataBase=ASTSQLOFFICE2\AstOffice,Trans=0,dbpid=99,Sql='INSERT INTO #tt117 WITH(TABLOCK) (_Q_001_F_000RRef, _Q_001_F_001RRef, _Q_001_F_002, _Q_001_F_003RRef, _Q_001_F_004RRef, _Q_001_F_005, _Q_001_F_006, _Q_001_F_007, _Q_001_F_008, _Q_001_F_009, _Q_001_F_010RRef) SELECT
+T1._Q_001_F_000RRef,
+ISNULL(T1._Q_001_F_001RRef,T2._Q_001_F_001RRef),
+ISNULL(CAST(T1._Q_001_F_002 AS NVARCHAR(20)),T2._Q_001_F_002),
+ISNULL(T1._Q_001_F_003RRef,T2._Q_001_F_003RRef),
+T1._Q_001_F_004RRef,
+ISNULL(T1._Q_001_F_006,0x01),
+T1._Q_001_F_007,
+T1._Q_001_F_010,
+T1._Q_001_F_008,
+T1._Q_001_F_009,
+T1._Q_001_F_005RRef
+FROM #tt116 T1 WITH(NOLOCK)
+LEFT OUTER JOIN #tt115 T2 WITH(NOLOCK)
+ON (T1._Q_001_F_000RRef = T2._Q_001_F_000RRef) AND (T1._Q_001_F_003RRef IS NULL)',Rows=0,RowsAffected=432872,Context='
+ОбщийМодуль.мчт_МодульРегламентныхЗаданий.Модуль : 28 : ВнешняяОбработка.ВыполнитьАвто();
+	ВнешняяОбработка.мчт_ВыгрузкаТоваровДляКаспийВеб.МодульОбъекта : 333 : ОтветЗапроса = ПолучитьТаблицуТоваров(СписокМагазинов, СписокМагазиновДоп, СписокРодителей, УчитыватьРодителей, СписокГрупп, СписокГруппТоваров, Учитыватьгруппы, СписокАстаны, ДатаАктуальности, МинимальнаяЦена, ОтборПоНаличию, ОтборКоличество, Ложь, ОграниченияНоменклатуры, ТаблПринудВыгрузки);
+		ВнешняяОбработка.мчт_ВыгрузкаТоваровДляКаспийВеб.МодульОбъекта : 1186 : ПакетыЗапроса=Запрос.ВыполнитьПакет();'
+04:53.541000-13905986,DBMSSQL,4,process=rphost,p:processName=AstOffice,OSThread=12740,t:clientID=2655,t:applicationName=BackgroundJob,t:computerName=Ast1COffice,t:connectID=8097,SessionID=38327,Usr=ФоновоеВыгрузка,DBMS=DBMSSQL,DataBase=ASTSQLOFFICE2\AstOffice,Trans=0,dbpid=99,Sql="INSERT INTO #tt121 WITH(TABLOCK) (_Q_001_F_000RRef, _Q_001_F_001RRef, _Q_001_F_002, _Q_001_F_003RRef, _Q_001_F_004RRef, _Q_001_F_005, _Q_001_F_006, _Q_001_F_007, _Q_001_F_008, _Q_001_F_009, _Q_001_F_010RRef, _Q_001_F_011) SELECT
+T1._Q_001_F_000RRef,
+T1._Q_001_F_001RRef,
+T1._Q_001_F_002,
+T1._Q_001_F_003RRef,
+T1._Q_001_F_004RRef,
+T1._Q_001_F_005,
+T1._Q_001_F_006,
+(T3._Q_001_F_001),
+T1._Q_001_F_007,
+T1._Q_001_F_008,
+T1._Q_001_F_009RRef,
+T4._Q_001_F_002
+FROM #tt120 T1 WITH(NOLOCK)
+LEFT OUTER JOIN dbo._Reference84 T2 WITH(NOLOCK)
+ON T1._Q_001_F_004RRef = T2._IDRRef
+LEFT OUTER JOIN #tt119 T3 WITH(NOLOCK)
+ON (CASE WHEN T2._Fld1301RRef = T3._Q_001_F_000RRef THEN 0x01 WHEN NOT (T2._Fld1301RRef = T3._Q_001_F_000RRef) THEN 0x00 END) = 0x01
+LEFT OUTER JOIN #tt95 T4 WITH(NOLOCK)
+ON (0x08 = T4._Q_001_F_000_TYPE AND CASE WHEN T1._Q_001_F_003RRef IS NOT NULL THEN ? END = T4._Q_001_F_000_S AND 0x0000006F = T4._Q_001_F_000_RTRef AND T1._Q_001_F_003RRef = T4._Q_001_F_000_RRRef) AND (0x08 = T4._Q_001_F_001_TYPE AND 0x00000054 = T4._Q_001_F_001_RTRef AND T1._Q_001_F_004RRef = T4._Q_001_F_001_RRRef)
+p_0: ''
+",Rows=0,RowsAffected=432699,Context='
+ОбщийМодуль.мчт_МодульРегламентныхЗаданий.Модуль : 28 : ВнешняяОбработка.ВыполнитьАвто();
+	ВнешняяОбработка.мчт_ВыгрузкаТоваровДляКаспийВеб.МодульОбъекта : 333 : ОтветЗапроса = ПолучитьТаблицуТоваров(СписокМагазинов, СписокМагазиновДоп, СписокРодителей, УчитыватьРодителей, СписокГрупп, СписокГруппТоваров, Учитыватьгруппы, СписокАстаны, ДатаАктуальности, МинимальнаяЦена, ОтборПоНаличию, ОтборКоличество, Ложь, ОграниченияНоменклатуры, ТаблПринудВыгрузки);
+		ВнешняяОбработка.мчт_ВыгрузкаТоваровДляКаспийВеб.МодульОбъекта : 1186 : ПакетыЗапроса=Запрос.ВыполнитьПакет();'
+04:55.338026-1297017,DBMSSQL,4,process=rphost,p:processName=AstOffice,OSThread=12740,t:clientID=2655,t:applicationName=BackgroundJob,t:computerName=Ast1COffice,t:connectID=8097,SessionID=38327,Usr=ФоновоеВыгрузка,DBMS=DBMSSQL,DataBase=ASTSQLOFFICE2\AstOffice,Trans=0,dbpid=99,Sql='INSERT INTO #tt123 WITH(TABLOCK) (_Q_001_F_000RRef, _Q_001_F_001RRef, _Q_001_F_002, _Q_001_F_003RRef, _Q_001_F_004RRef, _Q_001_F_005, _Q_001_F_006, _Q_001_F_007, _Q_001_F_008, _Q_001_F_009, _Q_001_F_010RRef) SELECT
+T1._Q_001_F_000RRef,
+T1._Q_001_F_001RRef,
+T1._Q_001_F_002,
+T1._Q_001_F_003RRef,
+T1._Q_001_F_004RRef,
+T1._Q_001_F_005,
+CAST(SUM(T1._Q_001_F_006) AS NUMERIC(38, 8)),
+MIN(T1._Q_001_F_007),
+?,
+?,
+T1._Q_001_F_009RRef
+FROM #tt122 T1 WITH(NOLOCK)
+GROUP BY T1._Q_001_F_003RRef,
+T1._Q_001_F_005,
+T1._Q_001_F_000RRef,
+T1._Q_001_F_001RRef,
+T1._Q_001_F_002,
+T1._Q_001_F_004RRef,
+T1._Q_001_F_009RRef
+p_0: 0N
+p_1: 0N
+',Rows=0,RowsAffected=425121,Context='
+ОбщийМодуль.мчт_МодульРегламентныхЗаданий.Модуль : 28 : ВнешняяОбработка.ВыполнитьАвто();
+	ВнешняяОбработка.мчт_ВыгрузкаТоваровДляКаспийВеб.МодульОбъекта : 333 : ОтветЗапроса = ПолучитьТаблицуТоваров(СписокМагазинов, СписокМагазиновДоп, СписокРодителей, УчитыватьРодителей, СписокГрупп, СписокГруппТоваров, Учитыватьгруппы, СписокАстаны, ДатаАктуальности, МинимальнаяЦена, ОтборПоНаличию, ОтборКоличество, Ложь, ОграниченияНоменклатуры, ТаблПринудВыгрузки);
+		ВнешняяОбработка.мчт_ВыгрузкаТоваровДляКаспийВеб.МодульОбъекта : 1186 : ПакетыЗапроса=Запрос.ВыполнитьПакет();'
+04:58.073006-2734974,DBMSSQL,4,process=rphost,p:processName=AstOffice,OSThread=12740,t:clientID=2655,t:applicationName=BackgroundJob,t:computerName=Ast1COffice,t:connectID=8097,SessionID=38327,Usr=ФоновоеВыгрузка,DBMS=DBMSSQL,DataBase=ASTSQLOFFICE2\AstOffice,Trans=0,dbpid=99,Sql="SELECT
+T1._Q_001_F_000RRef,
+T1._Q_001_F_001RRef,
+T1._Q_001_F_002,
+T1._Q_001_F_003RRef,
+T1._Q_001_F_004RRef,
+T1._Q_001_F_005,
+T1._Q_001_F_006,
+T1._Q_001_F_007,
+T1._Q_001_F_008,
+T1._Q_001_F_009,
+T1._Q_001_F_010RRef
+FROM #tt123 T1 WITH(NOLOCK)
+WHERE (NOT ((EXISTS(SELECT
+1
+FROM #tt94 T2 WITH(NOLOCK)
+WHERE (0x08 = T2._Q_000_F_000_TYPE AND CASE WHEN T1._Q_001_F_003RRef IS NOT NULL THEN ? END = T2._Q_000_F_000_S AND 0x0000006F = T2._Q_000_F_000_RTRef AND T1._Q_001_F_003RRef = T2._Q_000_F_000_RRRef) AND (0x08 = T2._Q_000_F_001_TYPE AND 0x00000054 = T2._Q_000_F_001_RTRef AND T1._Q_001_F_004RRef = T2._Q_000_F_001_RRRef)))))
+GROUP BY T1._Q_001_F_010RRef,
+T1._Q_001_F_000RRef,
+T1._Q_001_F_002,
+T1._Q_001_F_003RRef,
+T1._Q_001_F_005,
+T1._Q_001_F_001RRef,
+T1._Q_001_F_004RRef,
+T1._Q_001_F_006,
+T1._Q_001_F_007,
+T1._Q_001_F_008,
+T1._Q_001_F_009
+p_0: ''
+",Rows=421342,RowsAffected=-1,Context='
+ОбщийМодуль.мчт_МодульРегламентныхЗаданий.Модуль : 28 : ВнешняяОбработка.ВыполнитьАвто();
+	ВнешняяОбработка.мчт_ВыгрузкаТоваровДляКаспийВеб.МодульОбъекта : 333 : ОтветЗапроса = ПолучитьТаблицуТоваров(СписокМагазинов, СписокМагазиновДоп, СписокРодителей, УчитыватьРодителей, СписокГрупп, СписокГруппТоваров, Учитыватьгруппы, СписокАстаны, ДатаАктуальности, МинимальнаяЦена, ОтборПоНаличию, ОтборКоличество, Ложь, ОграниченияНоменклатуры, ТаблПринудВыгрузки);
+		ВнешняяОбработка.мчт_ВыгрузкаТоваровДляКаспийВеб.МодульОбъекта : 1186 : ПакетыЗапроса=Запрос.ВыполнитьПакет();'
+05:02.712006-1061999,DBMSSQL,4,process=rphost,p:processName=AstOffice,OSThread=12740,t:clientID=2655,t:applicationName=BackgroundJob,t:computerName=Ast1COffice,t:connectID=8097,SessionID=38327,Usr=ФоновоеВыгрузка,DBMS=DBMSSQL,DataBase=ASTSQLOFFICE2\AstOffice,Trans=0,dbpid=104,Sql='INSERT INTO #tt125 WITH(TABLOCK) (_Q_001_F_000RRef, _Q_001_F_001, _Q_001_F_002RRef, _Q_001_F_003RRef, _Q_001_F_004, _Q_001_F_005, _Q_001_F_006RRef, _Q_001_F_007) SELECT
+T1._Q_001_F_000RRef,
+T1._Q_001_F_001,
+T1._Q_001_F_002RRef,
+T1._Q_001_F_003RRef,
+MIN(ISNULL(CAST(T2.Fld12211Balance_ AS NUMERIC(27, 3)),0.0)),
+CASE WHEN (ISNULL(CAST(T2.Fld12211Balance_ AS NUMERIC(27, 3)),0.0) = 0.0) THEN 0x00 ELSE 0x01 END,
+T14._Fld1494RRef,
+MAX(ISNULL(CAST(T8.Fld12124Balance_ AS NUMERIC(27, 3)),0.0))
+FROM #tt124 T1 WITH(NOLOCK)
+INNER JOIN (SELECT
+T3._Fld12207RRef AS Fld12207RRef,
+T3._Fld12206RRef AS Fld12206RRef,
+CAST(SUM(T3._Fld12211) AS NUMERIC(27, 3)) AS Fld12211Balance_
+FROM dbo._AccumRgT12213 T3 WITH(NOLOCK)
+LEFT OUTER JOIN dbo._Reference84 T4 WITH(NOLOCK)
+ON T3._Fld12207RRef = T4._IDRRef
+WHERE T3._Period = ? AND (EXISTS(SELECT
+1
+FROM #tt124 T5 WITH(NOLOCK)
+GROUP BY T5._Q_001_F_002RRef,
+T5._Q_001_F_004RRef
+HAVING (T3._Fld12207RRef = T5._Q_001_F_004RRef) AND (T3._Fld12206RRef = T5._Q_001_F_002RRef)) AND (CASE WHEN T4._Fld1301RRef IN
+(SELECT
+T6._INVALUELISTRRef AS INVALUELISTRRef
+FROM #tt31 T6 WITH(NOLOCK)
+WHERE T6._INVALUELISTRRef IS NOT NULL) THEN 0x01 WHEN NOT (T4._Fld1301RRef IN
+(SELECT
+T7._INVALUELISTRRef AS INVALUELISTRRef
+FROM #tt32 T7 WITH(NOLOCK)
+WHERE T7._INVALUELISTRRef IS NOT NULL)) THEN 0x00 END) = 0x01 AND 0x01 = 0x01) AND (T3._Fld12211 <> ?) AND (T3._Fld12211 <> ?)
+GROUP BY T3._Fld12207RRef,
+T3._Fld12206RRef
+HAVING (CAST(SUM(T3._Fld12211) AS NUMERIC(27, 3))) <> 0.0) T2
+LEFT OUTER JOIN (SELECT
+T9._Fld12121RRef AS Fld12121RRef,
+T9._Fld12119RRef AS Fld12119RRef,
+CAST(SUM(T9._Fld12124) AS NUMERIC(27, 3)) AS Fld12124Balance_
+FROM dbo._AccumRgT12127 T9 WITH(NOLOCK)
+LEFT OUTER JOIN dbo._Reference84 T10 WITH(NOLOCK)
+ON T9._Fld12121RRef = T10._IDRRef
+WHERE T9._Period = ? AND (EXISTS(SELECT
+1
+FROM #tt124 T11 WITH(NOLOCK)
+GROUP BY T11._Q_001_F_002RRef,
+T11._Q_001_F_004RRef
+HAVING (T9._Fld12121RRef = T11._Q_001_F_004RRef) AND (T9._Fld12119RRef = T11._Q_001_F_002RRef)) AND (CASE WHEN T10._Fld1301RRef IN
+(SELECT
+T12._INVALUELISTRRef AS INVALUELISTRRef
+FROM #tt33 T12 WITH(NOLOCK)
+WHERE T12._INVALUELISTRRef IS NOT NULL) THEN 0x01 WHEN NOT (T10._Fld1301RRef IN
+(SELECT
+T13._INVALUELISTRRef AS INVALUELISTRRef
+FROM #tt34 T13 WITH(NOLOCK)
+WHERE T13._INVALUELISTRRef IS NOT NULL)) THEN 0x00 END) = 0x01 AND 0x01 = 0x01) AND (T9._Fld12124 <> ?) AND (T9._Fld12124 <> ?)
+GROUP BY T9._Fld12121RRef,
+T9._Fld12119RRef
+HAVING (CAST(SUM(T9._Fld12124) AS NUMERIC(27, 3))) <> 0.0) T8
+ON (T2.Fld12207RRef = T8.Fld12121RRef) AND (T2.Fld12206RRef = T8.Fld12119RRef)
+ON (T1._Q_001_F_002RRef = T2.Fld12206RRef) AND (T1._Q_001_F_004RRef = T2.Fld12207RRef)
+LEFT OUTER JOIN dbo._Reference111 T14 WITH(NOLOCK)
+ON T1._Q_001_F_002RRef = T14._IDRRef
+GROUP BY T1._Q_001_F_000RRef,
+T1._Q_001_F_002RRef,
+CASE WHEN (ISNULL(CAST(T2.Fld12211Balance_ AS NUMERIC(27, 3)),0.0) = 0.0) THEN 0x00 ELSE 0x01 END,
+T1._Q_001_F_001,
+T1._Q_001_F_003RRef,
+T14._Fld1494RRef
+p_0: 59991101000000
+p_1: 0N
+p_2: 0N
+p_3: 59991101000000
+p_4: 0N
+p_5: 0N
+',Rows=0,RowsAffected=987,Context='
+ОбщийМодуль.мчт_МодульРегламентныхЗаданий.Модуль : 28 : ВнешняяОбработка.ВыполнитьАвто();
+	ВнешняяОбработка.мчт_ВыгрузкаТоваровДляКаспийВеб.МодульОбъекта : 337 : ОтветПоКомплектам = ПолучитьТаблицуТоваровКомплектов(СписокМагазинов, СписокМагазиновДоп, СписокРодителей, УчитыватьРодителей, СписокГрупп, СписокГруппТоваров, TRUE, СписокАстаны, ДатаАктуальности, МинимальнаяЦена, ОтборПоНаличию, ОтборКоличество, Ложь, ОграниченияНоменклатуры);
+		ВнешняяОбработка.мчт_ВыгрузкаТоваровДляКаспийВеб.МодульОбъекта : 2725 : ПакетыЗапроса=Запрос.ВыполнитьПакет();'
+05:04.790000-1874991,DBMSSQL,4,process=rphost,p:processName=AstOffice,OSThread=12740,t:clientID=2655,t:applicationName=BackgroundJob,t:computerName=Ast1COffice,t:connectID=8097,SessionID=38327,Usr=ФоновоеВыгрузка,DBMS=DBMSSQL,DataBase=ASTSQLOFFICE2\AstOffice,Trans=0,dbpid=104,Sql="INSERT INTO #tt126 WITH(TABLOCK) (_Q_001_F_000RRef, _Q_001_F_001RRef, _Q_001_F_002, _Q_001_F_003, _Q_001_F_004RRef) SELECT
+CASE WHEN (T32._Code = N'120000302') OR (T32._Code = N'300000113') OR (T32._Code = N'300000114') OR (T32._Code = N'300000115') THEN 0x9FFE2C768A5D355311E47096FA0CD251 WHEN (T33._Code = N'120000002') THEN 0xA211005056B6DBD711E864B1818AF428 ELSE T16._Fld12537RRef END,
+T2.Fld12206RRef,
+MAX((T2.Fld12211Balance_ - ISNULL(CAST(T17.Fld12124Balance_ AS NUMERIC(33, 3)),0.0))),
+T31._Q_001_F_001,
+T1._Fld9817RRef
+FROM dbo._InfoRg9816 T1 WITH(NOLOCK)
+INNER JOIN (SELECT
+T3.Fld12206RRef AS Fld12206RRef,
+T3.Fld12207RRef AS Fld12207RRef,
+CAST(SUM(T3.Fld12211Balance_) AS NUMERIC(33, 3)) AS Fld12211Balance_
+FROM (SELECT
+T4._Fld12206RRef AS Fld12206RRef,
+T4._Fld12207RRef AS Fld12207RRef,
+CAST(SUM(T4._Fld12211) AS NUMERIC(27, 3)) AS Fld12211Balance_
+FROM dbo._AccumRgT12213 T4 WITH(NOLOCK)
+LEFT OUTER JOIN dbo._Reference84 T5 WITH(NOLOCK)
+ON T4._Fld12207RRef = T5._IDRRef
+WHERE T4._Period = ? AND (T4._Fld12207RRef IN
+(SELECT
+T6._Q_001_F_004RRef AS Q_001_F_000RRef
+FROM #tt124 T6 WITH(NOLOCK)) AND T4._Fld12206RRef IN
+(SELECT
+T7._Q_001_F_000RRef AS Q_001_F_000RRef
+FROM #tt24 T7 WITH(NOLOCK)) AND (CASE WHEN T5._Fld1301RRef IN
+(SELECT
+T8._INVALUELISTRRef AS INVALUELISTRRef
+FROM #tt35 T8 WITH(NOLOCK)
+WHERE T8._INVALUELISTRRef IS NOT NULL) THEN 0x01 WHEN NOT (T5._Fld1301RRef IN
+(SELECT
+T9._INVALUELISTRRef AS INVALUELISTRRef
+FROM #tt26 T9 WITH(NOLOCK)
+WHERE T9._INVALUELISTRRef IS NOT NULL)) THEN 0x00 END) = 0x01 AND 0x01 = 0x01) AND (T4._Fld12211 <> ?) AND (T4._Fld12211 <> ?)
+GROUP BY T4._Fld12206RRef,
+T4._Fld12207RRef
+HAVING (CAST(SUM(T4._Fld12211) AS NUMERIC(27, 3))) <> 0.0
+UNION ALL SELECT
+T10._Fld12206RRef AS Fld12206RRef,
+T10._Fld12207RRef AS Fld12207RRef,
+CAST(CAST(SUM(CASE WHEN T10._RecordKind = 0.0 THEN -T10._Fld12211 ELSE T10._Fld12211 END) AS NUMERIC(21, 3)) AS NUMERIC(27, 3)) AS Fld12211Balance_
+FROM dbo._AccumRg12205 T10 WITH(NOLOCK)
+LEFT OUTER JOIN dbo._Reference84 T11 WITH(NOLOCK)
+ON T10._Fld12207RRef = T11._IDRRef
+WHERE T10._Period >= ? AND T10._Period < ? AND T10._Active = 0x01 AND (T10._Fld12207RRef IN
+(SELECT
+T12._Q_001_F_004RRef AS Q_001_F_000RRef
+FROM #tt124 T12 WITH(NOLOCK)) AND T10._Fld12206RRef IN
+(SELECT
+T13._Q_001_F_000RRef AS Q_001_F_000RRef
+FROM #tt24 T13 WITH(NOLOCK)) AND (CASE WHEN T11._Fld1301RRef IN
+(SELECT
+T14._INVALUELISTRRef AS INVALUELISTRRef
+FROM #tt27 T14 WITH(NOLOCK)
+WHERE T14._INVALUELISTRRef IS NOT NULL) THEN 0x01 WHEN NOT (T11._Fld1301RRef IN
+(SELECT
+T15._INVALUELISTRRef AS INVALUELISTRRef
+FROM #tt30 T15 WITH(NOLOCK)
+WHERE T15._INVALUELISTRRef IS NOT NULL)) THEN 0x00 END) = 0x01 AND 0x01 = 0x01)
+GROUP BY T10._Fld12206RRef,
+T10._Fld12207RRef
+HAVING (CAST(CAST(SUM(CASE WHEN T10._RecordKind = 0.0 THEN -T10._Fld12211 ELSE T10._Fld12211 END) AS NUMERIC(21, 3)) AS NUMERIC(27, 3))) <> 0.0) T3
+GROUP BY T3.Fld12206RRef,
+T3.Fld12207RRef
+HAVING (CAST(SUM(T3.Fld12211Balance_) AS NUMERIC(33, 3))) <> 0.0) T2
+LEFT OUTER JOIN dbo._InfoRg11204 T16 WITH(NOLOCK)
+ON (T2.Fld12206RRef = T16._Fld11205RRef)
+LEFT OUTER JOIN (SELECT
+T18.Fld12119RRef AS Fld12119RRef,
+T18.Fld12121RRef AS Fld12121RRef,
+CAST(SUM(T18.Fld12124Balance_) AS NUMERIC(33, 3)) AS Fld12124Balance_
+FROM (SELECT
+T19._Fld12119RRef AS Fld12119RRef,
+T19._Fld12121RRef AS Fld12121RRef,
+CAST(SUM(T19._Fld12124) AS NUMERIC(27, 3)) AS Fld12124Balance_
+FROM dbo._AccumRgT12127 T19 WITH(NOLOCK)
+LEFT OUTER JOIN dbo._Reference84 T20 WITH(NOLOCK)
+ON T19._Fld12121RRef = T20._IDRRef
+WHERE T19._Period = ? AND (T19._Fld12121RRef IN
+(SELECT
+T21._Q_001_F_004RRef AS Q_001_F_000RRef
+FROM #tt124 T21 WITH(NOLOCK)) AND T19._Fld12119RRef IN
+(SELECT
+T22._Q_001_F_000RRef AS Q_001_F_000RRef
+FROM #tt24 T22 WITH(NOLOCK)) AND (CASE WHEN T20._Fld1301RRef IN
+(SELECT
+T23._INVALUELISTRRef AS INVALUELISTRRef
+FROM #tt31 T23 WITH(NOLOCK)
+WHERE T23._INVALUELISTRRef IS NOT NULL) THEN 0x01 WHEN NOT (T20._Fld1301RRef IN
+(SELECT
+T24._INVALUELISTRRef AS INVALUELISTRRef
+FROM #tt32 T24 WITH(NOLOCK)
+WHERE T24._INVALUELISTRRef IS NOT NULL)) THEN 0x00 END) = 0x01 AND 0x01 = 0x01) AND (T19._Fld12124 <> ?) AND (T19._Fld12124 <> ?)
+GROUP BY T19._Fld12119RRef,
+T19._Fld12121RRef
+HAVING (CAST(SUM(T19._Fld12124) AS NUMERIC(27, 3))) <> 0.0
+UNION ALL SELECT
+T25._Fld12119RRef AS Fld12119RRef,
+T25._Fld12121RRef AS Fld12121RRef,
+CAST(CAST(SUM(CASE WHEN T25._RecordKind = 0.0 THEN -T25._Fld12124 ELSE T25._Fld12124 END) AS NUMERIC(21, 3)) AS NUMERIC(27, 3)) AS Fld12124Balance_
+FROM dbo._AccumRg12118 T25 WITH(NOLOCK)
+LEFT OUTER JOIN dbo._Reference84 T26 WITH(NOLOCK)
+ON T25._Fld12121RRef = T26._IDRRef
+WHERE T25._Period >= ? AND T25._Period < ? AND T25._Active = 0x01 AND (T25._Fld12121RRef IN
+(SELECT
+T27._Q_001_F_004RRef AS Q_001_F_000RRef
+FROM #tt124 T27 WITH(NOLOCK)) AND T25._Fld12119RRef IN
+(SELECT
+T28._Q_001_F_000RRef AS Q_001_F_000RRef
+FROM #tt24 T28 WITH(NOLOCK)) AND (CASE WHEN T26._Fld1301RRef IN
+(SELECT
+T29._INVALUELISTRRef AS INVALUELISTRRef
+FROM #tt33 T29 WITH(NOLOCK)
+WHERE T29._INVALUELISTRRef IS NOT NULL) THEN 0x01 WHEN NOT (T26._Fld1301RRef IN
+(SELECT
+T30._INVALUELISTRRef AS INVALUELISTRRef
+FROM #tt34 T30 WITH(NOLOCK)
+WHERE T30._INVALUELISTRRef IS NOT NULL)) THEN 0x00 END) = 0x01 AND 0x01 = 0x01)
+GROUP BY T25._Fld12119RRef,
+T25._Fld12121RRef
+HAVING (CAST(CAST(SUM(CASE WHEN T25._RecordKind = 0.0 THEN -T25._Fld12124 ELSE T25._Fld12124 END) AS NUMERIC(21, 3)) AS NUMERIC(27, 3))) <> 0.0) T18
+GROUP BY T18.Fld12119RRef,
+T18.Fld12121RRef
+HAVING (CAST(SUM(T18.Fld12124Balance_) AS NUMERIC(33, 3))) <> 0.0) T17
+ON (T2.Fld12206RRef = T17.Fld12119RRef) AND (T2.Fld12207RRef = T17.Fld12121RRef)
+LEFT OUTER JOIN #tt24 T31 WITH(NOLOCK)
+ON (T2.Fld12206RRef = T31._Q_001_F_000RRef)
+ON (T1._Fld9819RRef = T2.Fld12207RRef)
+LEFT OUTER JOIN dbo._Reference111 T32 WITH(NOLOCK)
+ON T2.Fld12206RRef = T32._IDRRef
+LEFT OUTER JOIN dbo._Reference89 T33 WITH(NOLOCK)
+ON T16._Fld12537RRef = T33._IDRRef
+WHERE ((T2.Fld12211Balance_ - ISNULL(CAST(T17.Fld12124Balance_ AS NUMERIC(33, 3)),?)) > ?)
+GROUP BY T2.Fld12206RRef,
+T31._Q_001_F_001,
+CASE WHEN (T32._Code = N'120000302') OR (T32._Code = N'300000113') OR (T32._Code = N'300000114') OR (T32._Code = N'300000115') THEN 0x9FFE2C768A5D355311E47096FA0CD251 WHEN (T33._Code = N'120000002') THEN 0xA211005056B6DBD711E864B1818AF428 ELSE T16._Fld12537RRef END,
+T1._Fld9817RRef
+p_0: 59991101000000
+p_1: 0N
+p_2: 0N
+p_3: 40230407140412
+p_4: 59991101000000
+p_5: 59991101000000
+p_6: 0N
+p_7: 0N
+p_8: 40230407140412
+p_9: 59991101000000
+p_10: 0N
+p_11: 0N
+",Rows=0,RowsAffected=446,Context='
+ОбщийМодуль.мчт_МодульРегламентныхЗаданий.Модуль : 28 : ВнешняяОбработка.ВыполнитьАвто();
+	ВнешняяОбработка.мчт_ВыгрузкаТоваровДляКаспийВеб.МодульОбъекта : 337 : ОтветПоКомплектам = ПолучитьТаблицуТоваровКомплектов(СписокМагазинов, СписокМагазиновДоп, СписокРодителей, УчитыватьРодителей, СписокГрупп, СписокГруппТоваров, TRUE, СписокАстаны, ДатаАктуальности, МинимальнаяЦена, ОтборПоНаличию, ОтборКоличество, Ложь, ОграниченияНоменклатуры);
+		ВнешняяОбработка.мчт_ВыгрузкаТоваровДляКаспийВеб.МодульОбъекта : 2725 : ПакетыЗапроса=Запрос.ВыполнитьПакет();'
+05:23.728000-3468953,DBMSSQL,4,process=rphost,p:processName=AstOffice,OSThread=12740,t:clientID=2655,t:applicationName=BackgroundJob,t:computerName=Ast1COffice,t:connectID=8097,SessionID=38327,Usr=ФоновоеВыгрузка,DBMS=DBMSSQL,DataBase=ASTSQLOFFICE2\AstOffice,Trans=0,dbpid=57,Sql="INSERT INTO #tt88 WITH(TABLOCK) (_Q_001_F_000RRef, _Q_001_F_001RRef, _Q_001_F_002RRef, _Q_001_F_003, _Q_001_F_004RRef, _Q_001_F_005, _Q_001_F_006, _Q_001_F_007, _Q_001_F_008, _Q_001_F_009_00, _Q_001_F_010_00, _Q_001_F_011RRef, _Q_001_F_012_TYPE, _Q_001_F_012_L, _Q_001_F_012_N, _Q_001_F_012_T, _Q_001_F_012_S, _Q_001_F_012_RTRef, _Q_001_F_012_RRRef, _Q_001_F_013RRef, _Q_001_F_014RRef, _Q_001_F_015RRef, _Q_001_F_016_00, _Q_001_F_017RRef, _Q_001_F_018_00, _Q_001_F_019) SELECT
+T1._Q_001_F_001RRef,
+T1._Q_001_F_000RRef,
+T1._Q_001_F_002RRef,
+T2._Period,
+T2._RecorderRRef,
+T2._LineNo,
+T2._Active,
+T2._Fld15701,
+T2._Fld15702,
+T2._Fld15703,
+T2._Fld15704,
+T2._Fld15705RRef,
+T2._Fld15706_TYPE,
+T2._Fld15706_L,
+T2._Fld15706_N,
+T2._Fld15706_T,
+T2._Fld15706_S,
+T2._Fld15706_RTRef,
+T2._Fld15706_RRRef,
+T2._Fld15707RRef,
+T2._Fld15708RRef,
+T2._Fld15709RRef,
+T2._Fld15710,
+T2._Fld15882RRef,
+T2._Fld15883,
+T1._Q_001_F_003
+FROM #tt87 T1 WITH(NOLOCK)
+LEFT OUTER JOIN dbo._InfoRg15700 T2 WITH(NOLOCK)
+ON (0x08 = T2._Fld15706_TYPE AND CASE WHEN T1._Q_001_F_001RRef IS NOT NULL THEN 0x00 END = T2._Fld15706_L AND CASE WHEN T1._Q_001_F_001RRef IS NOT NULL THEN ? END = T2._Fld15706_N AND CASE WHEN T1._Q_001_F_001RRef IS NOT NULL THEN ? END = T2._Fld15706_T AND CASE WHEN T1._Q_001_F_001RRef IS NOT NULL THEN ? END = T2._Fld15706_S AND 0x00000054 = T2._Fld15706_RTRef AND T1._Q_001_F_001RRef = T2._Fld15706_RRRef) AND (T1._Q_001_F_002RRef = T2._Fld15708RRef)
+WHERE (T2._Fld15701 <= ?) AND (T2._Fld15702 >= ?) AND (T2._Fld15709RRef <> ?)
+p_0: 0N
+p_1: 20010101000000
+p_2: ''
+p_3: 40230407140412
+p_4: 40230407140412
+p_5: 0xADE3391C85EF64044A09146DD7BB5288
+",Rows=0,RowsAffected=433127,Context='
+ОбщийМодуль.мчт_МодульРегламентныхЗаданий.Модуль : 28 : ВнешняяОбработка.ВыполнитьАвто();
+	ВнешняяОбработка.мчт_ВыгрузкаТоваровДляКаспийВеб.МодульОбъекта : 391 : ЦеныНаТовары = РезультатПроверкиАкций(ДатаАктуальности,ТТ_Товары,истина,истина);
+		ВнешняяОбработка.мчт_ВыгрузкаТоваровДляКаспийВеб.МодульОбъекта : 1438 : РезультатАкций = ЗапросВР.Выполнить().Выгрузить();'
+05:34.556000-2218956,DBMSSQL,6,process=rphost,p:processName=AstOffice,OSThread=8876,t:clientID=2245,t:applicationName=WebServerExtension,t:computerName=Ast1COffice,t:connectID=2051,SessionID=38466,Usr=УзлыИБ,DBMS=DBMSSQL,DataBase=ASTSQLOFFICE2\AstOffice,Trans=1,dbpid=79,Sql='UPDATE T1 SET _Fld12124 = T1._Fld12124 + ?
+FROM dbo._AccumRgT12127 T1 WITH(SERIALIZABLE)
+WHERE T1._Period = ? AND T1._Fld12119RRef = ? AND T1._Fld12120_TYPE = 0x08 AND T1._Fld12120_RTRef = 0x000000B3 AND T1._Fld12120_RRRef = ? AND T1._Fld12121RRef = ? AND T1._Fld12122RRef = 0x00000000000000000000000000000000 AND T1._Fld12123RRef = 0x00000000000000000000000000000000 AND T1._Splitter = ?
+p_0: 1N
+p_1: 59991101000000
+p_2: 0x902068B599C9809D11E250B43DF15213
+p_3: 0xBBBF1866DAF08E3911EDD4F5C01FDD86
+p_4: 0xA23C005056B6DBD711EBA28BCE0E0B95
+p_5: 8N
+',Rows=0,RowsAffected=0,Context='
+WebСервис.GetDocument.Модуль : 17 : Возврат LoadDocXML_v1(XMLIn);
+	WebСервис.GetDocument.Модуль : 121 : Объект.Записать();'
+05:34.556002-3577956,DBMSSQL,5,process=rphost,p:processName=AstOffice,OSThread=8756,t:clientID=2096,t:applicationName=WebServerExtension,t:computerName=Ast1COffice,t:connectID=1911,SessionID=38463,Usr=УзлыИБ,DBMS=DBMSSQL,DataBase=ASTSQLOFFICE2\AstOffice,Trans=1,dbpid=104,Sql='UPDATE T1 SET _Fld12124 = T1._Fld12124 + ?
+FROM dbo._AccumRgT12127 T1 WITH(SERIALIZABLE)
+WHERE T1._Period = ? AND T1._Fld12119RRef = ? AND T1._Fld12120_TYPE = 0x08 AND T1._Fld12120_RTRef = 0x000000B3 AND T1._Fld12120_RRRef = ? AND T1._Fld12121RRef = ? AND T1._Fld12122RRef = 0x00000000000000000000000000000000 AND T1._Fld12123RRef = 0x00000000000000000000000000000000 AND T1._Splitter = ?
+p_0: 1N
+p_1: 59991101000000
+p_2: 0xA22B005056B6DBD711EA04455C2EE928
+p_3: 0x96576C2B5994256A11EDD51AF37435A6
+p_4: 0x85E390E6BAD53EC511DFED63E72B1D49
+p_5: 2N
+',Rows=0,RowsAffected=0,Context='
+WebСервис.GetDocument.Модуль : 17 : Возврат LoadDocXML_v1(XMLIn);
+	WebСервис.GetDocument.Модуль : 121 : Объект.Записать();'
+05:34.556003-3515996,DBMSSQL,5,process=rphost,p:processName=AstOffice,OSThread=3472,t:clientID=2610,t:applicationName=WebServerExtension,t:computerName=Ast1COffice,t:connectID=6988,SessionID=38464,Usr=УзлыИБ,DBMS=DBMSSQL,DataBase=ASTSQLOFFICE2\AstOffice,Trans=1,dbpid=99,Sql='UPDATE T1 SET _Fld12124 = T1._Fld12124 + ?
+FROM dbo._AccumRgT12127 T1 WITH(SERIALIZABLE)
+WHERE T1._Period = ? AND T1._Fld12119RRef = ? AND T1._Fld12120_TYPE = 0x08 AND T1._Fld12120_RTRef = 0x000000B3 AND T1._Fld12120_RRRef = ? AND T1._Fld12121RRef = ? AND T1._Fld12122RRef = 0x00000000000000000000000000000000 AND T1._Fld12123RRef = 0x00000000000000000000000000000000 AND T1._Splitter = ?
+p_0: 1N
+p_1: 59991101000000
+p_2: 0xA242005056B6DBD711EC66F82E7F23E2
+p_3: 0x86DB801844E095A411EDD5125D17FEAA
+p_4: 0x80D1704D7BB700A811E76C35EFB9995E
+p_5: 4N
+',Rows=0,RowsAffected=0,Context='
+WebСервис.GetDocument.Модуль : 17 : Возврат LoadDocXML_v1(XMLIn);
+	WebСервис.GetDocument.Модуль : 121 : Объект.Записать();'
+05:38.822024-15094013,DBMSSQL,4,process=rphost,p:processName=AstOffice,OSThread=12740,t:clientID=2655,t:applicationName=BackgroundJob,t:computerName=Ast1COffice,t:connectID=8097,SessionID=38327,Usr=ФоновоеВыгрузка,DBMS=DBMSSQL,DataBase=ASTSQLOFFICE2\AstOffice,Trans=0,dbpid=57,Sql='INSERT INTO #tt89 WITH(TABLOCK) (_Q_001_F_000_TYPE, _Q_001_F_000_N, _Q_001_F_000_RRRef, _Q_001_F_001_TYPE, _Q_001_F_001_N, _Q_001_F_001_RRRef, _Q_001_F_002, _Q_001_F_003RRef, _Q_001_F_004RRef, _Q_001_F_005, _Q_001_F_006, _Q_001_F_007_TYPE, _Q_001_F_007_N, _Q_001_F_007_RRRef, _Q_001_F_008RRef, _Q_001_F_009RRef, _Q_001_F_010RRef, _Q_001_F_011) SELECT
+CASE WHEN T2._RecorderRRef IS NULL THEN 0x03 ELSE 0x08 END,
+CASE WHEN T2._RecorderRRef IS NULL THEN ? ELSE CASE WHEN T2._RecorderRRef IS NOT NULL THEN ? END END,
+CASE WHEN T2._RecorderRRef IS NULL THEN 0x00000000000000000000000000000000 ELSE T2._RecorderRRef END,
+T2._Fld15467_TYPE,
+T2._Fld15467_N,
+T2._Fld15467_RRRef,
+T2._Fld15468,
+T2._Fld15713RRef,
+T2._Fld15714RRef,
+T2._Fld15715,
+T2._Fld15469,
+T2._Fld15470_TYPE,
+T2._Fld15470_N,
+T2._Fld15470_RRRef,
+T1._Q_001_F_001RRef,
+T1._Q_001_F_000RRef,
+T1._Q_001_F_002RRef,
+T1._Q_001_F_019
+FROM #tt88 T1 WITH(NOLOCK)
+LEFT OUTER JOIN dbo._InfoRg15465 T2 WITH(NOLOCK)
+ON (T1._Q_001_F_010_00 = T2._Fld15712) AND (T1._Q_001_F_004RRef = T2._RecorderRRef) AND CASE WHEN (T2._Fld15713RRef = ?) THEN 0x01 ELSE CASE WHEN (CASE WHEN T1._Q_001_F_000RRef IS NOT NULL THEN 0x08 END = T2._Fld15467_TYPE AND CASE WHEN T1._Q_001_F_000RRef IS NOT NULL THEN ? END = T2._Fld15467_N AND T1._Q_001_F_000RRef = T2._Fld15467_RRRef) THEN 0x01 WHEN NOT (CASE WHEN T1._Q_001_F_000RRef IS NOT NULL THEN 0x08 END = T2._Fld15467_TYPE AND CASE WHEN T1._Q_001_F_000RRef IS NOT NULL THEN ? END = T2._Fld15467_N AND T1._Q_001_F_000RRef = T2._Fld15467_RRRef) THEN 0x00 END END = 0x01
+p_0: 0N
+p_1: 0N
+p_2: 0x9B66B3FA64F39B0F4D7A0D30AD4656FF
+p_3: 0N
+p_4: 0N
+',Rows=0,RowsAffected=515365,Context='
+ОбщийМодуль.мчт_МодульРегламентныхЗаданий.Модуль : 28 : ВнешняяОбработка.ВыполнитьАвто();
+	ВнешняяОбработка.мчт_ВыгрузкаТоваровДляКаспийВеб.МодульОбъекта : 391 : ЦеныНаТовары = РезультатПроверкиАкций(ДатаАктуальности,ТТ_Товары,истина,истина);
+		ВнешняяОбработка.мчт_ВыгрузкаТоваровДляКаспийВеб.МодульОбъекта : 1438 : РезультатАкций = ЗапросВР.Выполнить().Выгрузить();'
+05:40.087025-1264975,DBMSSQL,4,process=rphost,p:processName=AstOffice,OSThread=12740,t:clientID=2655,t:applicationName=BackgroundJob,t:computerName=Ast1COffice,t:connectID=8097,SessionID=38327,Usr=ФоновоеВыгрузка,DBMS=DBMSSQL,DataBase=ASTSQLOFFICE2\AstOffice,Trans=0,dbpid=57,Sql='INSERT INTO #tt90 WITH(TABLOCK) (_Q_001_F_000RRef, _Q_001_F_001RRef, _Q_001_F_002RRef, _Q_001_F_003_TYPE, _Q_001_F_003_N, _Q_001_F_003_RRRef, _Q_001_F_004RRef, _Q_001_F_005RRef, _Q_001_F_006_TYPE, _Q_001_F_006_N, _Q_001_F_006_RRRef, _Q_001_F_007, _Q_001_F_008, _Q_001_F_009, _Q_001_F_010_TYPE, _Q_001_F_010_N, _Q_001_F_010_RRRef, _Q_001_F_011) SELECT DISTINCT
+T1._Q_001_F_008RRef,
+T1._Q_001_F_009RRef,
+T1._Q_001_F_010RRef,
+T1._Q_001_F_000_TYPE,
+T1._Q_001_F_000_N,
+T1._Q_001_F_000_RRRef,
+T1._Q_001_F_003RRef,
+T1._Q_001_F_004RRef,
+T1._Q_001_F_001_TYPE,
+T1._Q_001_F_001_N,
+T1._Q_001_F_001_RRRef,
+T1._Q_001_F_002,
+MAX(T1._Q_001_F_005),
+T1._Q_001_F_006,
+T1._Q_001_F_007_TYPE,
+T1._Q_001_F_007_N,
+T1._Q_001_F_007_RRRef,
+T1._Q_001_F_011
+FROM #tt89 T1 WITH(NOLOCK)
+WHERE (((T1._Q_001_F_000_TYPE <> 0x03 OR T1._Q_001_F_000_N <> ?))) AND (T1._Q_001_F_003RRef <> ?) AND (T1._Q_001_F_003RRef <> ?)
+GROUP BY T1._Q_001_F_008RRef,
+T1._Q_001_F_009RRef,
+T1._Q_001_F_010RRef,
+T1._Q_001_F_000_TYPE,
+T1._Q_001_F_000_N,
+T1._Q_001_F_000_RRRef,
+T1._Q_001_F_003RRef,
+T1._Q_001_F_004RRef,
+T1._Q_001_F_001_TYPE,
+T1._Q_001_F_001_N,
+T1._Q_001_F_001_RRRef,
+T1._Q_001_F_002,
+T1._Q_001_F_006,
+T1._Q_001_F_007_TYPE,
+T1._Q_001_F_007_N,
+T1._Q_001_F_007_RRRef,
+T1._Q_001_F_011
+p_0: 0N
+p_1: 0x9B66B3FA64F39B0F4D7A0D30AD4656FF
+p_2: 0xBAA33D0457D4EDF841BF0162AAF6CC04
+',Rows=0,RowsAffected=108486,Context='
+ОбщийМодуль.мчт_МодульРегламентныхЗаданий.Модуль : 28 : ВнешняяОбработка.ВыполнитьАвто();
+	ВнешняяОбработка.мчт_ВыгрузкаТоваровДляКаспийВеб.МодульОбъекта : 391 : ЦеныНаТовары = РезультатПроверкиАкций(ДатаАктуальности,ТТ_Товары,истина,истина);
+		ВнешняяОбработка.мчт_ВыгрузкаТоваровДляКаспийВеб.МодульОбъекта : 1438 : РезультатАкций = ЗапросВР.Выполнить().Выгрузить();'
+56:30.211007-0,EXCP,2,process=rphost,p:processName=AstOffice,OSThread=13848,t:clientID=2245,t:applicationName=WebServerExtension,t:computerName=Ast1COffice,t:connectID=2051,SessionID=44547,Usr=CallCenter,Exception=8d366056-4d5a-4d88-a207-0ae535b7d28e,Descr='src\VResourceHttpServiceServer.cpp(152):
+8d366056-4d5a-4d88-a207-0ae535b7d28e: Поле объекта не обнаружено (ДатаДоставки)
+{ОбщийМодуль.мчт_CallCenterВызовСервера.Модуль(445)}:		СтруктураЗаказа.Вставить("DeliveryDate",      ?(ПереданНаДоставку, ДатуВстроку(ТЗ[0].ДатаДоставки), "")); //дату доставки отображать только если передан на доставку
+{HTTPСервис.GetOrder.Модуль(158)}:		ДанныеЗаказа = мчт_CallCenterВызовСервера.ПолучитьДанныеЗаказаИМПоНомеру(НомерЗаказа, Онлайн, ЭтоЧек, ДатаЗаказа);
+'

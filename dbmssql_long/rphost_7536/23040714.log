@@ -1,0 +1,268 @@
+﻿01:55.865000-1312939,DBMSSQL,4,process=rphost,p:processName=AstOffice,OSThread=13536,t:clientID=610,t:applicationName=1CV8,t:computerName=AST1CMARKET,t:connectID=4446,SessionID=13561,Usr=Муцкий Герман,DBMS=DBMSSQL,DataBase=ASTSQLOFFICE2\AstOffice,Trans=0,dbpid=63,Sql='INSERT INTO #tt2 WITH(TABLOCK) (_Q_000_F_000, _Q_000_F_001) SELECT
+T1._Fld25886,
+T1._Fld25888
+FROM dbo._InfoRg25885 T1 WITH(NOLOCK)
+WHERE (T1._Fld25887 = ?)
+p_0: 130028584N
+',Rows=0,RowsAffected=0
+01:55.865011-0,Context,2,process=rphost,p:processName=AstOffice,OSThread=13536,t:clientID=610,t:applicationName=1CV8,t:computerName=AST1CMARKET,t:connectID=4446,SessionID=13561,Usr=Муцкий Герман,Context='
+ВнешняяОбработка.ПолучитСписокДействий.Форма.Форма.Форма : 11 : ПолучитьТаблицуДействий(НачДня, КонДня);
+	ВнешняяОбработка.ПолучитСписокДействий.МодульОбъекта : 73 : ОстаткиПоПартиям     		= ПолучитьОстаткиПоПартиямДляСписания(ИдДействия);
+		ВнешняяОбработка.ПолучитСписокДействий.МодульОбъекта : 411 : ТаблицаПоПартиям = Запрос.Выполнить().Выгрузить();'
+01:57.599000-1249965,DBMSSQL,4,process=rphost,p:processName=AstOffice,OSThread=13536,t:clientID=610,t:applicationName=1CV8,t:computerName=AST1CMARKET,t:connectID=4446,SessionID=13561,Usr=Муцкий Герман,DBMS=DBMSSQL,DataBase=ASTSQLOFFICE2\AstOffice,Trans=0,dbpid=63,Sql='SELECT TOP 1
+T1._IDRRef
+FROM dbo._Document25869 T1 WITH(NOLOCK)
+WHERE (T1._Marked = 0x00) AND (T1._Fld25870 = ?)
+p_0: 130062882N
+',Rows=1,RowsAffected=-1
+01:57.615001-0,Context,2,process=rphost,p:processName=AstOffice,OSThread=13536,t:clientID=610,t:applicationName=1CV8,t:computerName=AST1CMARKET,t:connectID=4446,SessionID=13561,Usr=Муцкий Герман,Context='
+ВнешняяОбработка.ПолучитСписокДействий.Форма.Форма.Форма : 11 : ПолучитьТаблицуДействий(НачДня, КонДня);
+	ВнешняяОбработка.ПолучитСписокДействий.МодульОбъекта : 72 : ДокументДвижения 			= ПолучитьДокументДействияПоИд(ИдДействия);
+		ВнешняяОбработка.ПолучитСписокДействий.МодульОбъекта : 142 : РезультатЗапроса = Запрос.Выполнить();'
+02:12.006000-1515995,DBMSSQL,4,process=rphost,p:processName=AstOffice,OSThread=13536,t:clientID=610,t:applicationName=1CV8,t:computerName=AST1CMARKET,t:connectID=4446,SessionID=13561,Usr=Муцкий Герман,DBMS=DBMSSQL,DataBase=ASTSQLOFFICE2\AstOffice,Trans=0,dbpid=106,Sql='SELECT TOP 1
+T1._IDRRef
+FROM dbo._Document25869 T1 WITH(NOLOCK)
+WHERE (T1._Marked = 0x00) AND (T1._Fld25870 = ?)
+p_0: 130177640N
+',Rows=1,RowsAffected=-1
+02:12.021007-0,Context,2,process=rphost,p:processName=AstOffice,OSThread=13536,t:clientID=610,t:applicationName=1CV8,t:computerName=AST1CMARKET,t:connectID=4446,SessionID=13561,Usr=Муцкий Герман,Context='
+ВнешняяОбработка.ПолучитСписокДействий.Форма.Форма.Форма : 11 : ПолучитьТаблицуДействий(НачДня, КонДня);
+	ВнешняяОбработка.ПолучитСписокДействий.МодульОбъекта : 72 : ДокументДвижения 			= ПолучитьДокументДействияПоИд(ИдДействия);
+		ВнешняяОбработка.ПолучитСписокДействий.МодульОбъекта : 142 : РезультатЗапроса = Запрос.Выполнить();'
+02:13.959000-1702962,DBMSSQL,4,process=rphost,p:processName=AstOffice,OSThread=13536,t:clientID=610,t:applicationName=1CV8,t:computerName=AST1CMARKET,t:connectID=4446,SessionID=13561,Usr=Муцкий Герман,DBMS=DBMSSQL,DataBase=ASTSQLOFFICE2\AstOffice,Trans=0,dbpid=106,Sql='SELECT TOP 1
+T1._IDRRef
+FROM dbo._Document25869 T1 WITH(NOLOCK)
+WHERE (T1._Marked = 0x00) AND (T1._Fld25870 = ?)
+p_0: 129748932N
+',Rows=1,RowsAffected=-1
+02:13.959004-0,Context,2,process=rphost,p:processName=AstOffice,OSThread=13536,t:clientID=610,t:applicationName=1CV8,t:computerName=AST1CMARKET,t:connectID=4446,SessionID=13561,Usr=Муцкий Герман,Context='
+ВнешняяОбработка.ПолучитСписокДействий.Форма.Форма.Форма : 11 : ПолучитьТаблицуДействий(НачДня, КонДня);
+	ВнешняяОбработка.ПолучитСписокДействий.МодульОбъекта : 72 : ДокументДвижения 			= ПолучитьДокументДействияПоИд(ИдДействия);
+		ВнешняяОбработка.ПолучитСписокДействий.МодульОбъекта : 142 : РезультатЗапроса = Запрос.Выполнить();'
+02:25.459030-22562990,DBMSSQL,4,process=rphost,p:processName=AstOffice,OSThread=8728,t:clientID=638,t:applicationName=1CV8,t:computerName=Ast12SMMmanager1,t:connectID=4490,SessionID=13911,Usr=Кабаев Павел Александрович,DBMS=DBMSSQL,DataBase=ASTSQLOFFICE2\AstOffice,Trans=0,dbpid=75,Sql="INSERT INTO #tt50 WITH(TABLOCK) (_Q_000_F_000, _Q_000_F_001RRef, _Q_000_F_002_TYPE, _Q_000_F_002_RTRef, _Q_000_F_002_RRRef, _Q_000_F_003, _Q_000_F_004) SELECT
+T1.Q_001_F_000_,
+T1.Q_001_F_001RRef,
+T1.Q_001_F_002_TYPE,
+T1.Q_001_F_002_RTRef,
+T1.Q_001_F_002_RRRef,
+T1.Q_001_F_003_,
+T1.Q_001_F_004_
+FROM (SELECT
+T2.Period_ AS Q_001_F_000_,
+T2.Fld11891RRef AS Q_001_F_001RRef,
+T2.Fld11885_TYPE AS Q_001_F_002_TYPE,
+T2.Fld11885_RTRef AS Q_001_F_002_RTRef,
+T2.Fld11885_RRRef AS Q_001_F_002_RRRef,
+CAST(SUM(T2.Fld11895Turnover_) AS NUMERIC(33, 3)) AS Q_001_F_003_,
+CAST(? AS NUMERIC(38, 8)) AS Q_001_F_004_
+FROM (SELECT
+DATETIME2FROMPARTS(DATEPART(YEAR,T3._Period),DATEPART(MONTH,T3._Period),1,0,0,0,0,0) AS Period_,
+T3._Fld11891RRef AS Fld11891RRef,
+T3._Fld11885_TYPE AS Fld11885_TYPE,
+T3._Fld11885_RTRef AS Fld11885_RTRef,
+T3._Fld11885_RRRef AS Fld11885_RRRef,
+CAST(SUM(T3._Fld11895) AS NUMERIC(27, 3)) AS Fld11895Turnover_
+FROM dbo._AccumRgTn11905 T3 WITH(NOLOCK)
+WHERE T3._Period >= ? AND T3._Period < ? AND (T3._Fld11895 <> ?)
+GROUP BY DATETIME2FROMPARTS(DATEPART(YEAR,T3._Period),DATEPART(MONTH,T3._Period),1,0,0,0,0,0),
+T3._Fld11891RRef,
+T3._Fld11885_TYPE,
+T3._Fld11885_RTRef,
+T3._Fld11885_RRRef
+HAVING (CAST(SUM(T3._Fld11895) AS NUMERIC(27, 3))) <> 0.0) T2
+GROUP BY T2.Period_,
+T2.Fld11891RRef,
+T2.Fld11885_TYPE,
+T2.Fld11885_RTRef,
+T2.Fld11885_RRRef
+UNION ALL SELECT
+?,
+T8._Fld1494RRef AS Fld1494RRef,
+0x08 AS Fld12207_TYPE,
+0x00000054 AS Fld12207_RTRef,
+T4.Fld12207RRef AS Fld12207_RRRef,
+CAST(? AS NUMERIC(33, 3)),
+CAST(SUM(T4.Fld12211Balance_) AS NUMERIC(38, 8))
+FROM (SELECT
+T5.Fld12206RRef AS Fld12206RRef,
+T5.Fld12207RRef AS Fld12207RRef,
+CAST(SUM(T5.Fld12211Balance_) AS NUMERIC(33, 3)) AS Fld12211Balance_
+FROM (SELECT
+T6._Fld12206RRef AS Fld12206RRef,
+T6._Fld12207RRef AS Fld12207RRef,
+CAST(SUM(T6._Fld12211) AS NUMERIC(27, 3)) AS Fld12211Balance_
+FROM dbo._AccumRgT12213 T6 WITH(NOLOCK)
+WHERE T6._Period = ? AND (T6._Fld12211 <> ?) AND (T6._Fld12211 <> ?)
+GROUP BY T6._Fld12206RRef,
+T6._Fld12207RRef
+HAVING (CAST(SUM(T6._Fld12211) AS NUMERIC(27, 3))) <> 0.0
+UNION ALL SELECT
+T7._Fld12206RRef AS Fld12206RRef,
+T7._Fld12207RRef AS Fld12207RRef,
+CAST(CAST(SUM(CASE WHEN T7._RecordKind = 0.0 THEN -T7._Fld12211 ELSE T7._Fld12211 END) AS NUMERIC(21, 3)) AS NUMERIC(27, 3)) AS Fld12211Balance_
+FROM dbo._AccumRg12205 T7 WITH(NOLOCK)
+WHERE T7._Period > ? AND T7._Period < ? AND T7._Active = 0x01
+GROUP BY T7._Fld12206RRef,
+T7._Fld12207RRef
+HAVING (CAST(CAST(SUM(CASE WHEN T7._RecordKind = 0.0 THEN -T7._Fld12211 ELSE T7._Fld12211 END) AS NUMERIC(21, 3)) AS NUMERIC(27, 3))) <> 0.0) T5
+GROUP BY T5.Fld12206RRef,
+T5.Fld12207RRef
+HAVING (CAST(SUM(T5.Fld12211Balance_) AS NUMERIC(33, 3))) <> 0.0) T4
+LEFT OUTER JOIN dbo._Reference111 T8 WITH(NOLOCK)
+ON T4.Fld12206RRef = T8._IDRRef
+WHERE (? = ?) AND (T8._Fld20505RRef = ?) OR (? = ?) AND (T8._Fld20505RRef <> ?) OR (? = ?)
+GROUP BY T8._Fld1494RRef,
+T4.Fld12207RRef) T1
+LEFT OUTER JOIN dbo._Reference84 T9 WITH(NOLOCK)
+ON T1.Q_001_F_002_TYPE = 0x08 AND T1.Q_001_F_002_RTRef = 0x00000054 AND T1.Q_001_F_002_RRRef = T9._IDRRef
+LEFT OUTER JOIN dbo._Reference85 T10 WITH(NOLOCK)
+ON T9._Fld1301RRef = T10._IDRRef
+WHERE (CASE WHEN T1.Q_001_F_002_TYPE = 0x08 AND T1.Q_001_F_002_RTRef = 0x00000054 THEN T9._Fld1316RRef ELSE CAST(NULL AS BINARY(16)) END = ?) AND (CASE WHEN T1.Q_001_F_002_TYPE = 0x08 AND T1.Q_001_F_002_RTRef = 0x00000054 THEN T10._Fld13198RRef ELSE CAST(NULL AS BINARY(16)) END = ?)
+p_0: 0N
+p_1: 40220801000000
+p_2: 40230501000000
+p_3: 0N
+p_4: 20010101000000
+p_5: 0N
+p_6: 59991101000000
+p_7: 0N
+p_8: 0N
+p_9: 40230430235959
+p_10: 59991101000000
+p_11: ''
+p_12: 'Да'
+p_13: 0xAB9B3228050A137B42A26D3D637BF6A0
+p_14: ''
+p_15: 'Нет'
+p_16: 0xAB9B3228050A137B42A26D3D637BF6A0
+p_17: ''
+p_18: ''
+p_19: 0xB1F090E6BAD53EC511DFCCA5064038BB
+p_20: 0xA230005056B6DBD711EAD22E38754F41
+",Rows=0,RowsAffected=1118
+02:25.490020-0,Context,2,process=rphost,p:processName=AstOffice,OSThread=8728,t:clientID=638,t:applicationName=1CV8,t:computerName=Ast12SMMmanager1,t:connectID=4490,SessionID=13911,Usr=Кабаев Павел Александрович,Context='
+ВнешнийОтчет.мчт_СводныеПродажиПоМесяцам.Форма.Форма.Форма : 76 : ДеревоЗапроса = ПостроительОтчета.Результат.Выгрузить(ОбходРезультатаЗапроса.ПоГруппировкам);'
+02:46.787000-1593951,DBMSSQL,4,process=rphost,p:processName=AstOffice,OSThread=13536,t:clientID=610,t:applicationName=1CV8,t:computerName=AST1CMARKET,t:connectID=4446,SessionID=13561,Usr=Муцкий Герман,DBMS=DBMSSQL,DataBase=ASTSQLOFFICE2\AstOffice,Trans=0,dbpid=75,Sql='INSERT INTO #tt2 WITH(TABLOCK) (_Q_000_F_000, _Q_000_F_001) SELECT
+T1._Fld25886,
+T1._Fld25888
+FROM dbo._InfoRg25885 T1 WITH(NOLOCK)
+WHERE (T1._Fld25887 = ?)
+p_0: 129748700N
+',Rows=0,RowsAffected=1
+02:46.787006-0,Context,2,process=rphost,p:processName=AstOffice,OSThread=13536,t:clientID=610,t:applicationName=1CV8,t:computerName=AST1CMARKET,t:connectID=4446,SessionID=13561,Usr=Муцкий Герман,Context='
+ВнешняяОбработка.ПолучитСписокДействий.Форма.Форма.Форма : 11 : ПолучитьТаблицуДействий(НачДня, КонДня);
+	ВнешняяОбработка.ПолучитСписокДействий.МодульОбъекта : 73 : ОстаткиПоПартиям     		= ПолучитьОстаткиПоПартиямДляСписания(ИдДействия);
+		ВнешняяОбработка.ПолучитСписокДействий.МодульОбъекта : 411 : ТаблицаПоПартиям = Запрос.Выполнить().Выгрузить();'
+03:00.886021-16209013,DBMSSQL,4,process=rphost,p:processName=AstOffice,OSThread=3572,t:clientID=638,t:applicationName=1CV8,t:computerName=Ast12SMMmanager1,t:connectID=4490,SessionID=13911,Usr=Кабаев Павел Александрович,DBMS=DBMSSQL,DataBase=ASTSQLOFFICE2\AstOffice,Trans=0,dbpid=63,Sql="INSERT INTO #tt13 WITH(TABLOCK) (_Q_000_F_000, _Q_000_F_001RRef, _Q_000_F_002_TYPE, _Q_000_F_002_RTRef, _Q_000_F_002_RRRef, _Q_000_F_003, _Q_000_F_004) SELECT
+T1.Q_001_F_000_,
+T1.Q_001_F_001RRef,
+T1.Q_001_F_002_TYPE,
+T1.Q_001_F_002_RTRef,
+T1.Q_001_F_002_RRRef,
+T1.Q_001_F_003_,
+T1.Q_001_F_004_
+FROM (SELECT
+T2.Period_ AS Q_001_F_000_,
+T2.Fld11891RRef AS Q_001_F_001RRef,
+T2.Fld11885_TYPE AS Q_001_F_002_TYPE,
+T2.Fld11885_RTRef AS Q_001_F_002_RTRef,
+T2.Fld11885_RRRef AS Q_001_F_002_RRRef,
+CAST(SUM(T2.Fld11895Turnover_) AS NUMERIC(33, 3)) AS Q_001_F_003_,
+CAST(? AS NUMERIC(38, 8)) AS Q_001_F_004_
+FROM (SELECT
+DATETIME2FROMPARTS(DATEPART(YEAR,T3._Period),DATEPART(MONTH,T3._Period),1,0,0,0,0,0) AS Period_,
+T3._Fld11891RRef AS Fld11891RRef,
+T3._Fld11885_TYPE AS Fld11885_TYPE,
+T3._Fld11885_RTRef AS Fld11885_RTRef,
+T3._Fld11885_RRRef AS Fld11885_RRRef,
+CAST(SUM(T3._Fld11895) AS NUMERIC(27, 3)) AS Fld11895Turnover_
+FROM dbo._AccumRgTn11905 T3 WITH(NOLOCK)
+WHERE T3._Period >= ? AND T3._Period < ? AND (T3._Fld11895 <> ?)
+GROUP BY DATETIME2FROMPARTS(DATEPART(YEAR,T3._Period),DATEPART(MONTH,T3._Period),1,0,0,0,0,0),
+T3._Fld11891RRef,
+T3._Fld11885_TYPE,
+T3._Fld11885_RTRef,
+T3._Fld11885_RRRef
+HAVING (CAST(SUM(T3._Fld11895) AS NUMERIC(27, 3))) <> 0.0) T2
+GROUP BY T2.Period_,
+T2.Fld11891RRef,
+T2.Fld11885_TYPE,
+T2.Fld11885_RTRef,
+T2.Fld11885_RRRef
+UNION ALL SELECT
+?,
+T8._Fld1494RRef AS Fld1494RRef,
+0x08 AS Fld12207_TYPE,
+0x00000054 AS Fld12207_RTRef,
+T4.Fld12207RRef AS Fld12207_RRRef,
+CAST(? AS NUMERIC(33, 3)),
+CAST(SUM(T4.Fld12211Balance_) AS NUMERIC(38, 8))
+FROM (SELECT
+T5.Fld12206RRef AS Fld12206RRef,
+T5.Fld12207RRef AS Fld12207RRef,
+CAST(SUM(T5.Fld12211Balance_) AS NUMERIC(33, 3)) AS Fld12211Balance_
+FROM (SELECT
+T6._Fld12206RRef AS Fld12206RRef,
+T6._Fld12207RRef AS Fld12207RRef,
+CAST(SUM(T6._Fld12211) AS NUMERIC(27, 3)) AS Fld12211Balance_
+FROM dbo._AccumRgT12213 T6 WITH(NOLOCK)
+WHERE T6._Period = ? AND (T6._Fld12211 <> ?) AND (T6._Fld12211 <> ?)
+GROUP BY T6._Fld12206RRef,
+T6._Fld12207RRef
+HAVING (CAST(SUM(T6._Fld12211) AS NUMERIC(27, 3))) <> 0.0
+UNION ALL SELECT
+T7._Fld12206RRef AS Fld12206RRef,
+T7._Fld12207RRef AS Fld12207RRef,
+CAST(CAST(SUM(CASE WHEN T7._RecordKind = 0.0 THEN -T7._Fld12211 ELSE T7._Fld12211 END) AS NUMERIC(21, 3)) AS NUMERIC(27, 3)) AS Fld12211Balance_
+FROM dbo._AccumRg12205 T7 WITH(NOLOCK)
+WHERE T7._Period > ? AND T7._Period < ? AND T7._Active = 0x01
+GROUP BY T7._Fld12206RRef,
+T7._Fld12207RRef
+HAVING (CAST(CAST(SUM(CASE WHEN T7._RecordKind = 0.0 THEN -T7._Fld12211 ELSE T7._Fld12211 END) AS NUMERIC(21, 3)) AS NUMERIC(27, 3))) <> 0.0) T5
+GROUP BY T5.Fld12206RRef,
+T5.Fld12207RRef
+HAVING (CAST(SUM(T5.Fld12211Balance_) AS NUMERIC(33, 3))) <> 0.0) T4
+LEFT OUTER JOIN dbo._Reference111 T8 WITH(NOLOCK)
+ON T4.Fld12206RRef = T8._IDRRef
+WHERE (? = ?) AND (T8._Fld20505RRef = ?) OR (? = ?) AND (T8._Fld20505RRef <> ?) OR (? = ?)
+GROUP BY T8._Fld1494RRef,
+T4.Fld12207RRef) T1
+LEFT OUTER JOIN dbo._Reference84 T9 WITH(NOLOCK)
+ON T1.Q_001_F_002_TYPE = 0x08 AND T1.Q_001_F_002_RTRef = 0x00000054 AND T1.Q_001_F_002_RRRef = T9._IDRRef
+LEFT OUTER JOIN dbo._Reference85 T10 WITH(NOLOCK)
+ON T9._Fld1301RRef = T10._IDRRef
+WHERE (CASE WHEN T1.Q_001_F_002_TYPE = 0x08 AND T1.Q_001_F_002_RTRef = 0x00000054 THEN T9._Fld1316RRef ELSE CAST(NULL AS BINARY(16)) END = ?) AND (CASE WHEN T1.Q_001_F_002_TYPE = 0x08 AND T1.Q_001_F_002_RTRef = 0x00000054 THEN T10._Fld13198RRef ELSE CAST(NULL AS BINARY(16)) END = ?)
+p_0: 0N
+p_1: 40220901000000
+p_2: 40230501000000
+p_3: 0N
+p_4: 20010101000000
+p_5: 0N
+p_6: 59991101000000
+p_7: 0N
+p_8: 0N
+p_9: 40230430235959
+p_10: 59991101000000
+p_11: ''
+p_12: 'Да'
+p_13: 0xAB9B3228050A137B42A26D3D637BF6A0
+p_14: ''
+p_15: 'Нет'
+p_16: 0xAB9B3228050A137B42A26D3D637BF6A0
+p_17: ''
+p_18: ''
+p_19: 0xB1F090E6BAD53EC511DFCCA5064038BB
+p_20: 0xA230005056B6DBD711EAD22E38754F41
+",Rows=0,RowsAffected=1044
+03:00.917047-0,Context,2,process=rphost,p:processName=AstOffice,OSThread=3572,t:clientID=638,t:applicationName=1CV8,t:computerName=Ast12SMMmanager1,t:connectID=4490,SessionID=13911,Usr=Кабаев Павел Александрович,Context='
+ВнешнийОтчет.мчт_СводныеПродажиПоМесяцам.Форма.Форма.Форма : 76 : ДеревоЗапроса = ПостроительОтчета.Результат.Выгрузить(ОбходРезультатаЗапроса.ПоГруппировкам);'
+04:26.889000-1843974,DBMSSQL,4,process=rphost,p:processName=AstOffice,OSThread=13536,t:clientID=610,t:applicationName=1CV8,t:computerName=AST1CMARKET,t:connectID=4446,SessionID=13561,Usr=Муцкий Герман,DBMS=DBMSSQL,DataBase=ASTSQLOFFICE2\AstOffice,Trans=0,dbpid=69,Sql='SELECT TOP 1
+T1._IDRRef
+FROM dbo._Document25869 T1 WITH(NOLOCK)
+WHERE (T1._Marked = 0x00) AND (T1._Fld25870 = ?)
+p_0: 129745705N
+',Rows=1,RowsAffected=-1
+04:26.889013-0,Context,2,process=rphost,p:processName=AstOffice,OSThread=13536,t:clientID=610,t:applicationName=1CV8,t:computerName=AST1CMARKET,t:connectID=4446,SessionID=13561,Usr=Муцкий Герман,Context='
+ВнешняяОбработка.ПолучитСписокДействий.Форма.Форма.Форма : 11 : ПолучитьТаблицуДействий(НачДня, КонДня);
+	ВнешняяОбработка.ПолучитСписокДействий.МодульОбъекта : 72 : ДокументДвижения 			= ПолучитьДокументДействияПоИд(ИдДействия);
+		ВнешняяОбработка.ПолучитСписокДействий.МодульОбъекта : 142 : РезультатЗапроса = Запрос.Выполнить();'
