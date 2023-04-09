@@ -10,7 +10,7 @@ import (
 	"strings"
 )
 
-func ScanFile(filePath string) ([]*Event, error) {
+func ScanFile(filePath string, multiplier int) ([]*Event, error) {
 	if _, err := os.Stat(filePath); os.IsNotExist(err) {
 		return nil, fmt.Errorf("Файл %s не существает (%s)", filePath, err.Error())
 	}
@@ -24,7 +24,9 @@ func ScanFile(filePath string) ([]*Event, error) {
 	fileNameWithoutExt := "20" + strings.TrimSuffix(fileName, filepath.Ext(fileName))
 	fsm := myFSM{fileName: fileNameWithoutExt}
 	scanner := bufio.NewScanner(file)
-	scanner.Buffer(make([]byte, 1024*512), bufio.MaxScanTokenSize)
+	if multiplier > 0 {
+		scanner.Buffer(make([]byte, 1024*multiplier), bufio.MaxScanTokenSize)
+	}
 	reNewEvent := regexp.MustCompile(`^\d\d:\d\d\.\d{6}`)
 
 	for scanner.Scan() {

@@ -1,3 +1,3 @@
-module github.com/windnow/sm
+module github.com/windnow/tlanalyzer
 
 go 1.19
