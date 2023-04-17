@@ -25,20 +25,16 @@ func WalkDir(rootDir string) []*Event {
 		if !info.IsDir() && matched {
 			info := fmt.Sprintf("Чтение %s", path)
 			start := time.Now()
-			e, err := ScanFile(path, 0)
+			e, err := ScanFile(path)
 			if err != nil {
-				info = fmt.Sprintf("%s ERROR: \"%s\".\n\tПовторное чтение (увеличим размер буфера чтения)", info, err.Error())
-				e, err = ScanFile(path, 512)
-				if err != nil {
-					duration := time.Since(start)
-					info = fmt.Sprintf("%s. Ошибка с множителем 512. Длительность выполнения: %d с.", info, duration/time.Second)
-					return nil //err
-				}
+				duration := time.Since(start)
+				log.Printf("%s. Ошибка. %s. Длительность: %d мк.с.", info, err.Error(), duration/time.Microsecond)
+				return nil //err
 			}
 			duration := time.Since(start)
 			l := len(e)
 			if l > 0 {
-				log.Printf("%s. Прочитано %d записей за (длительность: %d сек.)", info, l, duration/time.Second)
+				log.Printf("%s. Прочитано %d записей за (длительность: %d мк.с.)", info, l, duration/time.Microsecond)
 			}
 			events = append(events, e...)
 
