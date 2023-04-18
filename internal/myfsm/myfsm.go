@@ -1,26 +1,41 @@
 package myfsm
 
-import "strings"
+import (
+	"regexp"
+	"strings"
+	"time"
+)
 
-type Event struct {
-	time     string
-	duration string
-	name     string
-	level    string
-	Fields   map[string]string
+type Event interface {
+	GetField(string) *string
+	SetField(string, string)
+	ParseTime(*time.Location) error
+	SetIndex(i int)
 }
 
 type Process func()
 
 type myFSM struct {
+	reNewEvent   *regexp.Regexp
 	c            rune
 	prev_c       rune
 	quoter       rune
 	fileName     string
 	currentField string
-	events       []*Event
+	events       []Event
 	value        string
 	Event        Process
+}
+
+func (f *myFSM) GetEvents() []Event {
+	return f.events
+}
+func NewFSM(fileName string) *myFSM {
+	r := regexp.MustCompile(`^\d\d:\d\d\.\d{6}`)
+	return &myFSM{
+		fileName:   fileName,
+		reNewEvent: r,
+	}
 }
 
 func (fsm *myFSM) NewEvent() {
@@ -29,7 +44,7 @@ func (fsm *myFSM) NewEvent() {
 			fsm.value = string(fsm.prev_c)
 			fsm.prev_c = 0
 		}
-		fsm.events = append(fsm.events, &Event{
+		fsm.events = append(fsm.events, &BulkEvent{
 			Fields: make(map[string]string),
 		})
 	}
@@ -37,7 +52,7 @@ func (fsm *myFSM) NewEvent() {
 		fsm.value += string(fsm.c)
 		fsm.prev_c = fsm.c
 	} else {
-		fsm.events[len(fsm.events)-1].time = fsm.fileName[:8] + " " + fsm.fileName[8:] + ":" + fsm.value
+		fsm.events[len(fsm.events)-1].SetField("time", fsm.fileName[:8]+" "+fsm.fileName[8:]+":"+fsm.value)
 		fsm.prev_c = 0
 		fsm.value = ""
 		fsm.Event = fsm.DurationEvent
@@ -48,7 +63,7 @@ func (fsm *myFSM) DurationEvent() {
 	if fsm.c >= '0' && fsm.c <= '9' {
 		fsm.value += string(fsm.c)
 	} else {
-		fsm.events[len(fsm.events)-1].duration = fsm.value
+		fsm.events[len(fsm.events)-1].SetField("duration", fsm.value)
 		fsm.value = ""
 		fsm.Event = fsm.NameEvent
 	}
@@ -57,17 +72,34 @@ func (fsm *myFSM) NameEvent() {
 	if (fsm.c >= 'a' && fsm.c <= 'z') || (fsm.c >= 'A' && fsm.c <= 'Z') {
 		fsm.value += string(fsm.c)
 	} else {
-		fsm.events[len(fsm.events)-1].name = fsm.value
+		fsm.events[len(fsm.events)-1].SetField("name", fsm.value)
 		fsm.value = ""
 		fsm.Event = fsm.LevelEvent
 	}
+}
+func (fsm *myFSM) ProcessLine(line string) {
+	line = strings.TrimSpace(line)
+	if fsm.reNewEvent.MatchString(line) {
+		if fsm.Event != nil {
+			fsm.Event = fsm.FinalizeEvent
+		} else {
+			fsm.Event = fsm.NewEvent
+		}
+	} else {
+		line = "\n" + line
+	}
+
+	for _, c := range line {
+		fsm.Update(c)
+	}
+
 }
 
 func (fsm *myFSM) LevelEvent() {
 	if fsm.c >= '0' && fsm.c <= '9' {
 		fsm.value += string(fsm.c)
 	} else {
-		fsm.events[len(fsm.events)-1].level = fsm.value
+		fsm.events[len(fsm.events)-1].SetField("level", fsm.value)
 		fsm.value = ""
 		fsm.Event = fsm.FieldEvent
 	}
@@ -87,10 +119,6 @@ func (fsm *myFSM) FieldEvent() {
 	}
 }
 
-func (fsm myFSM) GetOne(num int) string {
-	return fsm.events[num].Fields["Sql"] + "\n\n" + fsm.events[num].Fields["Context"]
-}
-
 func (fsm *myFSM) ValueEvent() {
 	if (fsm.c == '\'' || fsm.c == '"') && fsm.prev_c == 0 {
 
@@ -100,7 +128,10 @@ func (fsm *myFSM) ValueEvent() {
 		fsm.Event = fsm.QuotedValueEvent
 
 	} else if fsm.c == ',' {
-		fsm.events[len(fsm.events)-1].Fields[fsm.currentField] = strings.TrimSpace(fsm.value)
+		fsm.events[len(fsm.events)-1].SetField(fsm.currentField, strings.TrimSpace(fsm.value))
+
+		fsm.prev_c = 0
+		fsm.currentField = ""
 		fsm.value = ""
 		fsm.Event = fsm.FieldEvent
 	} else {
@@ -111,8 +142,9 @@ func (fsm *myFSM) ValueEvent() {
 
 func (fsm *myFSM) QuotedValueEvent() {
 	if fsm.c == fsm.quoter && fsm.prev_c != '\\' {
-		fsm.events[len(fsm.events)-1].Fields[fsm.currentField] = strings.TrimSpace(fsm.value)
+		fsm.events[len(fsm.events)-1].SetField(fsm.currentField, strings.TrimSpace(fsm.value))
 
+		fsm.currentField = ""
 		fsm.value = ""
 		fsm.Event = fsm.FieldEvent
 	} else {
@@ -131,7 +163,7 @@ func (fsm *myFSM) Update(c rune) {
 
 func (fsm *myFSM) FinalizeEvent() {
 	if len(fsm.events) > 0 && len(fsm.currentField) > 0 && len(fsm.value) > 0 {
-		fsm.events[len(fsm.events)-1].Fields[fsm.currentField] = fsm.value
+		fsm.events[len(fsm.events)-1].SetField(fsm.currentField, fsm.value)
 		fsm.value = ""
 	}
 	fsm.prev_c = fsm.c
