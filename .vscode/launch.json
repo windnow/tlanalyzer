@@ -12,7 +12,7 @@
             // "program": "${fileDirname}",
             "program": "${workspaceFolder}/cmd/tlanalyzer/main.go",
             //"args": ["C:\\Users\\ermek\\develop\\golang\\sm\\dbmssql_long\\rphost_7664\\23040717.log"]
-            "args": ["C:\\files\\2\\TECHLOGS"]
+            "args": ["C:\\files\\2\\TECHLOGS\\call"]
         }
     ]
 }

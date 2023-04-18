@@ -10,7 +10,7 @@ import (
 	"strings"
 )
 
-func ScanFile(filePath string) ([]*Event, error) {
+func ScanFile(filePath string) ([]Event, error) {
 	if _, err := os.Stat(filePath); os.IsNotExist(err) {
 		return nil, fmt.Errorf("Файл %s не существает (%s)", filePath, err.Error())
 	}

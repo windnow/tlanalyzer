@@ -8,10 +8,10 @@ import (
 	"time"
 )
 
-func WalkDir(rootDir string) []*Event {
+func WalkDir(rootDir string) []Event {
 
 	mask := "*.log"
-	var events []*Event
+	var events []Event
 
 	filepath.Walk(rootDir, func(path string, info fs.FileInfo, err error) error {
 		if err != nil {

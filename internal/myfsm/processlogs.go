@@ -1,6 +1,6 @@
 package myfsm
 
-type ProcessFunc func([]*Event)
+type ProcessFunc func([]Event)
 
 func ProcessLogs(rootDir string, processFunc ProcessFunc) {
 

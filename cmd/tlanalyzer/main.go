@@ -16,7 +16,7 @@ func main() {
 	}
 	rootDir := os.Args[1]
 
-	myfsm.ProcessLogs(rootDir, func(events []*myfsm.Event) {
+	myfsm.ProcessLogs(rootDir, func(events []myfsm.Event) {
 		fmt.Println("ВСЕГО ПРОЧИТАНО", len(events))
 	})
 
