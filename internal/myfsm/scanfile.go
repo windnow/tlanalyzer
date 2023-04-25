@@ -22,16 +22,17 @@ func ScanFile(filePath string) ([]Event, error) {
 	defer file.Close()
 	fileName := filepath.Base(filePath)
 	fileNameWithoutExt := "20" + strings.TrimSuffix(fileName, filepath.Ext(fileName))
+
 	fsm := myFSM{fileName: fileNameWithoutExt}
+
 	scanner := bufio.NewScanner(file)
+	scanner.Split(scanLinesWithoutBOM)
+
 	scanner.Buffer(make([]byte, 0), 1024*1024)
 	reNewEvent := regexp.MustCompile(`^\d\d:\d\d\.\d{6}`)
 
 	for scanner.Scan() {
 		line := strings.TrimSpace(scanner.Text())
-		if len(line) > 2 && string(line[0:3]) == "\uFEFF" {
-			line = string(line[3:])
-		}
 		if reNewEvent.MatchString(line) {
 			if fsm.Event != nil {
 				fsm.Event = fsm.FinalizeEvent
@@ -50,6 +51,11 @@ func ScanFile(filePath string) ([]Event, error) {
 		c = 0
 
 	}
+
+	a, err := file.Seek(0, os.SEEK_CUR)
+	func(a int64, err error, s string) {
+		func(a int64) {}(a)
+	}(a, err, filePath)
 	if err := scanner.Err(); err != nil {
 		return nil, err
 	}
