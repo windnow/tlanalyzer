@@ -21,7 +21,7 @@ func WalkDir(rootDir string) []Event {
 		Level: logrus.DebugLevel,
 		Formatter: &easy.Formatter{
 			TimestampFormat: "2006-01-02 15:04:05",
-			LogFormat:       "\n[%lvl%]: %time% - %msg%",
+			LogFormat:       "[%lvl%]: %time% - %msg%\n",
 		},
 	} //logrus.New()
 	filepath.Walk(rootDir, func(path string, info fs.FileInfo, err error) error {
@@ -45,7 +45,7 @@ func WalkDir(rootDir string) []Event {
 			duration := time.Since(start)
 			l := len(e)
 			if l > 0 {
-				log.Infof("%s: Прочитано %d записей за (длительность: %d мк.с. [%d/1])", info, l, duration/time.Microsecond, (duration/time.Microsecond)/time.Duration(l))
+				log.Infof("%s: %d, %d, %d", info, l, duration/time.Microsecond, (duration/time.Microsecond)/time.Duration(l))
 			}
 			events = append(events, e...)
 

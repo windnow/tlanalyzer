@@ -15,15 +15,19 @@ func ScanFile(filePath string) ([]Event, error) {
 		return nil, fmt.Errorf("Файл %s не существает (%s)", filePath, err.Error())
 	}
 
+	fileName := filepath.Base(filePath)
+	fileNameWithoutExt := "20" + strings.TrimSuffix(fileName, filepath.Ext(fileName))
+
 	file, err := os.Open(filePath)
 	if err != nil {
 		log.Fatal(err)
 	}
-	defer file.Close()
-	fileName := filepath.Base(filePath)
-	fileNameWithoutExt := "20" + strings.TrimSuffix(fileName, filepath.Ext(fileName))
 
 	fsm := myFSM{fileName: fileNameWithoutExt}
+
+	defer func() {
+		file.Close()
+	}()
 
 	scanner := bufio.NewScanner(file)
 	scanner.Split(scanLinesWithoutBOM)
@@ -43,19 +47,16 @@ func ScanFile(filePath string) ([]Event, error) {
 			line = "\n" + line
 		}
 
-		var c rune
-
-		for _, c = range line {
+		for _, c := range line {
 			fsm.Update(c)
 		}
-		c = 0
 
 	}
-
 	a, err := file.Seek(0, os.SEEK_CUR)
 	func(a int64, err error, s string) {
 		func(a int64) {}(a)
 	}(a, err, filePath)
+
 	if err := scanner.Err(); err != nil {
 		return nil, err
 	}

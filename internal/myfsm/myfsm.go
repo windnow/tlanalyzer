@@ -94,6 +94,9 @@ func (fsm *myFSM) ValueEvent() {
 
 	} else if fsm.c == ',' {
 		fsm.events[len(fsm.events)-1].SetField(fsm.currentField, strings.TrimSpace(fsm.value))
+
+		fsm.prev_c = 0
+		fsm.currentField = ""
 		fsm.value = ""
 		fsm.Event = fsm.FieldEvent
 	} else {
@@ -106,6 +109,7 @@ func (fsm *myFSM) QuotedValueEvent() {
 	if fsm.c == fsm.quoter && fsm.prev_c != '\\' {
 		fsm.events[len(fsm.events)-1].SetField(fsm.currentField, strings.TrimSpace(fsm.value))
 
+		fsm.currentField = ""
 		fsm.value = ""
 		fsm.Event = fsm.FieldEvent
 	} else {
