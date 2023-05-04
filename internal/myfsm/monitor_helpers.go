@@ -1,26 +1,13 @@
 package myfsm
 
-import (
-	"os"
-
-	"github.com/sirupsen/logrus"
-	easy "github.com/t-tomalak/logrus-easy-formatter"
-)
-
-func (m *Monitor) loggerConfig() *logrus.Logger {
-	return &logrus.Logger{
-		Out:   os.Stderr,
-		Level: logrus.DebugLevel,
-		Formatter: &easy.Formatter{
-			TimestampFormat: "2006-01-02 15:04:05",
-			LogFormat:       "[%lvl%]: %time% - %msg%\n",
-		},
-	}
-}
-
-func (m *Monitor) getFolders() []string {
+func (m *Monitor) getFolders() []Log {
 	m.mutex.Lock()
 	result := append(m.folders, m.cfg_folders...)
 	m.mutex.Unlock()
 	return result
+}
+func (m *Monitor) setFolders(cfg_folders []Log) {
+	m.mutex.Lock()
+	m.cfg_folders = cfg_folders
+	m.mutex.Unlock()
 }
