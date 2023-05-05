@@ -2,7 +2,6 @@ package myfsm
 
 import (
 	"bufio"
-	"context"
 	"errors"
 	"fmt"
 	"os"
@@ -11,7 +10,7 @@ import (
 	"strings"
 )
 
-func (m *Monitor) ScanFile(ctx context.Context, filePath string) ([]Event, error) {
+func (m *Monitor) ScanFile(filePath string) ([]Event, error) {
 
 	fileName := filepath.Base(filePath)
 	fileNameWithoutExt := "20" + strings.TrimSuffix(fileName, filepath.Ext(fileName))
@@ -28,8 +27,8 @@ func (m *Monitor) ScanFile(ctx context.Context, filePath string) ([]Event, error
 
 	for scanner.Scan() {
 		select {
-		case <-ctx.Done():
-			errMsg := fmt.Sprintf("СКАНИРОВАНИЕ ФАЙЛА \"%s\" ПРЕРВАНО ПО СИГНАЛУ", fileName)
+		case <-m.ctx.Done():
+			errMsg := fmt.Sprintf("СКАНИРОВАНИЕ ФАЙЛА \"%s\" ПРЕРВАНО (ПО СИГНАЛУ)", fileName)
 			return nil, errors.New(errMsg)
 		default:
 			processLine(fsm, scanner.Text(), reNewEvent)
