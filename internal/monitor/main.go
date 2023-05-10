@@ -16,11 +16,70 @@ import (
 	"github.com/sirupsen/logrus"
 	easy "github.com/t-tomalak/logrus-easy-formatter"
 	"github.com/windnow/tlanalyzer/internal/common"
+	"github.com/windnow/tlanalyzer/internal/internalprocessor"
 	"github.com/windnow/tlanalyzer/internal/myfsm"
 	"github.com/windnow/tlanalyzer/internal/processor"
+	// "github.com/windnow/tlanalyzer/internal/redisprocessor"
 )
 
 var mask = "*.log"
+
+type Monitor struct {
+	ctx         context.Context
+	wg          sync.WaitGroup
+	mutex       sync.Mutex
+	cfg_folders []Log
+	cfg_file    string
+	location    *time.Location
+
+	folders   []Log
+	log       *logrus.Logger
+	processor processor.Processor
+}
+
+func NewMonitor(ctx context.Context, folders []string, cfg_file, timezone string) (monitor *Monitor, err error) {
+	logFolders := make([]Log, 0, len(folders))
+
+	for _, folder := range folders {
+		logFolders = append(logFolders, Log{Location: folder, Depth: -1})
+	}
+
+	log := &logrus.Logger{
+		Out:   os.Stderr,
+		Level: logrus.DebugLevel,
+		Formatter: &easy.Formatter{
+			TimestampFormat: "2006-01-02 15:04:05",
+			LogFormat:       "[%lvl%]: %time% - %msg%\n",
+		},
+	}
+
+	tz := "Asia/Almaty"
+	if timezone != "" {
+		tz = timezone
+	}
+
+	loc, err := time.LoadLocation(tz)
+	if err != nil {
+
+		return nil, err
+
+	}
+
+	// processor, err := redisprocessor.NewProcessor(ctx, log)
+	processor, err := internalprocessor.NewProcessor(ctx, log)
+	if err != nil {
+		return nil, err
+	}
+
+	return &Monitor{
+		ctx:       ctx,
+		folders:   logFolders,
+		log:       log,
+		cfg_file:  cfg_file,
+		location:  loc,
+		processor: processor,
+	}, nil
+}
 
 func (m *Monitor) ScanFile(filePath string) ([]myfsm.Event, error) {
 
@@ -138,62 +197,6 @@ func (m *Monitor) checkConfigContent() {
 		m.log.Infof("%s -- %d", l.Location, l.Depth)
 	}
 	m.setFolders(config.Logs)
-}
-
-type Monitor struct {
-	ctx         context.Context
-	wg          sync.WaitGroup
-	mutex       sync.Mutex
-	cfg_folders []Log
-	cfg_file    string
-	location    *time.Location
-
-	folders   []Log
-	log       *logrus.Logger
-	processor processor.Processor
-}
-
-func NewMonitor(ctx context.Context, folders []string, cfg_file, timezone string) (monitor *Monitor, err error) {
-	logFolders := make([]Log, 0, len(folders))
-
-	for _, folder := range folders {
-		logFolders = append(logFolders, Log{Location: folder, Depth: -1})
-	}
-
-	log := &logrus.Logger{
-		Out:   os.Stderr,
-		Level: logrus.DebugLevel,
-		Formatter: &easy.Formatter{
-			TimestampFormat: "2006-01-02 15:04:05",
-			LogFormat:       "[%lvl%]: %time% - %msg%\n",
-		},
-	}
-
-	tz := "Asia/Almaty"
-	if timezone != "" {
-		tz = timezone
-	}
-
-	loc, err := time.LoadLocation(tz)
-	if err != nil {
-
-		return nil, err
-
-	}
-
-	processor, err := processor.NewRedisProcessor(log)
-	if err != nil {
-		return nil, err
-	}
-
-	return &Monitor{
-		ctx:       ctx,
-		folders:   logFolders,
-		log:       log,
-		cfg_file:  cfg_file,
-		location:  loc,
-		processor: processor,
-	}, nil
 }
 
 func (m *Monitor) Start() error {
