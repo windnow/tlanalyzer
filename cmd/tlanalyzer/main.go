@@ -51,19 +51,3 @@ func breakListener(cancel context.CancelFunc) {
 	fmt.Println("Получен сигнал:", sig)
 	cancel() // Отменяем контекст
 }
-
-/*func main_old() {
-	begin := time.Now()
-	if len(os.Args) == 1 {
-		log.Fatal("directory name not specified")
-	}
-	rootDir := os.Args[1]
-
-	myfsm.ProcessLogs(rootDir, func(events []myfsm.Event) {
-		fmt.Println("ВСЕГО ПРОЧИТАНО", len(events))
-	})
-
-	log.Printf("Общее время выполнения: %d", time.Since(begin)/time.Second)
-
-}
-*/
