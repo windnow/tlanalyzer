@@ -1,0 +1,5 @@
+{
+    "socket": "localhost:6379",
+    "password": "",
+    "db": 0
+}

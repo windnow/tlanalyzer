@@ -1,15 +1,22 @@
 package myfsm
 
-import "strings"
+import (
+	"regexp"
+	"strings"
+	"time"
+)
 
 type Event interface {
 	GetField(string) *string
 	SetField(string, string)
+	ParseTime(*time.Location) error
+	SetIndex(i int)
 }
 
 type Process func()
 
 type myFSM struct {
+	reNewEvent   *regexp.Regexp
 	c            rune
 	prev_c       rune
 	quoter       rune
@@ -18,6 +25,17 @@ type myFSM struct {
 	events       []Event
 	value        string
 	Event        Process
+}
+
+func (f *myFSM) GetEvents() []Event {
+	return f.events
+}
+func NewFSM(fileName string) *myFSM {
+	r := regexp.MustCompile(`^\d\d:\d\d\.\d{6}`)
+	return &myFSM{
+		fileName:   fileName,
+		reNewEvent: r,
+	}
 }
 
 func (fsm *myFSM) NewEvent() {
@@ -58,6 +76,23 @@ func (fsm *myFSM) NameEvent() {
 		fsm.value = ""
 		fsm.Event = fsm.LevelEvent
 	}
+}
+func (fsm *myFSM) ProcessLine(line string) {
+	line = strings.TrimSpace(line)
+	if fsm.reNewEvent.MatchString(line) {
+		if fsm.Event != nil {
+			fsm.Event = fsm.FinalizeEvent
+		} else {
+			fsm.Event = fsm.NewEvent
+		}
+	} else {
+		line = "\n" + line
+	}
+
+	for _, c := range line {
+		fsm.Update(c)
+	}
+
 }
 
 func (fsm *myFSM) LevelEvent() {

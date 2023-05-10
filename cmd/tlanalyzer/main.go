@@ -10,7 +10,7 @@ import (
 	"syscall"
 
 	"github.com/windnow/tlanalyzer/internal/flag"
-	"github.com/windnow/tlanalyzer/internal/myfsm"
+	"github.com/windnow/tlanalyzer/internal/monitor"
 )
 
 var (
@@ -33,7 +33,10 @@ func main() {
 
 	go breakListener(cancel)
 
-	monitor := myfsm.NewMonitor(ctx, dirs, configPath, "", "")
+	monitor, err := monitor.NewMonitor(ctx, dirs, configPath, "", "")
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	if err := monitor.Start(); err != nil {
 		log.Fatal(err)

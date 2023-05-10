@@ -1,4 +1,4 @@
-package myfsm
+package monitor
 
 func (m *Monitor) getFolders() []Log {
 	m.mutex.Lock()

@@ -1,4 +1,4 @@
-package myfsm
+package monitor
 
 import "bufio"
 
