@@ -16,7 +16,6 @@ import (
 var (
 	configPath string
 	dirs       []string //stringSliceFlag
-	statusFile string
 )
 
 func init() {
@@ -33,7 +32,7 @@ func main() {
 
 	go breakListener(cancel)
 
-	monitor, err := monitor.NewMonitor(ctx, dirs, configPath, "", "")
+	monitor, err := monitor.NewMonitor(ctx, dirs, configPath, "")
 	if err != nil {
 		log.Fatal(err)
 	}

@@ -148,13 +148,12 @@ type Monitor struct {
 	cfg_file    string
 	location    *time.Location
 
-	folders    []Log
-	statusFile string
-	log        *logrus.Logger
-	processor  processor.Processor
+	folders   []Log
+	log       *logrus.Logger
+	processor processor.Processor
 }
 
-func NewMonitor(ctx context.Context, folders []string, cfg_file, statusFile, timezone string) (monitor *Monitor, err error) {
+func NewMonitor(ctx context.Context, folders []string, cfg_file, timezone string) (monitor *Monitor, err error) {
 	logFolders := make([]Log, 0, len(folders))
 
 	for _, folder := range folders {
@@ -188,13 +187,12 @@ func NewMonitor(ctx context.Context, folders []string, cfg_file, statusFile, tim
 	}
 
 	return &Monitor{
-		ctx:        ctx,
-		folders:    logFolders,
-		log:        log,
-		cfg_file:   cfg_file,
-		statusFile: statusFile,
-		location:   loc,
-		processor:  processor,
+		ctx:       ctx,
+		folders:   logFolders,
+		log:       log,
+		cfg_file:  cfg_file,
+		location:  loc,
+		processor: processor,
 	}, nil
 }
 
