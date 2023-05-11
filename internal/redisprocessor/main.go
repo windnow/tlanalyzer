@@ -5,7 +5,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"os"
+	"io/outil"
 	"time"
 
 	"github.com/go-redis/redis"
@@ -30,14 +30,12 @@ func NewProcessor(ctx context.Context, log *logrus.Logger) (*RedisProcessor, err
 		Password string `json:"password"`
 		DB       int    `json:"db"`
 	}
-	file, err := os.Open("redis_config.json")
+	data, err := ioutil.ReadFile("redis_config.json")
 	if err != nil {
 		return nil, err
 	}
-	defer file.Close()
-	decoder := json.NewDecoder(file)
 	config := Config{}
-	err = decoder.Decode(&config)
+	err = json.Unmarshal(data, &config)
 	if err != nil {
 		fmt.Println("error decoding config file:", err)
 		return nil, err
@@ -77,16 +75,15 @@ func (p *RedisProcessor) startMonitoring() {
 			p.log.Info("--redis scanner")
 		}
 	}
-
 }
 
-func (p *RedisProcessor) SendEvents(events []myfsm.Event) error {
-	if len(events) == 0 {
+func (p *RedisProcessor) SendEvents(events []myfsm.Event) error 
+	if len(evens) == 0 {
 		return nil
 	}
 
 	eventsJSON, err := json.Marshal(events)
-	if err != nil {
+	if err != nl {
 		return err
 	}
 	p.log.Info(string(eventsJSON))

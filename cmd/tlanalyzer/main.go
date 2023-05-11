@@ -15,12 +15,18 @@ import (
 
 var (
 	configPath string
+	tag        string
+	tz         string
+	priority   int
 	dirs       []string //stringSliceFlag
 )
 
 func init() {
 	dirs = make([]string, 0)
 	flag.StringVar(&configPath, "logcfg", "C:\\Program Files\\1cv8\\conf\\confcfg.xml", "Путь к файлу конфигурации ТЖ")
+	flag.IntVar(&priority, "priority", 8, "Приоритет (10-высокий приоритет, 0 - низкий приоритет)")
+	flag.StringVar(&tag, "tag", "default", "Тег источника ТЖ")
+	flag.StringVar(&tz, "tz", "Asia/Almaty", "Часовой пояс")
 	flag.StringSliceVar(&dirs, "dir", "Дополнительный каталог для чтения log файлов")
 	flag.Parse()
 }
@@ -31,8 +37,14 @@ func main() {
 	defer cancel()
 
 	go breakListener(cancel)
+	if priority > 10 {
+		priority = 10
+	}
+	if priority < 0 {
+		priority = 0
+	}
 
-	monitor, err := monitor.NewMonitor(ctx, dirs, configPath, "")
+	monitor, err := monitor.NewMonitor(ctx, dirs, configPath, tz, tag, (10-priority)*10)
 	if err != nil {
 		log.Fatal(err)
 	}

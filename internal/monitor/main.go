@@ -31,13 +31,15 @@ type Monitor struct {
 	cfg_folders []Log
 	cfg_file    string
 	location    *time.Location
+	tag         string
+	priority    int
 
 	folders   []Log
 	log       *logrus.Logger
 	processor processor.Processor
 }
 
-func NewMonitor(ctx context.Context, folders []string, cfg_file, timezone string) (monitor *Monitor, err error) {
+func NewMonitor(ctx context.Context, folders []string, cfg_file, timezone, tag string, priority int) (*Monitor, error) {
 	logFolders := make([]Log, 0, len(folders))
 
 	for _, folder := range folders {
@@ -53,32 +55,29 @@ func NewMonitor(ctx context.Context, folders []string, cfg_file, timezone string
 		},
 	}
 
-	tz := "Asia/Almaty"
-	if timezone != "" {
-		tz = timezone
-	}
-
-	loc, err := time.LoadLocation(tz)
+	loc, err := time.LoadLocation(timezone)
 	if err != nil {
 
 		return nil, err
 
+	}
+	monitor := &Monitor{
+		ctx:      ctx,
+		folders:  logFolders,
+		log:      log,
+		cfg_file: cfg_file,
+		location: loc,
+		priority: priority,
+		wg:       sync.WaitGroup{},
 	}
 
 	// processor, err := redisprocessor.NewProcessor(ctx, log)
-	processor, err := internalprocessor.NewProcessor(ctx, log)
+	processor, err := internalprocessor.NewProcessor(ctx, log, &monitor.wg)
 	if err != nil {
 		return nil, err
 	}
-
-	return &Monitor{
-		ctx:       ctx,
-		folders:   logFolders,
-		log:       log,
-		cfg_file:  cfg_file,
-		location:  loc,
-		processor: processor,
-	}, nil
+	monitor.processor = processor
+	return monitor, nil
 }
 
 func (m *Monitor) ScanFile(filePath string) ([]myfsm.Event, error) {
@@ -101,6 +100,7 @@ func (m *Monitor) ScanFile(filePath string) ([]myfsm.Event, error) {
 			errMsg := fmt.Sprintf("СКАНИРОВАНИЕ ФАЙЛА \"%s\" ПРЕРВАНО (ПО СИГНАЛУ)", fileName)
 			return nil, errors.New(errMsg)
 		default:
+			time.Sleep(time.Duration(m.priority) * time.Millisecond)
 			fsm.ProcessLine(scanner.Text())
 		}
 	}
@@ -118,6 +118,7 @@ func (m *Monitor) ScanFile(filePath string) ([]myfsm.Event, error) {
 	for _, event := range events {
 		event.SetIndex(i)
 		event.ParseTime(m.location)
+		event.SetTag(m.tag)
 		i++
 	}
 
@@ -205,8 +206,14 @@ func (m *Monitor) Start() error {
 		m.processor.Close()
 	}()
 
-	m.wg.Add(1)
-	go m.scanConfig()
+	if common.FileExistsAndIsReadable(m.cfg_file) {
+		m.wg.Add(1)
+		go m.scanConfig()
+	} else {
+		if m.cfg_file != "" {
+			m.log.Warn("НЕ ВЕРНО ЗАДАН ФАЙЛ КОНФИГУРАЦИИ")
+		}
+	}
 
 	m.wg.Add(1)
 	go m.scanFolder()
@@ -232,12 +239,10 @@ FoldersScanner:
 				break FoldersScanner
 			default:
 				filepath.Walk(folder.Location, m.pathChecker)
-				time.Sleep(500 * time.Millisecond)
 			}
 
 		}
 
-		time.Sleep(100 * time.Millisecond)
 	}
 }
 
@@ -266,18 +271,22 @@ func (m *Monitor) pathChecker(path string, fileInfo fs.FileInfo, err error) erro
 				m.log.Errorf("%s. Ошибка. %s. Длительность: %d мк.с.", info, err.Error(), duration/time.Microsecond)
 				return err
 			}
-
 			eventsCount := len(events)
+			duration := time.Since(start)
+			info = fmt.Sprintf("%s: Прочитано %d за %d мк.с.", info, eventsCount, duration/time.Microsecond)
 			if eventsCount > 0 {
+				start = time.Now()
+				info = fmt.Sprintf("%s: Отправка событий", info)
 				err = m.processor.SendEvents(events)
 				if err != nil {
 					duration := time.Since(start)
-					m.log.Errorf("%s. Ошибка при отправке (%s). Длительность %d мк.с., число событий: %d", info, err.Error(), duration/time.Microsecond, eventsCount)
+					m.log.Errorf("%s. Ошибка при отправке (%s). Длительность %d мк.с.", info, err.Error(), duration/time.Microsecond)
 					return nil
 				}
+				duration := time.Since(start)
+				info = fmt.Sprintf("%s: Отправлено за %d мк.с.", info, duration/time.Microsecond)
 				m.log.Info(info)
 			}
-
 		}
 	}
 	return nil

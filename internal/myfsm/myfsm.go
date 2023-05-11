@@ -10,7 +10,8 @@ type Event interface {
 	GetField(string) *string
 	SetField(string, string)
 	ParseTime(*time.Location) error
-	SetIndex(i int)
+	SetIndex(int)
+	SetTag(string)
 }
 
 type Process func()

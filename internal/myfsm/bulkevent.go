@@ -5,6 +5,7 @@ import "time"
 type BulkEvent struct {
 	time     string
 	Position int               `json:"idx"`
+	Tag      string            `json:"tag"`
 	Time     time.Time         `json:"time"`
 	Duration string            `json:"duration"`
 	Name     string            `json:"name"`
@@ -66,4 +67,8 @@ func (e *BulkEvent) ParseTime(loc *time.Location) error {
 
 func (e *BulkEvent) SetIndex(i int) {
 	e.Position = i
+}
+
+func (e *BulkEvent) SetTag(tag string) {
+	e.Tag = tag
 }
