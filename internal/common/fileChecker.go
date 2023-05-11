@@ -4,11 +4,6 @@ package common
 
 import "os"
 
-func FileCanBeDeleted(path string) bool {
-
-	return false
-
-}
 func FileExistsAndIsReadable(filename string) bool {
 	_, err := os.Stat(filename)
 	if err != nil {

@@ -5,7 +5,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"io/outil"
+	"io/ioutil"
 	"time"
 
 	"github.com/go-redis/redis"
@@ -77,13 +77,10 @@ func (p *RedisProcessor) startMonitoring() {
 	}
 }
 
-func (p *RedisProcessor) SendEvents(events []myfsm.Event) error 
-	if len(evens) == 0 {
-		return nil
-	}
+func (p *RedisProcessor) SendEvents(events []myfsm.Event) error {
 
 	eventsJSON, err := json.Marshal(events)
-	if err != nl {
+	if err != nil {
 		return err
 	}
 	p.log.Info(string(eventsJSON))

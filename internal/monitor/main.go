@@ -3,10 +3,13 @@ package monitor
 import (
 	"bufio"
 	"context"
+	"encoding/json"
 	"encoding/xml"
 	"errors"
 	"fmt"
+	"io"
 	"io/fs"
+	"io/ioutil"
 	"os"
 	"path/filepath"
 	"strings"
@@ -24,6 +27,12 @@ import (
 
 var mask = "*.log"
 
+type LogOfset struct {
+	Offset    int64
+	LastEvent time.Time
+	Depth     int
+}
+
 type Monitor struct {
 	ctx         context.Context
 	wg          sync.WaitGroup
@@ -34,6 +43,7 @@ type Monitor struct {
 	tag         string
 	priority    int
 
+	LogOfsets map[string]LogOfset
 	folders   []Log
 	log       *logrus.Logger
 	processor processor.Processor
@@ -62,13 +72,15 @@ func NewMonitor(ctx context.Context, folders []string, cfg_file, timezone, tag s
 
 	}
 	monitor := &Monitor{
-		ctx:      ctx,
-		folders:  logFolders,
-		log:      log,
-		cfg_file: cfg_file,
-		location: loc,
-		priority: priority,
-		wg:       sync.WaitGroup{},
+		ctx:       ctx,
+		folders:   logFolders,
+		log:       log,
+		cfg_file:  cfg_file,
+		location:  loc,
+		tag:       tag,
+		LogOfsets: make(map[string]LogOfset),
+		priority:  priority,
+		wg:        sync.WaitGroup{},
 	}
 
 	// processor, err := redisprocessor.NewProcessor(ctx, log)
@@ -80,15 +92,18 @@ func NewMonitor(ctx context.Context, folders []string, cfg_file, timezone, tag s
 	return monitor, nil
 }
 
-func (m *Monitor) ScanFile(filePath string) ([]myfsm.Event, error) {
+func (m *Monitor) ScanFile(filePath string) (events []myfsm.Event, offset int64, err error) {
 
 	fileName := filepath.Base(filePath)
 	fileNameWithoutExt := "20" + strings.TrimSuffix(fileName, filepath.Ext(fileName))
 
 	fsm := myfsm.NewFSM(fileNameWithoutExt)
 	file, scanner, err := getFileScanner(filePath)
+	if offset := m.getOffset(filePath); offset > 0 {
+		file.Seek(offset, io.SeekStart)
+	}
 	if err != nil {
-		return nil, err
+		return nil, 0, err
 	}
 	defer func() {
 		file.Close()
@@ -98,22 +113,29 @@ func (m *Monitor) ScanFile(filePath string) ([]myfsm.Event, error) {
 		select {
 		case <-m.ctx.Done():
 			errMsg := fmt.Sprintf("СКАНИРОВАНИЕ ФАЙЛА \"%s\" ПРЕРВАНО (ПО СИГНАЛУ)", fileName)
-			return nil, errors.New(errMsg)
+			return nil, 0, errors.New(errMsg)
 		default:
-			time.Sleep(time.Duration(m.priority) * time.Millisecond)
+			if m.priority > 0 {
+				time.Sleep(time.Duration(m.priority) * time.Millisecond)
+			}
 			fsm.ProcessLine(scanner.Text())
 		}
 	}
 
 	if err := scanner.Err(); err != nil {
-		return nil, err
+		return nil, 0, err
 	}
 	if fsm.Event != nil {
 		fsm.Event = fsm.FinalizeEvent
 		fsm.Update(0)
 	}
 
-	events := fsm.GetEvents()
+	offset, err = file.Seek(0, io.SeekCurrent)
+	if err != nil {
+		return nil, 0, err
+	}
+
+	events = fsm.GetEvents()
 	var i = 0
 	for _, event := range events {
 		event.SetIndex(i)
@@ -122,7 +144,7 @@ func (m *Monitor) ScanFile(filePath string) ([]myfsm.Event, error) {
 		i++
 	}
 
-	return events, nil
+	return events, offset, nil
 }
 
 func getFileScanner(filePath string) (file *os.File, scanner *bufio.Scanner, err error) {
@@ -202,6 +224,8 @@ func (m *Monitor) checkConfigContent() {
 
 func (m *Monitor) Start() error {
 
+	m.restoreLogOffsets()
+
 	defer func() {
 		m.processor.Close()
 	}()
@@ -222,6 +246,53 @@ func (m *Monitor) Start() error {
 	m.log.Info("Все процессы завершены")
 	return nil
 }
+func (m *Monitor) getOffset(path string) int64 {
+	m.mutex.Lock()
+	defer m.mutex.Unlock()
+
+	LogOfset, ok := m.LogOfsets[path]
+	if ok {
+		return LogOfset.Offset
+	}
+
+	return 0
+}
+
+func (m *Monitor) restoreLogOffsets() {
+	m.mutex.Lock()
+	defer m.mutex.Unlock()
+	b, err := ioutil.ReadFile("offsets")
+	if err != nil {
+		return
+	}
+	json.Unmarshal(b, &m.LogOfsets)
+
+}
+
+func (m *Monitor) LogOffset(e myfsm.Event, path string, offset int64, depth int) {
+	m.mutex.Lock()
+	defer m.mutex.Unlock()
+
+	switch be := e.(type) {
+	case *myfsm.BulkEvent:
+		m.LogOfsets[path] = LogOfset{
+			Offset:    offset,
+			LastEvent: be.Time,
+			Depth:     depth,
+		}
+		jsonData, err := json.Marshal(m.LogOfsets)
+		if err != nil {
+			m.log.Warnf("Не удалось сериализировать данные смещений (%s)", err.Error())
+			return
+		}
+		err = ioutil.WriteFile("offsets", jsonData, 0644)
+		if err != nil {
+
+			m.log.Warnf("Не удалось сохранить данные смещений (%s)", err.Error())
+
+		}
+	}
+}
 
 func (m *Monitor) scanFolder() {
 	defer m.wg.Done()
@@ -238,56 +309,56 @@ FoldersScanner:
 				m.log.Errorf("СКАНИРОВАНИЕ \"%s\" ПРЕРВАНО ПО СИГНАЛУ", folder.Location)
 				break FoldersScanner
 			default:
-				filepath.Walk(folder.Location, m.pathChecker)
-			}
+				filepath.Walk(folder.Location, func(path string, fileInfo fs.FileInfo, err error) error {
+					if err != nil {
+						return err
+					}
+					matched, err := filepath.Match(mask, fileInfo.Name())
+					if err != nil {
+						return err
+					}
 
-		}
+					if !fileInfo.IsDir() && matched {
+						select {
+						case <-m.ctx.Done():
+							errMsg := fmt.Sprintf("СКАНИРОВАНИЕ ДИРРЕКТОРИИ \"%s\" ПРЕРВАНО ПО СИГНАЛУ", path)
+							m.log.Error(errMsg)
+							return errors.New(errMsg)
+						default:
+							info := fmt.Sprintf("Чтение \"%s\"", path)
+							start := time.Now()
+							events, offset, err := m.ScanFile(path)
+							if err != nil {
+								duration := time.Since(start)
+								m.log.Errorf("%s. Ошибка. %s. Длительность: %d мк.с.", info, err.Error(), duration/time.Microsecond)
+								return err
+							}
+							eventsCount := len(events)
+							duration := time.Since(start)
+							info = fmt.Sprintf("%s: Прочитано %d за %d мк.с.", info, eventsCount, duration/time.Microsecond)
+							if eventsCount > 0 {
+								start = time.Now()
+								info = fmt.Sprintf("%s: Отправка событий", info)
+								err = m.processor.SendEvents(events)
+								if err != nil {
+									duration := time.Since(start)
+									m.log.Errorf("%s. Ошибка при отправке (%s). Длительность %d мк.с.", info, err.Error(), duration/time.Microsecond)
+									return nil
+								}
 
-	}
-}
+								m.LogOffset(events[len(events)-1], path, offset, folder.Depth)
 
-func (m *Monitor) pathChecker(path string, fileInfo fs.FileInfo, err error) error {
-	if err != nil {
-		return err
-	}
-	matched, err := filepath.Match(mask, fileInfo.Name())
-	if err != nil {
-		return err
-	}
-
-	if !fileInfo.IsDir() && matched {
-		select {
-		case <-m.ctx.Done():
-			errMsg := fmt.Sprintf("СКАНИРОВАНИЕ ДИРРЕКТОРИИ \"%s\" ПРЕРВАНО ПО СИГНАЛУ", path)
-			m.log.Error(errMsg)
-			return errors.New(errMsg)
-		default:
-			canBeDeleted := common.FileCanBeDeleted(path)
-			info := fmt.Sprintf("Чтение \"%s\" (%t)", path, canBeDeleted)
-			start := time.Now()
-			events, err := m.ScanFile(path)
-			if err != nil {
-				duration := time.Since(start)
-				m.log.Errorf("%s. Ошибка. %s. Длительность: %d мк.с.", info, err.Error(), duration/time.Microsecond)
-				return err
-			}
-			eventsCount := len(events)
-			duration := time.Since(start)
-			info = fmt.Sprintf("%s: Прочитано %d за %d мк.с.", info, eventsCount, duration/time.Microsecond)
-			if eventsCount > 0 {
-				start = time.Now()
-				info = fmt.Sprintf("%s: Отправка событий", info)
-				err = m.processor.SendEvents(events)
-				if err != nil {
-					duration := time.Since(start)
-					m.log.Errorf("%s. Ошибка при отправке (%s). Длительность %d мк.с.", info, err.Error(), duration/time.Microsecond)
+								duration := time.Since(start)
+								info = fmt.Sprintf("%s: Отправлено за %d мк.с.", info, duration/time.Microsecond)
+								m.log.Info(info)
+							}
+						}
+					}
 					return nil
-				}
-				duration := time.Since(start)
-				info = fmt.Sprintf("%s: Отправлено за %d мк.с.", info, duration/time.Microsecond)
-				m.log.Info(info)
+				})
 			}
+
 		}
+
 	}
-	return nil
 }

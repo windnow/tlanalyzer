@@ -15,8 +15,10 @@
             //"args": ["C:\\files\\2\\TECHLOGS\\dbmssql_long","-logcfg=C:\\files\\2\\logcfg.xml"]
             "args": [
                 "-logcfg=C:\\files\\2\\logcfg.xml",
+                "-priority=10",
+                "-tag=TESTNB",
                 "-dir=C:\\files\\2\\TECHLOGS\\call",
-                "-dir=C:\\files\\2\\TECHLOGS\\dbmssql_long",
+            //    "-dir=C:\\files\\2\\TECHLOGS\\dbmssql_long",
             ]
         }
     ]
