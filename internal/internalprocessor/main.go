@@ -155,6 +155,9 @@ func (p *InternalProcessor) SendDataIfThresholdReached() {
 		}
 		p.lastSend = time.Now()
 		p.events = make([]myfsm.Event, 0)
+		jsonData, _ := json.Marshal(p.events)
+
+		os.WriteFile(p.cacheFile, jsonData, 0644)
 	}
 }
 
