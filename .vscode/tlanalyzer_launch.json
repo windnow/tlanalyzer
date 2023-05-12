@@ -9,8 +9,16 @@
             "type": "go",
             "request": "launch",
             "mode": "auto",
-            "program": "${workspaceFolder}/cmd/tlserver/main.go",
+            // "program": "${fileDirname}",
+            "program": "${workspaceFolder}/cmd/tlanalyzer/main.go",
+            //"args": ["C:\\Users\\ermek\\develop\\golang\\sm\\dbmssql_long\\rphost_7664\\23040717.log"]
+            //"args": ["C:\\files\\2\\TECHLOGS\\dbmssql_long","-logcfg=C:\\files\\2\\logcfg.xml"]
             "args": [
+                "-logcfg=C:\\files\\2\\logcfg.xml",
+                "-priority=10",
+                "-tag=TESTNB",
+                "-dir=C:\\files\\2\\TECHLOGS\\call",
+            //    "-dir=C:\\files\\2\\TECHLOGS\\dbmssql_long",
             ]
         }
     ]
