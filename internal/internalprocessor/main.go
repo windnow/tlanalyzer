@@ -7,8 +7,9 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"net/http"
+	"os"
 	"sync"
 	"time"
 
@@ -61,7 +62,7 @@ func NewProcessor(ctx context.Context, log *logrus.Logger, wg *sync.WaitGroup) (
 func (p *InternalProcessor) loadConfig() {
 
 	config := Config{}
-	data, err := ioutil.ReadFile("int_config.json")
+	data, err := os.ReadFile("int_config.json")
 	if err != nil {
 		p.log.Warn("Не удалось прочитать файл конфигурации. Размеры данных установлены по умолчанию")
 	} else {
@@ -123,7 +124,7 @@ func (p *InternalProcessor) send(events []myfsm.Event) error {
 		return err
 	}
 	if resp.StatusCode != http.StatusAccepted {
-		body, err := ioutil.ReadAll(resp.Body)
+		body, err := io.ReadAll(resp.Body)
 		if err != nil {
 			return err
 		}
@@ -161,7 +162,7 @@ func (p *InternalProcessor) restore() {
 	p.mutex.Lock()
 	defer p.mutex.Unlock()
 
-	b, err := ioutil.ReadFile(p.cacheFile)
+	b, err := os.ReadFile(p.cacheFile)
 	if err != nil {
 		p.log.Info("Файл статусов обработки не найден. Пропущено")
 		return
@@ -190,7 +191,7 @@ func (p *InternalProcessor) save() error {
 		return err
 	}
 
-	return ioutil.WriteFile(p.cacheFile, jsonData, 0644)
+	return os.WriteFile(p.cacheFile, jsonData, 0644)
 
 }
 
