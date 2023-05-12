@@ -1,10 +1,12 @@
 package main
 
 import (
+	"context"
 	"flag"
 	"log"
 
 	"github.com/BurntSushi/toml"
+	"github.com/windnow/tlanalyzer/internal/clickhouse"
 	"github.com/windnow/tlanalyzer/internal/config"
 	"github.com/windnow/tlanalyzer/internal/tlserver"
 )
@@ -25,7 +27,12 @@ func main() {
 		log.Printf("Не удалось прочитать конфигурацию из файле %s.", configPath)
 	}
 
-	if err := tlserver.Start(conf); err != nil {
+	storage, err := clickhouse.New(context.Background())
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	if err := tlserver.Start(conf, storage); err != nil {
 		log.Fatal(err)
 	}
 
