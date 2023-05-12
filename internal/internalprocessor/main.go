@@ -1,11 +1,14 @@
 package internalprocessor
 
 import (
+	"bytes"
+	"compress/gzip"
 	"context"
 	"encoding/json"
 	"errors"
 	"fmt"
 	"io/ioutil"
+	"net/http"
 	"sync"
 	"time"
 
@@ -16,9 +19,11 @@ import (
 type Config struct {
 	SendThreshold int `json:"socket"`
 	Limit         int `json:"password"`
+	MaxInterval   int `json:"max-interval"`
 }
 
 type InternalProcessor struct {
+	lastSend  time.Time
 	wg        *sync.WaitGroup
 	cacheFile string
 	events    []myfsm.Event
@@ -30,45 +35,62 @@ type InternalProcessor struct {
 }
 
 func NewProcessor(ctx context.Context, log *logrus.Logger, wg *sync.WaitGroup) (*InternalProcessor, error) {
-	config := Config{}
-	data, err := ioutil.ReadFile("int_config.json")
-	if err != nil {
-		log.Warn("Не удалось прочитать файл конфигурации. Размеры данных установлены по умолчанию")
-	} else {
-		err = json.Unmarshal(data, &config)
-		if err != nil {
-			log.Warn("Не удалось разобрать файл конфигурации. Размеры данных установлены по умолчанию")
-		}
-	}
-	if config.SendThreshold == 0 {
-		config.SendThreshold = 5000
-	}
-	if config.Limit == 0 {
-		config.SendThreshold = 50000
-	}
-	if config.SendThreshold > config.Limit {
-		config.Limit, config.SendThreshold = config.SendThreshold, config.Limit
-	}
 	processor := &InternalProcessor{
 		cacheFile: ".\\cache.out",
 		wg:        wg,
 		ctx:       ctx,
 		log:       log,
+		lastSend:  time.Now(),
 		events:    make([]myfsm.Event, 0),
-		config:    config,
 	}
 
 	processor.restore()
+	processor.loadConfig()
+	processor.log.Infof(
+		"Параметры передачи:\n\tРазмер порции передачи: %d;\n\tМаксимальное количество событий: %d; \n\tМаксимальный интервал между отправками (сек.): %d",
+		processor.config.SendThreshold,
+		processor.config.Limit,
+		processor.config.MaxInterval,
+	)
 	processor.wg.Add(1)
 	go processor.startMonitoring()
 
 	return processor, nil
 }
 
+func (p *InternalProcessor) loadConfig() {
+
+	config := Config{}
+	data, err := ioutil.ReadFile("int_config.json")
+	if err != nil {
+		p.log.Warn("Не удалось прочитать файл конфигурации. Размеры данных установлены по умолчанию")
+	} else {
+		err = json.Unmarshal(data, &config)
+		if err != nil {
+			p.log.Warn("Не удалось разобрать файл конфигурации. Размеры данных установлены по умолчанию")
+		}
+	}
+	if config.SendThreshold == 0 {
+		config.SendThreshold = 5000
+	}
+	if config.Limit == 0 {
+		config.Limit = 50000
+	}
+	if config.MaxInterval == 0 {
+		config.MaxInterval = 300
+	}
+	if config.SendThreshold > config.Limit {
+		config.Limit, config.SendThreshold = config.SendThreshold, config.Limit
+	}
+	p.config = config
+}
+
 func (p *InternalProcessor) startMonitoring() {
 	defer p.wg.Done()
 
 	ticker := time.NewTicker(500 * time.Millisecond)
+	defer ticker.Stop()
+
 	for {
 		select {
 		case <-p.ctx.Done():
@@ -81,6 +103,40 @@ func (p *InternalProcessor) startMonitoring() {
 	}
 
 }
+func (p *InternalProcessor) send(events []myfsm.Event) error {
+	payload, err := json.Marshal(events)
+	if err != nil {
+		return err
+	}
+
+	var compressed bytes.Buffer
+	w := gzip.NewWriter(&compressed)
+	if _, err := w.Write(payload); err != nil {
+		return err
+	}
+	if err := w.Close(); err != nil {
+		return err
+	}
+
+	resp, err := http.Post("http://192.168.24.110:8080/set", "application/json", &compressed)
+	if err != nil {
+		return err
+	}
+	if resp.StatusCode != http.StatusAccepted {
+		body, err := ioutil.ReadAll(resp.Body)
+		if err != nil {
+			return err
+		}
+		return errors.New(string(body))
+	}
+
+	return nil
+}
+
+func (p *InternalProcessor) timeout() bool {
+	duration := time.Since(p.lastSend)
+	return duration > time.Duration(p.config.MaxInterval)*time.Second
+}
 
 func (p *InternalProcessor) SendDataIfThresholdReached() {
 	p.mutex.Lock()
@@ -91,10 +147,13 @@ func (p *InternalProcessor) SendDataIfThresholdReached() {
 		p.log.Info(msg)
 		p.lastMsg = msg
 	}
-	if cap > 5000 {
+	if cap > 5000 || p.timeout() {
+		if err := p.send(p.events); err != nil {
+			p.log.Errorf("Ошибка отправки событий: %s", err.Error())
+			return
+		}
+		p.lastSend = time.Now()
 		p.events = make([]myfsm.Event, 0)
-		cap := len(p.events)
-		p.log.Info("reset slice: ", cap)
 	}
 }
 
@@ -104,11 +163,13 @@ func (p *InternalProcessor) restore() {
 
 	b, err := ioutil.ReadFile(p.cacheFile)
 	if err != nil {
+		p.log.Info("Файл статусов обработки не найден. Пропущено")
 		return
 	}
 
 	var events []*myfsm.BulkEvent
 	if err := json.Unmarshal(b, &events); err != nil {
+		p.log.Info("Не удалось разобрать файл статусов обработки. Пропущено")
 		return
 	}
 	p.events = make([]myfsm.Event, len(events))
@@ -133,6 +194,13 @@ func (p *InternalProcessor) save() error {
 
 }
 
+func (p *InternalProcessor) capacity() int {
+	p.mutex.Lock()
+	defer p.mutex.Unlock()
+
+	return len(p.events)
+
+}
 func (p *InternalProcessor) append(events []myfsm.Event) {
 	p.mutex.Lock()
 	defer p.mutex.Unlock()
@@ -145,7 +213,7 @@ func (p *InternalProcessor) Close() {
 }
 
 func (p *InternalProcessor) SendEvents(events []myfsm.Event) error {
-	if len(p.events) > 50000 {
+	if p.capacity() > 50000 {
 		return errors.New("ДОСТИГНУТ ЛИМИТ ХРАНИЛИЩА. ПРОВЕРЬТЕ ПЕРЕДАЧУ")
 	}
 	p.append(events)
