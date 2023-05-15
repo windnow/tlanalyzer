@@ -43,6 +43,7 @@ func Start(conf *config.Config, storage storage.Storage) error {
 
 	s.BaseContext = func(_ net.Listener) context.Context { return ctx }
 
+	log.Println("Сервер запущен")
 	return s.ListenAndServe()
 
 }
