@@ -138,8 +138,11 @@ func (m *Monitor) ScanFile(filePath string) (events []myfsm.Event, offset int64,
 	events = fsm.GetEvents()
 	var i = 0
 	for _, event := range events {
+		if err := event.ParseTime(m.location); err != nil {
+			m.log.Warnf("Не удалось преобразовать в дату строку вида \"%s\"", *event.GetField("time"))
+		}
+
 		event.SetIndex(i)
-		event.ParseTime(m.location)
 		event.SetTag(m.tag)
 		i++
 	}
@@ -354,7 +357,6 @@ FoldersScanner:
 							}
 						}
 					}
-					time.Sleep(50 * time.Millisecond)
 					return nil
 				})
 			}

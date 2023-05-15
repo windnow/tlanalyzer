@@ -25,6 +25,7 @@ type myFSM struct {
 	currentField string
 	events       []Event
 	value        string
+	buf          string
 	Event        Process
 }
 
@@ -36,6 +37,7 @@ func NewFSM(fileName string) *myFSM {
 	return &myFSM{
 		fileName:   fileName,
 		reNewEvent: r,
+		buf:        "",
 	}
 }
 
@@ -140,14 +142,25 @@ func (fsm *myFSM) ValueEvent() {
 		fsm.prev_c = fsm.c
 	}
 }
-
-func (fsm *myFSM) QuotedValueEvent() {
-	if fsm.c == fsm.quoter && fsm.prev_c != '\\' {
+func (fsm *myFSM) endQuotedValueEvent() {
+	if fsm.c == ',' {
 		fsm.events[len(fsm.events)-1].SetField(fsm.currentField, strings.TrimSpace(fsm.value))
-
 		fsm.currentField = ""
 		fsm.value = ""
+		fsm.buf = ""
 		fsm.Event = fsm.FieldEvent
+	} else {
+		fsm.value += fsm.buf + string(fsm.c)
+		fsm.buf = ""
+		fsm.Event = fsm.QuotedValueEvent
+	}
+	fsm.buf = ""
+}
+
+func (fsm *myFSM) QuotedValueEvent() {
+	if fsm.c == fsm.quoter {
+		fsm.buf += string(fsm.c)
+		fsm.Event = fsm.endQuotedValueEvent
 	} else {
 		fsm.value += string(fsm.c)
 		fsm.prev_c = fsm.c

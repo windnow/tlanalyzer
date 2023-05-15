@@ -72,10 +72,10 @@ func (p *InternalProcessor) loadConfig() {
 		}
 	}
 	if config.SendThreshold == 0 {
-		config.SendThreshold = 5000
+		config.SendThreshold = 15000
 	}
 	if config.Limit == 0 {
-		config.Limit = 50000
+		config.Limit = 250000
 	}
 	if config.MaxInterval == 0 {
 		config.MaxInterval = 300
@@ -148,15 +148,28 @@ func (p *InternalProcessor) SendDataIfThresholdReached() {
 		p.log.Info(msg)
 		p.lastMsg = msg
 	}
-	if cap > 5000 || p.timeout() {
-		if err := p.send(p.events); err != nil {
-			p.log.Errorf("Ошибка отправки событий: %s", err.Error())
-			return
+	if cap > p.config.SendThreshold || (p.timeout() && cap > 0) {
+		portion := p.config.Limit
+		for cap > 0 {
+
+			border := cap
+			if border > portion {
+				border = portion
+			}
+
+			if err := p.send(p.events[:border]); err != nil {
+				p.log.Errorf("Ошибка отправки событий: %s", err.Error())
+				jsonData, _ := json.Marshal(p.events)
+				os.WriteFile(p.cacheFile, jsonData, 0644)
+				return
+			}
+
+			p.events = p.events[border:]
+
+			cap = len(p.events)
 		}
 		p.lastSend = time.Now()
-		p.events = make([]myfsm.Event, 0)
 		jsonData, _ := json.Marshal(p.events)
-
 		os.WriteFile(p.cacheFile, jsonData, 0644)
 	}
 }
