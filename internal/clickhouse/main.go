@@ -2,26 +2,72 @@ package clickhouse
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"log"
 
 	"github.com/ClickHouse/clickhouse-go/v2"
 	"github.com/ClickHouse/clickhouse-go/v2/lib/driver"
 )
 
+type Config struct {
+	Addr []string        `json:"addr"`
+	Auth clickhouse.Auth `json:"auth"`
+}
+
 type ClickHouse struct {
-	ctx  context.Context
-	conn driver.Conn
+	ctx    context.Context
+	conn   driver.Conn
+	tables map[string]*table
+}
+
+func getTable(tname, createQuery string) *table {
+
+	t := &table{fields: make(map[string]field)}
+	t.parseFields(createQuery)
+	t.setName(tname)
+	return t
+}
+
+func (ch *ClickHouse) parseTables(tables map[string]string) {
+
+	for tname, createQuery := range tables {
+		ch.tables[tname] = getTable(tname, createQuery)
+	}
 }
 
 func (ch *ClickHouse) PrepareBatch(sql string) (driver.Batch, error) {
 	return ch.conn.PrepareBatch(ch.ctx, sql)
 }
 
+func getConfig() Config {
+	config := Config{}
+	data, err := ioutil.ReadFile("clickhouse.json")
+	if err != nil {
+		log.Println("Не удалось прочитать файл конфигурации ClickHouse. Параметры установлены по умолчанию")
+	} else {
+		err = json.Unmarshal(data, &config)
+		if err != nil {
+			log.Println("Не удалось разобрать файл конфигурации ClickHouse. Параметры установлены по умолчанию")
+		}
+	}
+	if len(config.Addr) == 0 {
+		config.Addr = append(config.Addr, "localhost:9000")
+	}
+	if config.Auth.Database == "" {
+		config.Auth.Database = "default"
+	}
+
+	return config
+
+}
+
 func New(ctx context.Context) (*ClickHouse, error) {
+	config := getConfig()
 	conn, err := clickhouse.Open(&clickhouse.Options{
-		Addr: []string{"localhost:9000"},
-		Auth: clickhouse.Auth{Database: "ytzh_db"},
+		Addr: config.Addr,
+		Auth: config.Auth,
 		ClientInfo: clickhouse.ClientInfo{
 			Products: []struct {
 				Name    string
@@ -45,20 +91,26 @@ func New(ctx context.Context) (*ClickHouse, error) {
 		return nil, err
 	}
 
-	rows, err := conn.Query(ctx, "SELECT name,toString(uuid) as uuid_str FROM system.tables LIMIT 15")
+	rows, err := conn.Query(ctx, fmt.Sprintf("SELECT name, toString(uuid) as uuid_str, create_table_query FROM system.tables where database = '%s'", config.Auth.Database))
 	if err != nil {
 		return nil, err
 	}
 
+	info := fmt.Sprintf("Список таблиц базы `%s`\n", config.Auth.Database)
+
+	tables := make(map[string]string, 0)
 	for rows.Next() {
-		var name, uuid string
-		if err := rows.Scan(&name, &uuid); err != nil {
+		var name, uuid, query string
+		if err := rows.Scan(&name, &uuid, &query); err != nil {
 			log.Printf("Error on read row data")
 			continue
 		}
-		log.Printf("\tname: %s,\t uuid: %s\n", name, uuid)
+		info = fmt.Sprintf("%s\tname: %s,\t uuid: %s\n\t%s\n", info, name, uuid, query)
+		tables[name] = query
 	}
+	log.Println(info)
 
-	cs := &ClickHouse{conn: conn, ctx: ctx}
+	cs := &ClickHouse{conn: conn, ctx: ctx, tables: make(map[string]*table)}
+	cs.parseTables(tables)
 	return cs, nil
 }

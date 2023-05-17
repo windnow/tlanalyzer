@@ -55,7 +55,7 @@ func (s *server) handleSetEvents() http.HandlerFunc {
 
 		log.Printf("Получено событий: %d\n", len(events))
 
-		if err := s.storage.Save(events); err != nil {
+		if err := s.storage.Save(r.Context(), events); err != nil {
 			s.error(w, r, err)
 			log.Printf("Ошибка сохранения: %s", err.Error())
 			return
