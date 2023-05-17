@@ -2,7 +2,6 @@ package internalprocessor
 
 import (
 	"bytes"
-	"compress/gzip"
 	"context"
 	"encoding/json"
 	"errors"
@@ -14,39 +13,44 @@ import (
 	"time"
 
 	"github.com/sirupsen/logrus"
+	"github.com/windnow/tlanalyzer/internal/common"
 	"github.com/windnow/tlanalyzer/internal/myfsm"
 )
 
+type Poster func(io.Reader) error
+
 type Config struct {
-	SendThreshold int `json:"socket"`
-	Limit         int `json:"password"`
-	MaxInterval   int `json:"max-interval"`
+	SendThreshold  int    `json:"send threshold"`
+	Limit          int    `json:"limit"`
+	MaxInterval    int    `json:"max interval"`
+	ServerEndpoint string `json:"server endpoint"`
+	CacheFileName  string `json:"cache file name"`
 }
 
 type InternalProcessor struct {
-	lastSend  time.Time
-	wg        *sync.WaitGroup
-	cacheFile string
-	events    []myfsm.Event
-	mutex     sync.Mutex
-	log       *logrus.Logger
-	ctx       context.Context
-	config    Config
-	lastMsg   string
+	lastSend time.Time
+	wg       *sync.WaitGroup
+	events   []myfsm.Event
+	mutex    sync.Mutex
+	post     Poster
+	log      *logrus.Logger
+	ctx      context.Context
+	config   Config
+	lastMsg  string
 }
 
 func NewProcessor(ctx context.Context, log *logrus.Logger, wg *sync.WaitGroup) (*InternalProcessor, error) {
 	processor := &InternalProcessor{
-		cacheFile: ".\\cache.out",
-		wg:        wg,
-		ctx:       ctx,
-		log:       log,
-		lastSend:  time.Now(),
-		events:    make([]myfsm.Event, 0),
+		wg:       wg,
+		ctx:      ctx,
+		log:      log,
+		lastSend: time.Now(),
+		events:   make([]myfsm.Event, 0),
 	}
+	processor.post = processor.localPoster
 
-	processor.restore()
 	processor.loadConfig()
+	processor.restore()
 	processor.log.Infof(
 		"Параметры передачи:\n\tРазмер порции передачи: %d;\n\tМаксимальное количество событий: %d; \n\tМаксимальный интервал между отправками (сек.): %d",
 		processor.config.SendThreshold,
@@ -71,6 +75,7 @@ func (p *InternalProcessor) loadConfig() {
 			p.log.Warn("Не удалось разобрать файл конфигурации. Размеры данных установлены по умолчанию")
 		}
 	}
+
 	if config.SendThreshold == 0 {
 		config.SendThreshold = 15000
 	}
@@ -80,6 +85,15 @@ func (p *InternalProcessor) loadConfig() {
 	if config.MaxInterval == 0 {
 		config.MaxInterval = 300
 	}
+
+	if len(config.CacheFileName) == 0 {
+		config.CacheFileName = "cache.json"
+	}
+
+	if len(config.ServerEndpoint) == 0 {
+		config.ServerEndpoint = "http://192.168.24.110:8080/set"
+	}
+
 	if config.SendThreshold > config.Limit {
 		config.Limit, config.SendThreshold = config.SendThreshold, config.Limit
 	}
@@ -104,31 +118,41 @@ func (p *InternalProcessor) startMonitoring() {
 	}
 
 }
-func (p *InternalProcessor) send(events []myfsm.Event) error {
-	payload, err := json.Marshal(events)
+
+func (p *InternalProcessor) localPoster(body io.Reader) error {
+	r, err := http.NewRequestWithContext(p.ctx, http.MethodPost, p.config.ServerEndpoint, body)
 	if err != nil {
 		return err
 	}
 
-	var compressed bytes.Buffer
-	w := gzip.NewWriter(&compressed)
-	if _, err := w.Write(payload); err != nil {
-		return err
-	}
-	if err := w.Close(); err != nil {
-		return err
-	}
+	r.Header.Set("Content-Type", "application/json")
 
-	resp, err := http.Post("http://192.168.24.110:8080/set", "application/json", &compressed)
+	resp, err := http.DefaultClient.Do(r)
 	if err != nil {
 		return err
 	}
+	defer resp.Body.Close()
+
 	if resp.StatusCode != http.StatusAccepted {
 		body, err := io.ReadAll(resp.Body)
 		if err != nil {
 			return err
 		}
 		return errors.New(string(body))
+	}
+
+	return nil
+
+}
+
+func (p *InternalProcessor) send(events []myfsm.Event) error {
+
+	var compressed bytes.Buffer
+	if err := common.Compress(&compressed, events); err != nil {
+		return err
+	}
+	if err := p.post(&compressed); err != nil {
+		return err
 	}
 
 	return nil
@@ -160,7 +184,7 @@ func (p *InternalProcessor) SendDataIfThresholdReached() {
 			if err := p.send(p.events[:border]); err != nil {
 				p.log.Errorf("Ошибка отправки событий: %s", err.Error())
 				jsonData, _ := json.Marshal(p.events)
-				os.WriteFile(p.cacheFile, jsonData, 0644)
+				os.WriteFile(p.config.CacheFileName, jsonData, 0644)
 				return
 			}
 
@@ -170,7 +194,7 @@ func (p *InternalProcessor) SendDataIfThresholdReached() {
 		}
 		p.lastSend = time.Now()
 		jsonData, _ := json.Marshal(p.events)
-		os.WriteFile(p.cacheFile, jsonData, 0644)
+		os.WriteFile(p.config.CacheFileName, jsonData, 0644)
 	}
 }
 
@@ -178,7 +202,7 @@ func (p *InternalProcessor) restore() {
 	p.mutex.Lock()
 	defer p.mutex.Unlock()
 
-	b, err := os.ReadFile(p.cacheFile)
+	b, err := os.ReadFile(p.config.CacheFileName)
 	if err != nil {
 		p.log.Info("Файл статусов обработки не найден. Пропущено")
 		return
@@ -195,7 +219,6 @@ func (p *InternalProcessor) restore() {
 		p.events[i] = v
 	}
 	p.log.Info("После перезапуска восстановлено событий: ", len(p.events))
-
 }
 
 func (p *InternalProcessor) save() error {
@@ -207,7 +230,7 @@ func (p *InternalProcessor) save() error {
 		return err
 	}
 
-	return os.WriteFile(p.cacheFile, jsonData, 0644)
+	return os.WriteFile(p.config.CacheFileName, jsonData, 0644)
 
 }
 

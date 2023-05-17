@@ -12,6 +12,7 @@ type Event interface {
 	ParseTime(*time.Location) error
 	SetIndex(int)
 	SetTag(string)
+	ParsePath(string)
 }
 
 type Process func()

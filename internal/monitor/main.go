@@ -144,6 +144,7 @@ func (m *Monitor) ScanFile(filePath string) (events []myfsm.Event, offset int64,
 
 		event.SetIndex(i)
 		event.SetTag(m.tag)
+		event.ParsePath(filePath)
 		i++
 	}
 

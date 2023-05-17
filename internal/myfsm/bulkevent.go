@@ -1,16 +1,24 @@
 package myfsm
 
-import "time"
+import (
+	"strconv"
+	"strings"
+	"time"
+
+	"github.com/windnow/tlanalyzer/internal/common"
+)
 
 type BulkEvent struct {
-	time     string
-	Position int               `json:"idx"`
-	Tag      string            `json:"tag"`
-	Time     time.Time         `json:"time"`
-	Duration string            `json:"duration"`
-	Name     string            `json:"name"`
-	Level    string            `json:"level"`
-	Fields   map[string]string `json:"fields"`
+	time        string
+	Position    int               `json:"idx"`
+	Tag         string            `json:"tag"`
+	Time        time.Time         `json:"time"`
+	Duration    string            `json:"duration"`
+	Name        string            `json:"name"`
+	Level       string            `json:"level"`
+	Fields      map[string]string `json:"fields"`
+	ProcessName string            `json:"procName"`
+	ProcessPID  int               `json:"procPID"`
 }
 
 func (e BulkEvent) GetField(fieldName string) *string {
@@ -71,4 +79,19 @@ func (e *BulkEvent) SetIndex(i int) {
 
 func (e *BulkEvent) SetTag(tag string) {
 	e.Tag = tag
+}
+
+func (i *BulkEvent) ParsePath(path string) {
+
+	parent, _ := common.GetParentDirectoryName(path)
+	parts := strings.Split(parent, "_")
+
+	if len(parts) == 2 {
+		pid, err := strconv.Atoi(parts[1])
+		if err != nil {
+			return
+		}
+		i.ProcessName = parts[0]
+		i.ProcessPID = pid
+	}
 }
