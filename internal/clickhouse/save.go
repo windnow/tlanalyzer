@@ -55,6 +55,8 @@ EventsProc:
 				user, //+
 				Sql,
 				computerName,
+				event.ProcessName,
+				int32(event.ProcessPID),
 			)
 			if err != nil {
 				return err
