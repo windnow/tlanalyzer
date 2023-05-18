@@ -9,12 +9,16 @@ jobs:
     runs-on: ubuntu-latest
     env:
       OWNER: windnow
-      IMAGE: tlanalyzer-server
+      IMAGE: tlserver
     steps:
       - uses: actions/checkout@v2
 
-      - run: docker build -t ghcr.io/$OWNER/$IMAGE:latest .
+      - run: docker build -t ${{ github.actor }}/$IMAGE:latest .
 
-      - run: echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u $ --password-stdin
+      - name: Log in to Docker Hub
+        uses: docker/login-action@65b78e6e13532edd9afa3aa52ac7964289d1a9c1
+        with:
+          username: ${{ secrets.DOCKER_LOGIN }}
+          password: ${{ secrets.DOCKER }}
 
-      - run: docker push ghcr.io/$OWNER/$IMAGE:latest
+      - run: docker push ${{ github.actor }}/$IMAGE:latest
