@@ -43,7 +43,7 @@ func (ch *ClickHouse) PrepareBatch(sql string) (driver.Batch, error) {
 
 func getConfig() Config {
 	config := Config{}
-	data, err := os.ReadFile("clickhouse.json")
+	data, err := os.ReadFile("config/clickhouse.json")
 	if err != nil {
 		log.Println("Не удалось прочитать файл конфигурации ClickHouse. Параметры установлены по умолчанию")
 	} else {
