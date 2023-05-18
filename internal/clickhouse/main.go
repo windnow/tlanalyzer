@@ -4,8 +4,8 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
 	"log"
+	"os"
 
 	"github.com/ClickHouse/clickhouse-go/v2"
 	"github.com/ClickHouse/clickhouse-go/v2/lib/driver"
@@ -43,7 +43,7 @@ func (ch *ClickHouse) PrepareBatch(sql string) (driver.Batch, error) {
 
 func getConfig() Config {
 	config := Config{}
-	data, err := ioutil.ReadFile("clickhouse.json")
+	data, err := os.ReadFile("clickhouse.json")
 	if err != nil {
 		log.Println("Не удалось прочитать файл конфигурации ClickHouse. Параметры установлены по умолчанию")
 	} else {
