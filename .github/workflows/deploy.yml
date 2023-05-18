@@ -13,8 +13,8 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - run: docker build -t ghcr.io/$OWNER/$IMAGE:latest .
+      - run: docker build -t ghcr.io/$${{ github.actor }}/$IMAGE:latest .
 
       - run: echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u $ --password-stdin
 
-      - run: docker push ghcr.io/$OWNER/$IMAGE:latest
+      - run: docker push ghcr.io/$${{ github.actor }}/$IMAGE:latest
