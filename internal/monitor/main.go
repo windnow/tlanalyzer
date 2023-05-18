@@ -9,7 +9,6 @@ import (
 	"fmt"
 	"io"
 	"io/fs"
-	"io/ioutil"
 	"os"
 	"path/filepath"
 	"strings"
@@ -265,7 +264,7 @@ func (m *Monitor) getOffset(path string) (int64, int) {
 func (m *Monitor) restoreLogOffsets() {
 	m.mutex.Lock()
 	defer m.mutex.Unlock()
-	b, err := ioutil.ReadFile("offsets")
+	b, err := os.ReadFile("offsets")
 	if err != nil {
 		return
 	}
@@ -290,7 +289,7 @@ func (m *Monitor) LogOffset(e myfsm.Event, path string, offset int64, i int, dep
 			m.log.Warnf("Не удалось сериализировать данные смещений (%s)", err.Error())
 			return
 		}
-		err = ioutil.WriteFile("offsets", jsonData, 0644)
+		err = os.WriteFile("offsets", jsonData, 0644)
 		if err != nil {
 
 			m.log.Warnf("Не удалось сохранить данные смещений (%s)", err.Error())
