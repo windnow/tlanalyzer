@@ -45,7 +45,7 @@ func getConfig() Config {
 	config := Config{}
 	data, err := os.ReadFile("config/clickhouse.json")
 	if err != nil {
-		log.Println("Не удалось прочитать файл конфигурации ClickHouse. Параметры установлены по умолчанию")
+		log.Println("Не удалось прочитать файл конфигурации ClickHouse (`config/clickhouse.json`). Параметры установлены по умолчанию")
 	} else {
 		err = json.Unmarshal(data, &config)
 		if err != nil {
