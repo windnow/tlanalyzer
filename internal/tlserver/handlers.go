@@ -29,8 +29,6 @@ func (s *server) handlePing() http.HandlerFunc {
 func (s *server) handleSetEvents() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 
-		log.Println("request")
-
 		compressed, err := ioutil.ReadAll(r.Body)
 		if err != nil {
 			s.error(w, r, err)
@@ -45,11 +43,24 @@ func (s *server) handleSetEvents() http.HandlerFunc {
 		}
 		defer reader.Close()
 
-		var events []myfsm.BulkEvent
-		if err := json.NewDecoder(reader).Decode(&events); err != nil {
+		var e []*myfsm.BulkEvent
+		if err := json.NewDecoder(reader).Decode(&e); err != nil {
 			s.badRequest(w, r, err)
 			return
 		}
+		events := make([]myfsm.Event, len(e))
+		for i, v := range e {
+			events[i] = v
+		}
+
+		log.Printf("Получено событий: %d\n", len(events))
+
+		if err := s.storage.Save(r.Context(), events); err != nil {
+			s.error(w, r, err)
+			log.Printf("Ошибка сохранения: %s", err.Error())
+			return
+		}
+
 		s.respond(w, r, http.StatusAccepted, map[string]string{"status": "accepted"})
 
 	}
