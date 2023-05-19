@@ -110,7 +110,7 @@ func (m *Monitor) ScanFile(filePath string) (events []myfsm.Event, offset int64,
 	fileName := filepath.Base(filePath)
 	fileNameWithoutExt := "20" + strings.TrimSuffix(fileName, filepath.Ext(fileName))
 
-	fsm := myfsm.NewFSM(fileNameWithoutExt, 5000)
+	fsm := myfsm.NewFSM(fileNameWithoutExt)
 	file, scanner, err := getFileScanner(filePath)
 	if offset, i = m.getOffset(filePath); offset > 0 {
 		file.Seek(offset, io.SeekStart)
@@ -131,14 +131,7 @@ func (m *Monitor) ScanFile(filePath string) (events []myfsm.Event, offset int64,
 			if m.priority > 0 {
 				time.Sleep(time.Duration(m.priority) * time.Millisecond)
 			}
-			if last := fsm.ProcessLine(scanner.Text()); last {
-				break
-			}
-
-			offset, err = file.Seek(0, io.SeekCurrent)
-			if err != nil {
-				return nil, 0, 0, err
-			}
+			fsm.ProcessLine(scanner.Text())
 		}
 	}
 
@@ -148,6 +141,11 @@ func (m *Monitor) ScanFile(filePath string) (events []myfsm.Event, offset int64,
 	if fsm.Event != nil {
 		fsm.Event = fsm.FinalizeEvent
 		fsm.Update(0)
+	}
+
+	offset, err = file.Seek(0, io.SeekCurrent)
+	if err != nil {
+		return nil, 0, 0, err
 	}
 
 	events = fsm.GetEvents()
