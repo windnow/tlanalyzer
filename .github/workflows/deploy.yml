@@ -13,6 +13,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      - run: cat internal/clickhouse/main.go
       - run: docker build -t ${{ github.actor }}/$IMAGE:latest .
 
       - name: Log in to Docker Hub

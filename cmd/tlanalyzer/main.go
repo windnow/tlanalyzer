@@ -26,7 +26,7 @@ func init() {
 	flag.StringVar(&configPath, "logcfg", "C:\\Program Files\\1cv8\\conf\\confcfg.xml", "Путь к файлу конфигурации ТЖ")
 	flag.IntVar(&priority, "priority", 9, "Приоритет (10-высокий приоритет, 0 - низкий приоритет)")
 	flag.StringVar(&tag, "tag", "default", "Тег источника ТЖ")
-	flag.StringVar(&tz, "tz", "Asia/Almaty", "Часовой пояс")
+	flag.StringVar(&tz, "tz", "+06", "Часовой пояс")
 	flag.StringSliceVar(&dirs, "dir", "Дополнительный каталог для чтения log файлов")
 	flag.Parse()
 }
