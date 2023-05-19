@@ -11,6 +11,7 @@ import (
 	"io/fs"
 	"os"
 	"path/filepath"
+	"strconv"
 	"strings"
 	"sync"
 	"time"
@@ -65,12 +66,14 @@ func NewMonitor(ctx context.Context, folders []string, cfg_file, timezone, tag s
 		},
 	}
 
-	loc, err := time.LoadLocation(timezone)
+	offset, err := strconv.Atoi(timezone)
 	if err != nil {
-
 		return nil, err
-
 	}
+
+	offset = offset * 60 * 60
+	loc := time.FixedZone(timezone, offset)
+
 	monitor := &Monitor{
 		ctx:       ctx,
 		folders:   logFolders,

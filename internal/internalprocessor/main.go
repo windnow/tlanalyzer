@@ -52,10 +52,11 @@ func NewProcessor(ctx context.Context, log *logrus.Logger, wg *sync.WaitGroup) (
 	processor.loadConfig()
 	processor.restore()
 	processor.log.Infof(
-		"Параметры передачи:\n\tРазмер порции передачи: %d;\n\tМаксимальное количество событий: %d; \n\tМаксимальный интервал между отправками (сек.): %d",
+		"Параметры передачи:\n\tРазмер порции передачи: %d;\n\tМаксимальное количество событий: %d; \n\tМаксимальный интервал между отправками (сек.): %d\n\tURL: %s",
 		processor.config.SendThreshold,
 		processor.config.Limit,
 		processor.config.MaxInterval,
+		processor.config.ServerEndpoint,
 	)
 	processor.wg.Add(1)
 	go processor.startMonitoring()
@@ -66,7 +67,7 @@ func NewProcessor(ctx context.Context, log *logrus.Logger, wg *sync.WaitGroup) (
 func (p *InternalProcessor) loadConfig() {
 
 	config := Config{}
-	data, err := os.ReadFile("int_config.json")
+	data, err := os.ReadFile("config/int_config.json")
 	if err != nil {
 		p.log.Warn("Не удалось прочитать файл конфигурации. Размеры данных установлены по умолчанию")
 	} else {
