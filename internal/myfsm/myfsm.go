@@ -28,17 +28,19 @@ type myFSM struct {
 	value        string
 	buf          string
 	Event        Process
+	capacity     int
 }
 
 func (f *myFSM) GetEvents() []Event {
 	return f.events
 }
-func NewFSM(fileName string) *myFSM {
+func NewFSM(fileName string, capacity int) *myFSM {
 	r := regexp.MustCompile(`^\d\d:\d\d\.\d{6}`)
 	return &myFSM{
 		fileName:   fileName,
 		reNewEvent: r,
 		buf:        "",
+		capacity:   capacity,
 	}
 }
 
@@ -81,7 +83,7 @@ func (fsm *myFSM) NameEvent() {
 		fsm.Event = fsm.LevelEvent
 	}
 }
-func (fsm *myFSM) ProcessLine(line string) {
+func (fsm *myFSM) ProcessLine(line string) (isLast bool) {
 	line = strings.TrimSpace(line)
 	if fsm.reNewEvent.MatchString(line) {
 		if fsm.Event != nil {
@@ -96,6 +98,8 @@ func (fsm *myFSM) ProcessLine(line string) {
 	for _, c := range line {
 		fsm.Update(c)
 	}
+
+	return fsm.Event == nil && len(fsm.events) == fsm.capacity
 
 }
 
@@ -182,5 +186,10 @@ func (fsm *myFSM) FinalizeEvent() {
 		fsm.value = ""
 	}
 	fsm.prev_c = fsm.c
-	fsm.Event = fsm.NewEvent
+
+	if len(fsm.events) == fsm.capacity {
+		fsm.Event = nil
+	} else {
+		fsm.Event = fsm.NewEvent
+	}
 }

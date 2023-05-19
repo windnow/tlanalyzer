@@ -49,6 +49,16 @@ type Monitor struct {
 	processor processor.Processor
 }
 
+type Log struct {
+	Location string `xml:"location,attr"`
+	Depth    int    `xml:"history,attr"`
+}
+
+type Config struct {
+	XMLName xml.Name `xml:"config"`
+	Logs    []Log    `xml:"log"`
+}
+
 func NewMonitor(ctx context.Context, folders []string, cfg_file, timezone, tag string, priority int) (*Monitor, error) {
 	logFolders := make([]Log, 0, len(folders))
 
@@ -97,7 +107,7 @@ func (m *Monitor) ScanFile(filePath string) (events []myfsm.Event, offset int64,
 	fileName := filepath.Base(filePath)
 	fileNameWithoutExt := "20" + strings.TrimSuffix(fileName, filepath.Ext(fileName))
 
-	fsm := myfsm.NewFSM(fileNameWithoutExt)
+	fsm := myfsm.NewFSM(fileNameWithoutExt, 5000)
 	file, scanner, err := getFileScanner(filePath)
 	if offset, i = m.getOffset(filePath); offset > 0 {
 		file.Seek(offset, io.SeekStart)
@@ -118,7 +128,14 @@ func (m *Monitor) ScanFile(filePath string) (events []myfsm.Event, offset int64,
 			if m.priority > 0 {
 				time.Sleep(time.Duration(m.priority) * time.Millisecond)
 			}
-			fsm.ProcessLine(scanner.Text())
+			if last := fsm.ProcessLine(scanner.Text()); last {
+				break
+			}
+
+			offset, err = file.Seek(0, io.SeekCurrent)
+			if err != nil {
+				return nil, 0, 0, err
+			}
 		}
 	}
 
@@ -128,11 +145,6 @@ func (m *Monitor) ScanFile(filePath string) (events []myfsm.Event, offset int64,
 	if fsm.Event != nil {
 		fsm.Event = fsm.FinalizeEvent
 		fsm.Update(0)
-	}
-
-	offset, err = file.Seek(0, io.SeekCurrent)
-	if err != nil {
-		return nil, 0, 0, err
 	}
 
 	events = fsm.GetEvents()
@@ -161,16 +173,6 @@ func getFileScanner(filePath string) (file *os.File, scanner *bufio.Scanner, err
 
 	scanner.Buffer(make([]byte, 0), 1024*1024)
 	return
-}
-
-type Log struct {
-	Location string `xml:"location,attr"`
-	Depth    int    `xml:"history,attr"`
-}
-
-type Config struct {
-	XMLName xml.Name `xml:"config"`
-	Logs    []Log    `xml:"log"`
 }
 
 func (m *Monitor) scanConfig() {
