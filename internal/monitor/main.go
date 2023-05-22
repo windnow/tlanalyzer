@@ -7,7 +7,6 @@ import (
 	"encoding/xml"
 	"errors"
 	"fmt"
-	"io"
 	"io/fs"
 	"os"
 	"path/filepath"
@@ -30,8 +29,10 @@ var mask = "*.log"
 type LogOfset struct {
 	Offset    int64
 	LastEvent time.Time
+	Modified  time.Time
 	Idx       int
 	Depth     int
+	Tail      []byte
 }
 
 type Monitor struct {
@@ -105,47 +106,58 @@ func NewMonitor(ctx context.Context, folders []string, cfg_file, timezone, tag s
 	return monitor, nil
 }
 
-func (m *Monitor) ScanFile(filePath string) (events []myfsm.Event, offset int64, i int, err error) {
+func (m *Monitor) ScanFile(filePath string) (events []myfsm.Event, offset int64, i int, tail string, modified time.Time, err error) {
 
 	fileName := filepath.Base(filePath)
 	fileNameWithoutExt := "20" + strings.TrimSuffix(fileName, filepath.Ext(fileName))
 
 	fsm := myfsm.NewFSM(fileNameWithoutExt)
-	file, scanner, err := getFileScanner(filePath)
-	if offset, i = m.getOffset(filePath); offset > 0 {
-		file.Seek(offset, io.SeekStart)
-	}
+	offset, i, tail, modified = m.getOffset(filePath)
+	fileInfo, err := os.Stat(filePath)
 	if err != nil {
-		return nil, 0, 0, err
+		return nil, 0, 0, "", modified, err
 	}
-	defer func() {
-		file.Close()
-	}()
-
+	if fileInfo.ModTime() == modified {
+		return
+	}
+	file, scanner, err := getFileScanner(filePath)
+	if err != nil {
+		return nil, 0, 0, "", modified, err
+	}
+	defer file.Close()
+	if offset > 0 {
+		for j := int64(0); j < offset; j++ {
+			scanner.Scan()
+		}
+	}
+	if len(tail) > 0 {
+		fsm.ProcessLine(tail)
+	}
+FileScan:
 	for scanner.Scan() {
+		offset++
 		select {
 		case <-m.ctx.Done():
 			errMsg := fmt.Sprintf("СКАНИРОВАНИЕ ФАЙЛА \"%s\" ПРЕРВАНО (ПО СИГНАЛУ)", fileName)
-			return nil, 0, 0, errors.New(errMsg)
+			return nil, 0, 0, "", modified, errors.New(errMsg)
 		default:
 			if m.priority > 0 {
 				time.Sleep(time.Duration(m.priority) * time.Millisecond)
 			}
 			fsm.ProcessLine(scanner.Text())
+			if fsm.Full() {
+				break FileScan
+			}
 		}
 	}
 
 	if err := scanner.Err(); err != nil {
-		return nil, 0, 0, err
+		return nil, 0, 0, "", modified, err
 	}
-	if fsm.Event != nil {
+	if fsm.Event != nil && !fsm.Full() {
 		fsm.Event = fsm.FinalizeEvent
 		fsm.Update(0)
-	}
-
-	offset, err = file.Seek(0, io.SeekCurrent)
-	if err != nil {
-		return nil, 0, 0, err
+		modified = fileInfo.ModTime()
 	}
 
 	events = fsm.GetEvents()
@@ -160,7 +172,7 @@ func (m *Monitor) ScanFile(filePath string) (events []myfsm.Event, offset int64,
 		i++
 	}
 
-	return events, offset, i, nil
+	return events, offset, i, fsm.Tail(), modified, nil
 }
 
 func getFileScanner(filePath string) (file *os.File, scanner *bufio.Scanner, err error) {
@@ -252,16 +264,16 @@ func (m *Monitor) Start() error {
 	m.log.Info("Все процессы завершены")
 	return nil
 }
-func (m *Monitor) getOffset(path string) (int64, int) {
+func (m *Monitor) getOffset(path string) (offset int64, idx int, tail string, lastModified time.Time) {
 	m.mutex.Lock()
 	defer m.mutex.Unlock()
 
 	LogOfset, ok := m.LogOfsets[path]
 	if ok {
-		return LogOfset.Offset, LogOfset.Idx
+		return LogOfset.Offset, LogOfset.Idx, string(LogOfset.Tail), LogOfset.Modified
 	}
 
-	return 0, 0
+	return 0, 0, "", LogOfset.Modified
 }
 
 func (m *Monitor) restoreLogOffsets() {
@@ -275,7 +287,7 @@ func (m *Monitor) restoreLogOffsets() {
 
 }
 
-func (m *Monitor) LogOffset(e myfsm.Event, path string, offset int64, i int, depth int) {
+func (m *Monitor) LogOffset(e myfsm.Event, path string, offset int64, i int, tail string, modified time.Time, depth int) {
 	m.mutex.Lock()
 	defer m.mutex.Unlock()
 
@@ -285,6 +297,8 @@ func (m *Monitor) LogOffset(e myfsm.Event, path string, offset int64, i int, dep
 			Offset:    offset,
 			LastEvent: be.Time,
 			Idx:       i,
+			Tail:      []byte(tail),
+			Modified:  modified,
 			Depth:     depth,
 		}
 		jsonData, err := json.Marshal(m.LogOfsets)
@@ -334,7 +348,7 @@ FoldersScanner:
 						default:
 							info := fmt.Sprintf("Чтение \"%s\"", path)
 							start := time.Now()
-							events, offset, i, err := m.ScanFile(path)
+							events, offset, i, tail, modified, err := m.ScanFile(path)
 							if err != nil {
 								duration := time.Since(start)
 								m.log.Errorf("%s. Ошибка. %s. Длительность: %d мк.с.", info, err.Error(), duration/time.Microsecond)
@@ -353,7 +367,7 @@ FoldersScanner:
 									return nil
 								}
 
-								m.LogOffset(events[len(events)-1], path, offset, i, folder.Depth)
+								m.LogOffset(events[len(events)-1], path, offset, i, tail, modified, folder.Depth)
 
 								duration := time.Since(start)
 								info = fmt.Sprintf("%s: Отправлено за %d мк.с.", info, duration/time.Microsecond)

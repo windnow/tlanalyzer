@@ -28,6 +28,16 @@ type myFSM struct {
 	value        string
 	buf          string
 	Event        Process
+	tail         string
+	full         bool
+}
+
+func (f *myFSM) Tail() string {
+	return f.tail
+}
+
+func (f *myFSM) Full() bool {
+	return f.full
 }
 
 func (f *myFSM) GetEvents() []Event {
@@ -47,6 +57,10 @@ func (fsm *myFSM) NewEvent() {
 		if fsm.prev_c > 0 {
 			fsm.value = string(fsm.prev_c)
 			fsm.prev_c = 0
+		}
+		if len(fsm.events) >= 5000 {
+			fsm.full = true
+			return
 		}
 		fsm.events = append(fsm.events, &BulkEvent{
 			Fields: make(map[string]string),
@@ -95,6 +109,10 @@ func (fsm *myFSM) ProcessLine(line string) {
 
 	for _, c := range line {
 		fsm.Update(c)
+		if fsm.full {
+			fsm.tail = line
+			break
+		}
 	}
 
 }
@@ -177,7 +195,7 @@ func (fsm *myFSM) Update(c rune) {
 }
 
 func (fsm *myFSM) FinalizeEvent() {
-	if len(fsm.events) > 0 && len(fsm.currentField) > 0 && len(fsm.value) > 0 {
+	if len(fsm.events) > 0 && len(fsm.currentField) > 0 && len(fsm.currentField) > 0 && len(fsm.value) > 0 {
 		fsm.events[len(fsm.events)-1].SetField(fsm.currentField, fsm.value)
 		fsm.value = ""
 	}
