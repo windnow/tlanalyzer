@@ -62,6 +62,9 @@ type Config struct {
 }
 
 func NewMonitor(ctx context.Context, folders []string, cfg_file, timezone, tag string, priority int) (*Monitor, error) {
+	if priority < 0 {
+		priority = 0
+	}
 	logFolders := make([]Log, 0, len(folders))
 
 	for _, folder := range folders {
@@ -415,6 +418,7 @@ FoldersScanner:
 							}
 						}
 					}
+					time.Sleep(10 * time.Millisecond)
 					return nil
 				})
 			}

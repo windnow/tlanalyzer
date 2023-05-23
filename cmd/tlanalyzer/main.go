@@ -44,7 +44,7 @@ func main() {
 		priority = 0
 	}
 
-	monitor, err := monitor.NewMonitor(ctx, dirs, configPath, tz, tag, (10-priority)*10)
+	monitor, err := monitor.NewMonitor(ctx, dirs, configPath, tz, tag, (10 - priority))
 	if err != nil {
 		log.Fatal(err)
 	}
