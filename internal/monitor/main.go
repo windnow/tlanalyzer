@@ -260,6 +260,9 @@ func (m *Monitor) Start() error {
 	m.wg.Add(1)
 	go m.scanFolder()
 
+	m.wg.Add(1)
+	go m.monitorOfsets()
+
 	m.wg.Wait()
 	m.log.Info("Все процессы завершены")
 	return nil
@@ -285,6 +288,43 @@ func (m *Monitor) restoreLogOffsets() {
 	}
 	json.Unmarshal(b, &m.LogOfsets)
 
+}
+
+func (m *Monitor) monitorOfsets() {
+	defer m.wg.Done()
+	wg := sync.WaitGroup{}
+	ticker := time.NewTicker(5 * time.Second)
+	tick := 0
+INFINITIE:
+	for {
+		select {
+		case <-m.ctx.Done():
+			break INFINITIE
+		case <-ticker.C:
+			tick++
+			if tick%720 == 0 {
+				tick = 0
+				wg.Add(1)
+				go func() {
+					defer wg.Done()
+					m.mutex.Lock()
+					defer m.mutex.Unlock()
+					notFounds := make([]string, 0)
+					for key, _ := range m.LogOfsets {
+						if _, err := os.Stat(key); os.IsNotExist(err) {
+							notFounds = append(notFounds, key)
+						}
+					}
+					for _, key := range notFounds {
+						delete(m.LogOfsets, key)
+						m.log.Infof("Path \"%s\" removed from offsets list", key)
+					}
+				}()
+
+				wg.Wait()
+			}
+		}
+	}
 }
 
 func (m *Monitor) LogOffset(e myfsm.Event, path string, offset int64, i int, tail string, modified time.Time, depth int) {
@@ -375,7 +415,6 @@ FoldersScanner:
 							}
 						}
 					}
-					time.Sleep(time.Millisecond)
 					return nil
 				})
 			}
