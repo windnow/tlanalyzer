@@ -375,6 +375,7 @@ FoldersScanner:
 							}
 						}
 					}
+					time.Sleep(time.Millisecond)
 					return nil
 				})
 			}
