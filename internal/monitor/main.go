@@ -15,6 +15,7 @@ import (
 	"sync"
 	"time"
 
+	"github.com/kardianos/service"
 	"github.com/sirupsen/logrus"
 	easy "github.com/t-tomalak/logrus-easy-formatter"
 	"github.com/windnow/tlanalyzer/internal/common"
@@ -37,6 +38,7 @@ type LogOfset struct {
 
 type Monitor struct {
 	ctx         context.Context
+	cancel      context.CancelFunc
 	wg          sync.WaitGroup
 	mutex       sync.Mutex
 	cfg_folders []Log
@@ -45,10 +47,13 @@ type Monitor struct {
 	tag         string
 	priority    int
 
+	workDir   string
 	LogOfsets map[string]LogOfset
 	folders   []Log
 	log       *logrus.Logger
+	logFile   *os.File
 	processor processor.Processor
+	service   service.Service
 }
 
 type Log struct {
@@ -61,7 +66,7 @@ type Config struct {
 	Logs    []Log    `xml:"log"`
 }
 
-func NewMonitor(ctx context.Context, folders []string, cfg_file, timezone, tag string, priority int) (*Monitor, error) {
+func NewMonitor(folders []string, cfg_file, timezone, tag string, priority int) (*Monitor, error) {
 	if priority < 0 {
 		priority = 0
 	}
@@ -70,9 +75,17 @@ func NewMonitor(ctx context.Context, folders []string, cfg_file, timezone, tag s
 	for _, folder := range folders {
 		logFolders = append(logFolders, Log{Location: folder, Depth: -1})
 	}
+	var workDir string
+	if err := common.WorkingDir(&workDir); err != nil {
+		return nil, err
+	}
+	file, err := os.OpenFile(fmt.Sprintf("%s/tlanalyzer.log", workDir), os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0666)
+	if err != nil {
+		return nil, err
+	}
 
 	log := &logrus.Logger{
-		Out:   os.Stderr,
+		Out:   file,
 		Level: logrus.DebugLevel,
 		Formatter: &easy.Formatter{
 			TimestampFormat: "2006-01-02 15:04:05",
@@ -88,16 +101,20 @@ func NewMonitor(ctx context.Context, folders []string, cfg_file, timezone, tag s
 	offset = offset * 60 * 60
 	loc := time.FixedZone(timezone, offset)
 
+	ctx, cancel := context.WithCancel(context.Background())
 	monitor := &Monitor{
 		ctx:       ctx,
+		cancel:    cancel,
 		folders:   logFolders,
 		log:       log,
+		logFile:   file,
 		cfg_file:  cfg_file,
 		location:  loc,
 		tag:       tag,
 		LogOfsets: make(map[string]LogOfset),
 		priority:  priority,
 		wg:        sync.WaitGroup{},
+		workDir:   workDir,
 	}
 
 	// processor, err := redisprocessor.NewProcessor(ctx, log)
@@ -243,7 +260,11 @@ func (m *Monitor) checkConfigContent() {
 	m.setFolders(config.Logs)
 }
 
-func (m *Monitor) Start() error {
+func (m *Monitor) Start(s service.Service) error {
+
+	if s != nil {
+		m.service = s
+	}
 
 	m.restoreLogOffsets()
 
@@ -256,7 +277,7 @@ func (m *Monitor) Start() error {
 		go m.scanConfig()
 	} else {
 		if m.cfg_file != "" {
-			m.log.Warn("НЕ ВЕРНО ЗАДАН ФАЙЛ КОНФИГУРАЦИИ")
+			m.log.Warn(fmt.Sprintf("НЕ ВЕРНО ЗАДАН ФАЙЛ КОНФИГУРАЦИИ (%s)", m.cfg_file))
 		}
 	}
 
@@ -267,9 +288,19 @@ func (m *Monitor) Start() error {
 	go m.monitorOfsets()
 
 	m.wg.Wait()
+	m.logFile.Close()
 	m.log.Info("Все процессы завершены")
 	return nil
 }
+
+func (m *Monitor) Stop() error {
+	m.cancel()
+	if m.service != nil {
+		return m.service.Stop()
+	}
+	return nil
+}
+
 func (m *Monitor) getOffset(path string) (offset int64, idx int, tail string, lastModified time.Time) {
 	m.mutex.Lock()
 	defer m.mutex.Unlock()
@@ -285,7 +316,7 @@ func (m *Monitor) getOffset(path string) (offset int64, idx int, tail string, la
 func (m *Monitor) restoreLogOffsets() {
 	m.mutex.Lock()
 	defer m.mutex.Unlock()
-	b, err := os.ReadFile("offsets")
+	b, err := os.ReadFile(fmt.Sprintf("%s\\offsets", m.workDir))
 	if err != nil {
 		return
 	}
@@ -365,6 +396,12 @@ FoldersScanner:
 	for {
 
 		folders := m.getFolders()
+		/*if len(folders) == 0 {
+			m.log.Warn("Список каталогов пуст. Выходим")
+			m.Stop()
+			return
+		}
+		*/
 
 		for _, folder := range folders {
 
