@@ -7,7 +7,6 @@ import (
 	"encoding/xml"
 	"errors"
 	"fmt"
-	"io"
 	"io/fs"
 	"os"
 	"path/filepath"
@@ -16,6 +15,7 @@ import (
 	"sync"
 	"time"
 
+	"github.com/kardianos/service"
 	"github.com/sirupsen/logrus"
 	easy "github.com/t-tomalak/logrus-easy-formatter"
 	"github.com/windnow/tlanalyzer/internal/common"
@@ -30,12 +30,15 @@ var mask = "*.log"
 type LogOfset struct {
 	Offset    int64
 	LastEvent time.Time
+	Modified  time.Time
 	Idx       int
 	Depth     int
+	Tail      []byte
 }
 
 type Monitor struct {
 	ctx         context.Context
+	cancel      context.CancelFunc
 	wg          sync.WaitGroup
 	mutex       sync.Mutex
 	cfg_folders []Log
@@ -44,10 +47,13 @@ type Monitor struct {
 	tag         string
 	priority    int
 
+	workDir   string
 	LogOfsets map[string]LogOfset
 	folders   []Log
 	log       *logrus.Logger
+	logFile   *os.File
 	processor processor.Processor
+	service   service.Service
 }
 
 type Log struct {
@@ -60,15 +66,26 @@ type Config struct {
 	Logs    []Log    `xml:"log"`
 }
 
-func NewMonitor(ctx context.Context, folders []string, cfg_file, timezone, tag string, priority int) (*Monitor, error) {
+func NewMonitor(folders []string, cfg_file, timezone, tag string, priority int) (*Monitor, error) {
+	if priority < 0 {
+		priority = 0
+	}
 	logFolders := make([]Log, 0, len(folders))
 
 	for _, folder := range folders {
 		logFolders = append(logFolders, Log{Location: folder, Depth: -1})
 	}
+	var workDir string
+	if err := common.WorkingDir(&workDir); err != nil {
+		return nil, err
+	}
+	file, err := os.OpenFile(fmt.Sprintf("%s/tlanalyzer.log", workDir), os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0666)
+	if err != nil {
+		return nil, err
+	}
 
 	log := &logrus.Logger{
-		Out:   os.Stderr,
+		Out:   file,
 		Level: logrus.DebugLevel,
 		Formatter: &easy.Formatter{
 			TimestampFormat: "2006-01-02 15:04:05",
@@ -84,16 +101,20 @@ func NewMonitor(ctx context.Context, folders []string, cfg_file, timezone, tag s
 	offset = offset * 60 * 60
 	loc := time.FixedZone(timezone, offset)
 
+	ctx, cancel := context.WithCancel(context.Background())
 	monitor := &Monitor{
 		ctx:       ctx,
+		cancel:    cancel,
 		folders:   logFolders,
 		log:       log,
+		logFile:   file,
 		cfg_file:  cfg_file,
 		location:  loc,
 		tag:       tag,
 		LogOfsets: make(map[string]LogOfset),
 		priority:  priority,
 		wg:        sync.WaitGroup{},
+		workDir:   workDir,
 	}
 
 	// processor, err := redisprocessor.NewProcessor(ctx, log)
@@ -105,47 +126,58 @@ func NewMonitor(ctx context.Context, folders []string, cfg_file, timezone, tag s
 	return monitor, nil
 }
 
-func (m *Monitor) ScanFile(filePath string) (events []myfsm.Event, offset int64, i int, err error) {
+func (m *Monitor) ScanFile(filePath string) (events []myfsm.Event, offset int64, i int, tail string, modified time.Time, err error) {
 
 	fileName := filepath.Base(filePath)
 	fileNameWithoutExt := "20" + strings.TrimSuffix(fileName, filepath.Ext(fileName))
 
 	fsm := myfsm.NewFSM(fileNameWithoutExt)
-	file, scanner, err := getFileScanner(filePath)
-	if offset, i = m.getOffset(filePath); offset > 0 {
-		file.Seek(offset, io.SeekStart)
-	}
+	offset, i, tail, modified = m.getOffset(filePath)
+	fileInfo, err := os.Stat(filePath)
 	if err != nil {
-		return nil, 0, 0, err
+		return nil, 0, 0, "", modified, err
 	}
-	defer func() {
-		file.Close()
-	}()
-
+	if fileInfo.ModTime() == modified {
+		return
+	}
+	file, scanner, err := getFileScanner(filePath)
+	if err != nil {
+		return nil, 0, 0, "", modified, err
+	}
+	defer file.Close()
+	if offset > 0 {
+		for j := int64(0); j < offset; j++ {
+			scanner.Scan()
+		}
+	}
+	if len(tail) > 0 {
+		fsm.ProcessLine(tail)
+	}
+FileScan:
 	for scanner.Scan() {
+		offset++
 		select {
 		case <-m.ctx.Done():
 			errMsg := fmt.Sprintf("СКАНИРОВАНИЕ ФАЙЛА \"%s\" ПРЕРВАНО (ПО СИГНАЛУ)", fileName)
-			return nil, 0, 0, errors.New(errMsg)
+			return nil, 0, 0, "", modified, errors.New(errMsg)
 		default:
 			if m.priority > 0 {
 				time.Sleep(time.Duration(m.priority) * time.Millisecond)
 			}
 			fsm.ProcessLine(scanner.Text())
+			if fsm.Full() {
+				break FileScan
+			}
 		}
 	}
 
 	if err := scanner.Err(); err != nil {
-		return nil, 0, 0, err
+		return nil, 0, 0, "", modified, err
 	}
-	if fsm.Event != nil {
+	if fsm.Event != nil && !fsm.Full() {
 		fsm.Event = fsm.FinalizeEvent
 		fsm.Update(0)
-	}
-
-	offset, err = file.Seek(0, io.SeekCurrent)
-	if err != nil {
-		return nil, 0, 0, err
+		modified = fileInfo.ModTime()
 	}
 
 	events = fsm.GetEvents()
@@ -160,7 +192,7 @@ func (m *Monitor) ScanFile(filePath string) (events []myfsm.Event, offset int64,
 		i++
 	}
 
-	return events, offset, i, nil
+	return events, offset, i, fsm.Tail(), modified, nil
 }
 
 func getFileScanner(filePath string) (file *os.File, scanner *bufio.Scanner, err error) {
@@ -228,7 +260,11 @@ func (m *Monitor) checkConfigContent() {
 	m.setFolders(config.Logs)
 }
 
-func (m *Monitor) Start() error {
+func (m *Monitor) Start(s service.Service) error {
+
+	if s != nil {
+		m.service = s
+	}
 
 	m.restoreLogOffsets()
 
@@ -241,33 +277,46 @@ func (m *Monitor) Start() error {
 		go m.scanConfig()
 	} else {
 		if m.cfg_file != "" {
-			m.log.Warn("НЕ ВЕРНО ЗАДАН ФАЙЛ КОНФИГУРАЦИИ")
+			m.log.Warn(fmt.Sprintf("НЕ ВЕРНО ЗАДАН ФАЙЛ КОНФИГУРАЦИИ (%s)", m.cfg_file))
 		}
 	}
 
 	m.wg.Add(1)
 	go m.scanFolder()
 
+	m.wg.Add(1)
+	go m.monitorOfsets()
+
 	m.wg.Wait()
+	m.logFile.Close()
 	m.log.Info("Все процессы завершены")
 	return nil
 }
-func (m *Monitor) getOffset(path string) (int64, int) {
+
+func (m *Monitor) Stop() error {
+	m.cancel()
+	if m.service != nil {
+		return m.service.Stop()
+	}
+	return nil
+}
+
+func (m *Monitor) getOffset(path string) (offset int64, idx int, tail string, lastModified time.Time) {
 	m.mutex.Lock()
 	defer m.mutex.Unlock()
 
 	LogOfset, ok := m.LogOfsets[path]
 	if ok {
-		return LogOfset.Offset, LogOfset.Idx
+		return LogOfset.Offset, LogOfset.Idx, string(LogOfset.Tail), LogOfset.Modified
 	}
 
-	return 0, 0
+	return 0, 0, "", LogOfset.Modified
 }
 
 func (m *Monitor) restoreLogOffsets() {
 	m.mutex.Lock()
 	defer m.mutex.Unlock()
-	b, err := os.ReadFile("offsets")
+	b, err := os.ReadFile(fmt.Sprintf("%s\\offsets", m.workDir))
 	if err != nil {
 		return
 	}
@@ -275,7 +324,44 @@ func (m *Monitor) restoreLogOffsets() {
 
 }
 
-func (m *Monitor) LogOffset(e myfsm.Event, path string, offset int64, i int, depth int) {
+func (m *Monitor) monitorOfsets() {
+	defer m.wg.Done()
+	wg := sync.WaitGroup{}
+	ticker := time.NewTicker(5 * time.Second)
+	tick := 0
+INFINITIE:
+	for {
+		select {
+		case <-m.ctx.Done():
+			break INFINITIE
+		case <-ticker.C:
+			tick++
+			if tick%720 == 0 {
+				tick = 0
+				wg.Add(1)
+				go func() {
+					defer wg.Done()
+					m.mutex.Lock()
+					defer m.mutex.Unlock()
+					notFounds := make([]string, 0)
+					for key, _ := range m.LogOfsets {
+						if _, err := os.Stat(key); os.IsNotExist(err) {
+							notFounds = append(notFounds, key)
+						}
+					}
+					for _, key := range notFounds {
+						delete(m.LogOfsets, key)
+						m.log.Infof("Path \"%s\" removed from offsets list", key)
+					}
+				}()
+
+				wg.Wait()
+			}
+		}
+	}
+}
+
+func (m *Monitor) LogOffset(e myfsm.Event, path string, offset int64, i int, tail string, modified time.Time, depth int) {
 	m.mutex.Lock()
 	defer m.mutex.Unlock()
 
@@ -285,6 +371,8 @@ func (m *Monitor) LogOffset(e myfsm.Event, path string, offset int64, i int, dep
 			Offset:    offset,
 			LastEvent: be.Time,
 			Idx:       i,
+			Tail:      []byte(tail),
+			Modified:  modified,
 			Depth:     depth,
 		}
 		jsonData, err := json.Marshal(m.LogOfsets)
@@ -308,6 +396,12 @@ FoldersScanner:
 	for {
 
 		folders := m.getFolders()
+		/*if len(folders) == 0 {
+			m.log.Warn("Список каталогов пуст. Выходим")
+			m.Stop()
+			return
+		}
+		*/
 
 		for _, folder := range folders {
 
@@ -334,7 +428,7 @@ FoldersScanner:
 						default:
 							info := fmt.Sprintf("Чтение \"%s\"", path)
 							start := time.Now()
-							events, offset, i, err := m.ScanFile(path)
+							events, offset, i, tail, modified, err := m.ScanFile(path)
 							if err != nil {
 								duration := time.Since(start)
 								m.log.Errorf("%s. Ошибка. %s. Длительность: %d мк.с.", info, err.Error(), duration/time.Microsecond)
@@ -353,7 +447,7 @@ FoldersScanner:
 									return nil
 								}
 
-								m.LogOffset(events[len(events)-1], path, offset, i, folder.Depth)
+								m.LogOffset(events[len(events)-1], path, offset, i, tail, modified, folder.Depth)
 
 								duration := time.Since(start)
 								info = fmt.Sprintf("%s: Отправлено за %d мк.с.", info, duration/time.Microsecond)
@@ -361,6 +455,7 @@ FoldersScanner:
 							}
 						}
 					}
+					time.Sleep(10 * time.Millisecond)
 					return nil
 				})
 			}

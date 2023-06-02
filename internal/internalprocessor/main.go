@@ -37,15 +37,21 @@ type InternalProcessor struct {
 	ctx      context.Context
 	config   Config
 	lastMsg  string
+	workDir  string
 }
 
 func NewProcessor(ctx context.Context, log *logrus.Logger, wg *sync.WaitGroup) (*InternalProcessor, error) {
+	var workDir string
+	if err := common.WorkingDir(&workDir); err != nil {
+		return nil, err
+	}
 	processor := &InternalProcessor{
 		wg:       wg,
 		ctx:      ctx,
 		log:      log,
 		lastSend: time.Now(),
 		events:   make([]myfsm.Event, 0),
+		workDir:  workDir,
 	}
 	processor.post = processor.localPoster
 
@@ -67,7 +73,7 @@ func NewProcessor(ctx context.Context, log *logrus.Logger, wg *sync.WaitGroup) (
 func (p *InternalProcessor) loadConfig() {
 
 	config := Config{}
-	data, err := os.ReadFile("config/int_config.json")
+	data, err := os.ReadFile(fmt.Sprintf("%s/config/int_config.json", p.workDir))
 	if err != nil {
 		p.log.Warn("Не удалось прочитать файл конфигурации. Размеры данных установлены по умолчанию")
 	} else {
@@ -90,6 +96,7 @@ func (p *InternalProcessor) loadConfig() {
 	if len(config.CacheFileName) == 0 {
 		config.CacheFileName = "cache.json"
 	}
+	config.CacheFileName = fmt.Sprintf("%s/%s", p.workDir, config.CacheFileName)
 
 	if len(config.ServerEndpoint) == 0 {
 		config.ServerEndpoint = "http://192.168.24.110:8080/set"
