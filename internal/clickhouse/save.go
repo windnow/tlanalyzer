@@ -31,12 +31,11 @@ EventsProc:
 				continue EventsProc
 			}
 
-			dur, err := strconv.Atoi(event.Duration)
+			duration, err := strconv.ParseUint(event.Duration, 10, 64)
 			if err != nil {
 				return errors.New("НЕ УДАЛОСЬ ПРЕОБРАЗОВАТЬ ДЛИТЕЛЬНОСТЬ К ЧИСЛО")
 			}
 			idx := int32(event.Position)
-			duration := int32(dur)
 			context, _ := event.Fields["Context"]
 			user, _ := event.Fields["Usr"]
 			Sql, _ := event.Fields["Sql"]
