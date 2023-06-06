@@ -321,7 +321,6 @@ func (m *Monitor) restoreLogOffsets() {
 		return
 	}
 	json.Unmarshal(b, &m.LogOfsets)
-
 }
 
 func (m *Monitor) monitorOfsets() {
@@ -463,4 +462,8 @@ FoldersScanner:
 		}
 
 	}
+}
+
+func (m *Monitor) scanSQL() {
+
 }
