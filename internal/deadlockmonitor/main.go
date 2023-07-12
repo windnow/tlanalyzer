@@ -18,7 +18,7 @@ import (
 )
 
 type Event interface {
-	getEvent() myfsm.Event
+	getEvents() []myfsm.Event
 }
 
 type deadlockmonitor struct {
@@ -37,7 +37,7 @@ type config struct {
 
 type fileOffset struct {
 	LastEventTimestamp time.Time `json:"timestamp"`
-	Modified           time.Time `json:modified"`
+	Modified           time.Time `json:"modified"`
 }
 
 func New(logsDir, ctx context.Context, workDir string, log *logrus.Logger) (*deadlockmonitor, error) {
@@ -164,7 +164,10 @@ func (p *deadlockmonitor) read(fileName string, timestamp time.Time) ([]myfsm.Ev
 		if err != nil {
 			return nil, err
 		}
-		events = append(events, event.getEvent())
+		e := event.getEvents()
+		if e != nil {
+			events = append(events, e...)
+		}
 	}
 
 	return events, nil

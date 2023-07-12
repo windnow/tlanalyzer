@@ -343,7 +343,7 @@ INFINITIE:
 					m.mutex.Lock()
 					defer m.mutex.Unlock()
 					notFounds := make([]string, 0)
-					for key, _ := range m.LogOfsets {
+					for key := range m.LogOfsets {
 						if _, err := os.Stat(key); os.IsNotExist(err) {
 							notFounds = append(notFounds, key)
 						}

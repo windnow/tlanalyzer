@@ -3,25 +3,17 @@ package deadlockmonitor
 import (
 	"encoding/xml"
 	"time"
-
-	"github.com/windnow/tlanalyzer/internal/myfsm"
 )
 
 type event struct {
-	XMLName   xml.Name     `xml:"event"`
-	Name      string       `xml:"name,attr"`
-	Timestamp time.Time    `xml:"timestamp,attr"`
-	Victims   []victim     `xml:"data>value>deadlock>victim-list>victimProcess"`
-	Processes []process    `xml:"data>value>deadlock>process-list>process"`
-	Resources []objectlock `xml:"data>value>deadlock>resource-list>objectlock"`
-}
+	XMLName   xml.Name  `xml:"event"`
+	Name      string    `xml:"name,attr"`
+	Timestamp time.Time `xml:"timestamp,attr"`
 
-func (e *event) getEvent() myfsm.Event {
-	return nil
-}
-
-type victim struct {
-	Id string `xml:"id,attr"`
+	Victims     []processRef `xml:"data>value>deadlock>victim-list>victimProcess"`
+	Processes   []process    `xml:"data>value>deadlock>process-list>process"`
+	Objectlocks []objectlock `xml:"data>value>deadlock>resource-list>objectlock"`
+	Pagelocks   []objectlock `xml:"data>value>deadlock>resource-list>pagelock"`
 }
 
 type process struct {
@@ -39,15 +31,15 @@ type process struct {
 }
 
 type objectlock struct {
-	Objectname string        `xml:"objectname,attr"`
-	Mode       string        `xml:"mode,attr"`
-	Owners     []lockprocess `xml:"owner-list>owner"`
-	Waiters    []lockprocess `xml:"waiter-list>waiter"`
+	Objectname string       `xml:"objectname,attr"`
+	Mode       string       `xml:"mode,attr"`
+	Owners     []processRef `xml:"owner-list>owner"`
+	Waiters    []processRef `xml:"waiter-list>waiter"`
 }
 
-type lockprocess struct {
+type processRef struct {
 	Id          string `xml:"id,attr"`
-	Mode        string `xml:"mode,attr"`
+	Mode        string `xml:"mode,attr,omitempty"`
 	RequestType string `xml:"requestType,attr,omitempty"`
 }
 
