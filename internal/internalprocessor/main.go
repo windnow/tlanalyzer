@@ -261,7 +261,7 @@ func (p *InternalProcessor) Close() {
 }
 
 func (p *InternalProcessor) SendEvents(events []myfsm.Event) error {
-	if p.capacity() > 50000 {
+	if p.capacity() > p.config.Limit {
 		return errors.New("ДОСТИГНУТ ЛИМИТ ХРАНИЛИЩА. ПРОВЕРЬТЕ ПЕРЕДАЧУ")
 	}
 	p.append(events)
