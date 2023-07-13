@@ -29,35 +29,46 @@ func (s *server) handlePing() http.HandlerFunc {
 func (s *server) handleSetEvents() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 
-		compressed, err := ioutil.ReadAll(r.Body)
+		body, err := ioutil.ReadAll(r.Body)
 		if err != nil {
 			s.error(w, r, err)
 			return
 		}
 		r.Body.Close()
 
-		reader, err := gzip.NewReader(bytes.NewReader(compressed))
-		if err != nil {
-			s.error(w, r, err)
-			return
-		}
-		defer reader.Close()
+		userAgent := r.UserAgent()
 
+		unzip := !(userAgent == "1C+Enterprise/8.3")
 		var e []*myfsm.BulkEvent
-		if err := json.NewDecoder(reader).Decode(&e); err != nil {
-			s.badRequest(w, r, err)
-			return
+
+		if unzip {
+			reader, err := gzip.NewReader(bytes.NewReader(body))
+			if err != nil {
+				s.error(w, r, err)
+				return
+			}
+			defer reader.Close()
+
+			if err := json.NewDecoder(reader).Decode(&e); err != nil {
+				s.badRequest(w, r, err)
+				return
+			}
+		} else {
+			if err := json.NewDecoder(bytes.NewReader(body)).Decode(&e); err != nil {
+				s.badRequest(w, r, err)
+				return
+			}
 		}
 		events := make([]myfsm.Event, len(e))
 		for i, v := range e {
 			events[i] = v
 		}
 
-		log.Printf("Получено событий: %d\n", len(events))
+		log.Printf("[%s (%s)]. Получено событий: %d\n", r.RemoteAddr, userAgent, len(events))
 
 		if err := s.storage.Save(r.Context(), events); err != nil {
 			s.error(w, r, err)
-			log.Printf("Ошибка сохранения: %s", err.Error())
+			log.Printf("%s: Ошибка сохранения: %s", r.RemoteAddr, err.Error())
 			return
 		}
 

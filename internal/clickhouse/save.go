@@ -10,6 +10,37 @@ import (
 	"github.com/windnow/tlanalyzer/internal/myfsm"
 )
 
+func getByKey(fields map[string]string, key string) (string, bool) {
+	value, ok := fields[key]
+	return value, ok
+}
+
+func getUint64(value string, ok bool) uint64 {
+
+	if !ok {
+		return 0
+	}
+	result, err := strconv.ParseUint(value, 10, 64)
+	if err != nil {
+		return 0
+	}
+	return result
+
+}
+func getUint32(value string, ok bool) uint32 {
+
+	if !ok {
+		return 0
+	}
+	result, err := strconv.ParseUint(value, 10, 64)
+	if err != nil {
+		return 0
+	}
+
+	return uint32(result)
+
+}
+
 func (ch *ClickHouse) Save(ctx context.Context, events []myfsm.Event) error {
 	batch, err := ch.PrepareBatch(`INSERT INTO events`)
 	if err != nil {
@@ -31,15 +62,20 @@ EventsProc:
 				continue EventsProc
 			}
 
-			duration, err := strconv.ParseUint(event.Duration, 10, 64)
-			if err != nil {
-				return errors.New("НЕ УДАЛОСЬ ПРЕОБРАЗОВАТЬ ДЛИТЕЛЬНОСТЬ К ЧИСЛО")
-			}
+			//--------------------------------------------------------------------------
+			duration := getUint64(event.Duration, true)
 			idx := int32(event.Position)
-			context, _ := event.Fields["Context"]
-			user, _ := event.Fields["Usr"]
-			Sql, _ := event.Fields["Sql"]
-			computerName, _ := event.Fields["t:computerName"]
+			context, _ := getByKey(event.Fields, "Context")
+			user, _ := getByKey(event.Fields, "Usr")
+			Sql, _ := getByKey(event.Fields, "Sql")
+			computerName, _ := getByKey(event.Fields, "t:computerName")
+			DataBase, _ := getByKey(event.Fields, "DataBase")
+			dbPid := getUint32(getByKey(event.Fields, "dbpid"))
+			SessionID := getUint32(getByKey(event.Fields, "SessionID"))
+			MemoryPeak := getUint64(getByKey(event.Fields, "MemoryPeak"))
+			CpuTime := getUint64(getByKey(event.Fields, "CpuTime"))
+			//--------------------------------------------------------------------------
+
 			if begin.After(event.Time) {
 				log.Printf("-------> Пропущено событие %s из за не корректной даты %s", event.Name, event.Time.Format("2006.01.02"))
 				continue
@@ -54,6 +90,11 @@ EventsProc:
 				user, //+
 				Sql,
 				computerName,
+				SessionID,
+				DataBase,
+				dbPid,
+				MemoryPeak,
+				CpuTime,
 				event.ProcessName,
 				int32(event.ProcessPID),
 			)
