@@ -10,34 +10,26 @@ import (
 	"github.com/windnow/tlanalyzer/internal/myfsm"
 )
 
-func getByKey(fields map[string]string, key string) (string, bool) {
+func getByKey[A, B comparable](fields map[A]B, key A) (B, bool) {
 	value, ok := fields[key]
 	return value, ok
 }
 
-func getUint64(value string, ok bool) uint64 {
-
-	if !ok {
-		return 0
-	}
-	result, err := strconv.ParseUint(value, 10, 64)
-	if err != nil {
-		return 0
-	}
-	return result
-
+type UnsignedNumbers interface {
+	uint16 | uint32 | uint64
 }
-func getUint32(value string, ok bool) uint32 {
+
+func getUint[T UnsignedNumbers](value string, ok bool) T {
 
 	if !ok {
 		return 0
 	}
-	result, err := strconv.ParseUint(value, 10, 64)
+	result, err := strconv.ParseUint(value, 10, strconv.IntSize)
 	if err != nil {
 		return 0
 	}
 
-	return uint32(result)
+	return T(result)
 
 }
 
@@ -63,17 +55,17 @@ EventsProc:
 			}
 
 			//--------------------------------------------------------------------------
-			duration := getUint64(event.Duration, true)
+			duration := getUint[uint64](event.Duration, true)
 			idx := int32(event.Position)
 			context, _ := getByKey(event.Fields, "Context")
 			user, _ := getByKey(event.Fields, "Usr")
 			Sql, _ := getByKey(event.Fields, "Sql")
 			computerName, _ := getByKey(event.Fields, "t:computerName")
 			DataBase, _ := getByKey(event.Fields, "DataBase")
-			dbPid := getUint32(getByKey(event.Fields, "dbpid"))
-			SessionID := getUint32(getByKey(event.Fields, "SessionID"))
-			MemoryPeak := getUint64(getByKey(event.Fields, "MemoryPeak"))
-			CpuTime := getUint64(getByKey(event.Fields, "CpuTime"))
+			dbPid := getUint[uint32](getByKey(event.Fields, "dbpid"))
+			SessionID := getUint[uint32](getByKey(event.Fields, "SessionID"))
+			MemoryPeak := getUint[uint64](getByKey(event.Fields, "MemoryPeak"))
+			CpuTime := getUint[uint64](getByKey(event.Fields, "CpuTime"))
 			//--------------------------------------------------------------------------
 
 			if begin.After(event.Time) {
