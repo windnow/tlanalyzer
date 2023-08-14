@@ -33,6 +33,27 @@ func getUint[T UnsignedNumbers](value string, ok bool) T {
 
 }
 
+func processEvents(events []myfsm.Event) []myfsm.Event {
+
+	processedEvents := make([]myfsm.Event, 0, len(events))
+
+	var preventEvent myfsm.Event = nil
+
+	for _, event := range events {
+		eventName := *event.GetField("name")
+		if eventName != "Context" {
+			processedEvents = append(processedEvents, event)
+			preventEvent = event
+		} else {
+			if preventEvent != nil {
+				preventEvent.SetField("Context", *event.GetField("Context"))
+			}
+		}
+	}
+
+	return processedEvents
+}
+
 func (ch *ClickHouse) Save(ctx context.Context, events []myfsm.Event) error {
 	batch, err := ch.PrepareBatch(`INSERT INTO events`)
 	if err != nil {
@@ -43,7 +64,7 @@ func (ch *ClickHouse) Save(ctx context.Context, events []myfsm.Event) error {
 		return err
 	}
 EventsProc:
-	for _, e := range events {
+	for _, e := range processEvents(events) {
 		select {
 		case <-ctx.Done():
 			return errors.New("ЗАПРОС ПРЕРВАН")
