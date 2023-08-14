@@ -87,6 +87,11 @@ EventsProc:
 			SessionID := getUint[uint32](getByKey(event.Fields, "SessionID"))
 			MemoryPeak := getUint[uint64](getByKey(event.Fields, "MemoryPeak"))
 			CpuTime := getUint[uint64](getByKey(event.Fields, "CpuTime"))
+
+			pprocessName, _ := getByKey(event.Fields, "p:processName")
+			if DataBase == "" && pprocessName != "" {
+				DataBase = pprocessName
+			}
 			//--------------------------------------------------------------------------
 
 			if begin.After(event.Time) {
