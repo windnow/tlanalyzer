@@ -25,8 +25,8 @@ type myFSM struct {
 	fileName     string
 	currentField string
 	events       []Event
-	value        string
-	buf          string
+	valueBuilder strings.Builder
+	bufBuilder   strings.Builder
 	Event        Process
 	tail         string
 	full         bool
@@ -48,14 +48,13 @@ func NewFSM(fileName string) *myFSM {
 	return &myFSM{
 		fileName:   fileName,
 		reNewEvent: r,
-		buf:        "",
 	}
 }
 
 func (fsm *myFSM) NewEvent() {
-	if len(fsm.value) == 0 {
+	if fsm.valueBuilder.Len() == 0 {
 		if fsm.prev_c > 0 {
-			fsm.value = string(fsm.prev_c)
+			fsm.valueBuilder.WriteRune(fsm.prev_c)
 			fsm.prev_c = 0
 		}
 		if len(fsm.events) >= 5000 {
@@ -67,31 +66,31 @@ func (fsm *myFSM) NewEvent() {
 		})
 	}
 	if (fsm.c >= '0' && fsm.c <= '9') || (fsm.c == '.' && fsm.prev_c >= '0' && fsm.prev_c <= '9') || (fsm.c == ':' && fsm.prev_c >= '0' && fsm.prev_c <= '9') {
-		fsm.value += string(fsm.c)
+		fsm.valueBuilder.WriteRune(fsm.c)
 		fsm.prev_c = fsm.c
 	} else {
-		fsm.events[len(fsm.events)-1].SetField("time", fsm.fileName[:8]+" "+fsm.fileName[8:]+":"+fsm.value)
+		fsm.events[len(fsm.events)-1].SetField("time", fsm.fileName[:8]+" "+fsm.fileName[8:]+":"+fsm.valueBuilder.String())
 		fsm.prev_c = 0
-		fsm.value = ""
+		fsm.valueBuilder.Reset()
 		fsm.Event = fsm.DurationEvent
 	}
 }
 
 func (fsm *myFSM) DurationEvent() {
 	if fsm.c >= '0' && fsm.c <= '9' {
-		fsm.value += string(fsm.c)
+		fsm.valueBuilder.WriteRune(fsm.c)
 	} else {
-		fsm.events[len(fsm.events)-1].SetField("duration", fsm.value)
-		fsm.value = ""
+		fsm.events[len(fsm.events)-1].SetField("duration", fsm.valueBuilder.String())
+		fsm.valueBuilder.Reset()
 		fsm.Event = fsm.NameEvent
 	}
 }
 func (fsm *myFSM) NameEvent() {
 	if (fsm.c >= 'a' && fsm.c <= 'z') || (fsm.c >= 'A' && fsm.c <= 'Z') {
-		fsm.value += string(fsm.c)
+		fsm.valueBuilder.WriteRune(fsm.c)
 	} else {
-		fsm.events[len(fsm.events)-1].SetField("name", fsm.value)
-		fsm.value = ""
+		fsm.events[len(fsm.events)-1].SetField("name", fsm.valueBuilder.String())
+		fsm.valueBuilder.Reset()
 		fsm.Event = fsm.LevelEvent
 	}
 }
@@ -119,23 +118,23 @@ func (fsm *myFSM) ProcessLine(line string) {
 
 func (fsm *myFSM) LevelEvent() {
 	if fsm.c >= '0' && fsm.c <= '9' {
-		fsm.value += string(fsm.c)
+		fsm.valueBuilder.WriteRune(fsm.c)
 	} else {
-		fsm.events[len(fsm.events)-1].SetField("level", fsm.value)
-		fsm.value = ""
+		fsm.events[len(fsm.events)-1].SetField("level", fsm.valueBuilder.String())
+		fsm.valueBuilder.Reset()
 		fsm.Event = fsm.FieldEvent
 	}
 }
 
 func (fsm *myFSM) FieldEvent() {
-	if len(fsm.value) == 0 && fsm.c == ',' {
+	if fsm.valueBuilder.Len() == 0 && fsm.c == ',' {
 		return
 	}
 	if fsm.c != '=' {
-		fsm.value += string(fsm.c)
+		fsm.valueBuilder.WriteRune(fsm.c)
 	} else {
-		fsm.currentField = fsm.value
-		fsm.value = ""
+		fsm.currentField = fsm.valueBuilder.String()
+		fsm.valueBuilder.Reset()
 		fsm.prev_c = 0
 		fsm.Event = fsm.ValueEvent
 	}
@@ -146,42 +145,43 @@ func (fsm *myFSM) ValueEvent() {
 
 		fsm.quoter = fsm.c
 
-		fsm.value = ""
+		fsm.valueBuilder.Reset()
 		fsm.Event = fsm.QuotedValueEvent
 
 	} else if fsm.c == ',' {
-		fsm.events[len(fsm.events)-1].SetField(fsm.currentField, strings.TrimSpace(fsm.value))
+		fsm.events[len(fsm.events)-1].SetField(fsm.currentField, strings.TrimSpace(fsm.valueBuilder.String()))
 
 		fsm.prev_c = 0
 		fsm.currentField = ""
-		fsm.value = ""
+		fsm.valueBuilder.Reset()
 		fsm.Event = fsm.FieldEvent
 	} else {
-		fsm.value += string(fsm.c)
+		fsm.valueBuilder.WriteRune(fsm.c)
 		fsm.prev_c = fsm.c
 	}
 }
 func (fsm *myFSM) endQuotedValueEvent() {
 	if fsm.c == ',' {
-		fsm.events[len(fsm.events)-1].SetField(fsm.currentField, strings.TrimSpace(fsm.value))
+		fsm.events[len(fsm.events)-1].SetField(fsm.currentField, strings.TrimSpace(fsm.valueBuilder.String()))
 		fsm.currentField = ""
-		fsm.value = ""
-		fsm.buf = ""
+		fsm.valueBuilder.Reset()
+		fsm.bufBuilder.Reset()
 		fsm.Event = fsm.FieldEvent
 	} else {
-		fsm.value += fsm.buf + string(fsm.c)
-		fsm.buf = ""
+		fsm.valueBuilder.WriteString(fsm.bufBuilder.String())
+		fsm.valueBuilder.WriteRune(fsm.c)
+		fsm.bufBuilder.Reset()
 		fsm.Event = fsm.QuotedValueEvent
 	}
-	fsm.buf = ""
+	fsm.bufBuilder.Reset()
 }
 
 func (fsm *myFSM) QuotedValueEvent() {
 	if fsm.c == fsm.quoter {
-		fsm.buf += string(fsm.c)
+		fsm.bufBuilder.WriteRune(fsm.c)
 		fsm.Event = fsm.endQuotedValueEvent
 	} else {
-		fsm.value += string(fsm.c)
+		fsm.valueBuilder.WriteRune(fsm.c)
 		fsm.prev_c = fsm.c
 	}
 
@@ -195,9 +195,9 @@ func (fsm *myFSM) Update(c rune) {
 }
 
 func (fsm *myFSM) FinalizeEvent() {
-	if len(fsm.events) > 0 && len(fsm.currentField) > 0 && len(fsm.currentField) > 0 && len(fsm.value) > 0 {
-		fsm.events[len(fsm.events)-1].SetField(fsm.currentField, fsm.value)
-		fsm.value = ""
+	if len(fsm.events) > 0 && len(fsm.currentField) > 0 && fsm.valueBuilder.Len() > 0 {
+		fsm.events[len(fsm.events)-1].SetField(fsm.currentField, fsm.valueBuilder.String())
+		fsm.valueBuilder.Reset()
 	}
 	fsm.prev_c = fsm.c
 	fsm.Event = fsm.NewEvent
